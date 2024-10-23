@@ -33,7 +33,7 @@ données. Notre prise de décision quant au choix de ces technologies utilisées
 par la flexibilité, la scalabilité, et la rapidité de développement qu'elles offrent.
 
 ## ARCHITECTURE DES DONNEES
-# DESCRIPTION DE LA STRUCTURE DES DONNEES
+### DESCRIPTION DE LA STRUCTURE DES DONNEES
 
 UTILISATEUR
 La table Utilisateur contient des informations sur tous les utilisateurs (vendeur, acheteur,

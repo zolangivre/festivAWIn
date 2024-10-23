@@ -1,0 +1,24 @@
+<h1>Liste des jeux</h1>
+
+<mat-grid-list cols="4" rowHeight="fit" style="height: 800px;">
+  <mat-grid-tile *ngFor="let item of items"
+                 [colspan]="item.cols"
+                 [rowspan]="item.rows">
+    <mat-card class="game-card">
+      <mat-card-header>
+        <mat-card-title>{{ item.nomJeu }}</mat-card-title>
+        <mat-card-subtitle>{{ item.editeurJeu }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Prix : {{ item.prixJeu }} €</p>
+        <p>Quantité : {{ item.quantiteJeu }}</p>
+        <p>Statut : {{ item.statutJeu }}</p>
+        <p>Frais de dépôt : {{ item.fraisDepot }} €</p>
+        <p>Remise : {{ item.remiseDepot }}%</p>
+      </mat-card-content>
+      <mat-card-footer>
+        <p>Déposé le : {{ item.dateDepot }}</p>
+      </mat-card-footer>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

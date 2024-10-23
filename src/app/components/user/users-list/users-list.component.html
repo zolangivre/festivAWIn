@@ -1,0 +1,6 @@
+<h1>Liste des utilisateurs</h1>
+<div class="display">
+  @for (utilisateur of utilisateurs; track utilisateurs) {
+    <app-user-details [utilisateur]="utilisateur"></app-user-details>
+  }
+</div>

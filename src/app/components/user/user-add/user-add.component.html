@@ -1,6 +1,6 @@
-<div class="edit">
-  <h1>Modifier l'utilisateur {{utilisateur.nom}} {{utilisateur.prenom}}</h1>
-  <form [formGroup]="userForm" (ngSubmit)="updateUser()">
+<div class="add">
+  <h1>Ajouter un utilisateur</h1>
+  <form [formGroup]="userForm" (ngSubmit)="addUser()">
     <div>
       <mat-form-field for="nom">
         <mat-label>Nom :</mat-label>
@@ -25,14 +25,14 @@
       <mat-form-field for="role">
         <mat-label>Rôle :</mat-label>
         <mat-select id="role" formControlName="role" [value]="roles">
-            @for (role of roles; track role) {
-              <mat-option [value]="role"> {{ role }} </mat-option>
-            }
+          @for (role of roles; track role) {
+            <mat-option [value]="role"> {{ role }} </mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </div>
     <div class="button">
-      <button mat-raised-button type="submit" [disabled]="userForm.invalid">Modifier</button>
+      <button mat-raised-button type="submit" [disabled]="userForm.invalid">Ajouter</button>
     </div>
   </form>
 </div>

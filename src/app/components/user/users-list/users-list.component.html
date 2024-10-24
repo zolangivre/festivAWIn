@@ -1,6 +1,13 @@
 <h1>Liste des utilisateurs</h1>
+<div class="addButton">
+  <button mat-raised-button (click)="navigateToAdd()">Ajouter un utilisateur</button>
+</div>
 <div class="display">
   @for (utilisateur of utilisateurs; track utilisateurs) {
-    <app-user-details [utilisateur]="utilisateur"></app-user-details>
+    <app-user-details [utilisateur]="utilisateur" (deleteUserEvent)="deleteUser(utilisateur)"></app-user-details>
+    <div class="button>">
+      <button mat-raised-button (click)="deleteUser(utilisateur)">Supprimer</button>
+      <button mat-raised-button (click)="navigateToEdit(utilisateur)">Modifier</button>
+    </div>
   }
 </div>

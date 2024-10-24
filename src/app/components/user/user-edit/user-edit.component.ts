@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Utilisateur } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
 import { CommonModule } from '@angular/common';
@@ -23,6 +23,7 @@ import { ActivatedRoute } from '@angular/router';
 export class UserEditComponent implements OnChanges{
   @Input() utilisateur!: Utilisateur;
   userForm: FormGroup;
+  roles: string[] = ['Admin', 'Gestionnaire', 'Vendeur', 'Acheteur'];
 
   constructor(private usersService: UsersService, private route: ActivatedRoute, private fb: FormBuilder) {
     this.userForm = this.fb.group({

@@ -29,4 +29,15 @@ export class UsersService {
     const utilisateur = this.utilisateurs.find(u => u.idUtilisateur === id);
     return of(utilisateur!);
   }
+
+  addUser(utilisateur: Utilisateur): Observable<Utilisateur> {
+    this.utilisateurs.push(utilisateur);
+    return of(utilisateur);
+  }
+
+  deleteUser(id: number): Observable<Utilisateur> {
+    const utilisateur = this.utilisateurs.find(u => u.idUtilisateur === id);
+    this.utilisateurs = this.utilisateurs.filter(u => u.idUtilisateur !== id);
+    return of(utilisateur!);
+  }
 }

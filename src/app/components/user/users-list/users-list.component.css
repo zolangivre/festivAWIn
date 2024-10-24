@@ -41,3 +41,18 @@ tr.mat-row:hover {
 .ng-container {
   display: table-cell;
 }
+
+.button {
+  display: flex;
+  justify-content: center; /* Center the button horizontally */
+}
+
+button {
+  margin-right: 10px;
+}
+
+.addButton {
+  display: flex;
+  justify-content: center;
+}
+

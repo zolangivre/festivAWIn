@@ -5,18 +5,19 @@ import { MatTableModule } from '@angular/material/table';
 import { UsersService } from '../../../services/users.service';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
-
+import { UserEditComponent } from '../user-edit/user-edit.component';
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [UserDetailsComponent, MatTableModule, MatButton],
+  imports: [UserDetailsComponent, MatTableModule, MatButton, UserEditComponent],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.css'
 })
 
 export class UsersListComponent {
-  @Input() utilisateurs: Utilisateur[] = [];
+  utilisateurs: Utilisateur[] = [];
   utilisateur!: Utilisateur;
+  selectedUser: Utilisateur | null = null;
 
   constructor(private usersService: UsersService, private router : Router ) {}
 
@@ -29,6 +30,7 @@ export class UsersListComponent {
   }
 
   deleteUser(utilisateur: Utilisateur): void {
+    console.log(utilisateur.idUtilisateur);
     if (utilisateur.idUtilisateur != null) {
       this.usersService.deleteUser(utilisateur.idUtilisateur).subscribe(() => {
         this.getUsers();
@@ -39,7 +41,10 @@ export class UsersListComponent {
   }
 
   navigateToEdit(utilisateur: Utilisateur): void {
-    this.router.navigate(['/edit/utilisateur/', utilisateur.idUtilisateur]);
+    this.selectedUser = utilisateur;
+    this.router.navigate(['/edit/utilisateur/', utilisateur.idUtilisateur], {
+      state: { utilisateur: this.selectedUser }
+    });
   }
 
   navigateToAdd(): void {

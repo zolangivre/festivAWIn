@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-edit',
@@ -20,12 +20,11 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './user-edit.component.css'
 })
 
-export class UserEditComponent implements OnChanges{
-  @Input() utilisateur!: Utilisateur;
+export class UserEditComponent {
+  utilisateur!: Utilisateur;
   userForm: FormGroup;
   roles: string[] = ['Admin', 'Gestionnaire', 'Vendeur', 'Acheteur'];
-
-  constructor(private usersService: UsersService, private route: ActivatedRoute, private fb: FormBuilder) {
+  constructor(private usersService: UsersService, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {
     this.userForm = this.fb.group({
       nom: ['', [Validators.required, Validators.minLength(2)]],
       prenom: ['', [Validators.required, Validators.minLength(2)]],
@@ -36,14 +35,21 @@ export class UserEditComponent implements OnChanges{
     });
   }
 
-  ngOnInit(): void {
+/*   ngOnInit(): void {
+    console.log(this.utilisateur); 
     this.route.paramMap.subscribe(params => {
       const id = params.get('idUtilisateur');
+      console.log(id);
       if (id) {
-        this.usersService.getUser(+id).subscribe(utilisateur => {
-          this.utilisateur = utilisateur;
-          this.userForm.patchValue(utilisateur);
-        });
+        this.usersService.getUser(+id).subscribe(
+          utilisateur => {
+            this.utilisateur = utilisateur;
+            this.userForm.patchValue(utilisateur);
+          },
+          error => {
+            console.error('Erreur lors de la récupération de l\'utilisateur', error);
+          }
+        );
       }
     });
   }
@@ -69,6 +75,48 @@ export class UserEditComponent implements OnChanges{
       this.utilisateur.telephone = this.userForm.value.telephone;
       this.utilisateur.adresse = this.userForm.value.adresse;
       this.utilisateur.role = this.userForm.value.role;
+    }
+  } */
+  
+  ngOnInit(): void {
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as { utilisateur: Utilisateur };
+
+    if (state && state.utilisateur) {
+      this.utilisateur = state.utilisateur;
+      this.userForm.patchValue(this.utilisateur);
+    } else {
+      this.route.paramMap.subscribe(params => {
+        const id = params.get('idUtilisateur');
+        if (id) {
+          this.usersService.getUser(+id).subscribe({
+            next: (utilisateur) => {
+              this.utilisateur = utilisateur;
+              this.userForm.patchValue(utilisateur);
+            },
+            error: (error) => {
+              console.error('Erreur lors de la récupération de l\'utilisateur', error);
+            },
+            complete: () => {
+              console.log('Récupération de l\'utilisateur terminée');
+            }
+          });
+        }
+      });
+    }
+  }
+
+  onSubmit(): void {
+    if (this.userForm.valid) {
+      const updatedUser = { ...this.utilisateur, ...this.userForm.value };
+      this.usersService.updateUser(updatedUser).subscribe({
+        next: () => {
+          console.log('Utilisateur mis à jour avec succès');
+        },
+        error: (error) => {
+          console.error('Erreur lors de la mise à jour de l\'utilisateur', error);
+        }
+      });
     }
   }
 }

@@ -9,7 +9,7 @@ import { UserAddComponent } from './components/user/user-add/user-add.component'
 
 export const routes: Routes = [
   { path: 'utilisateur', component: UsersListComponent },
-  { path: 'utilisateur/:idUtlisateur', component: UserDetailsComponent },
+  { path: 'utilisateur/:idUtilisateur', component: UserDetailsComponent },
   { path: 'edit/utilisateur/:idUtilisateur', component: UserEditComponent },
   { path: 'add/utilisateur', component: UserAddComponent },
   { path: 'jeuDepot', component: ItemsListComponent },

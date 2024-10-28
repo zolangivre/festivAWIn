@@ -1,5 +1,5 @@
 <div class="edit">
-  <h1>Modifier l'utilisateur {{utilisateur.nom}} {{utilisateur.prenom}}</h1>
+  <h1>Modifier l'utilisateur {{utilisateur?.nom}} {{utilisateur?.prenom}}</h1>
   <form [formGroup]="userForm" (ngSubmit)="updateUser()">
     <div>
       <mat-form-field for="nom">

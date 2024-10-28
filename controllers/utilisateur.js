@@ -1,10 +1,10 @@
 const usersCollection = require('../models/utilisateur');
 
 //Récupère la liste de tous les utilisateurs (vendeurs, acheteurs, gestionnaires, administrateurs).
-exports.getAllUsers = (res) => {
+exports.getAllUsers = (req, res, next) => {
   usersCollection.find().then(
-    (users) => {
-      res.status(200).json(users);
+    (utilisateur) => {
+      res.status(200).json(utilisateur);
     }
   ).catch(
     (error) => {
@@ -16,7 +16,7 @@ exports.getAllUsers = (res) => {
 };
 
 //Récupère la liste de tous les vendeurs.
-exports.getAllSellers= (res) => {
+exports.getAllSellers= (req, res, next) => {
     usersCollection.find({ role: 'Vendeur' }).then(
         (sellers) => {
             res.status(200).json(sellers);
@@ -31,7 +31,7 @@ exports.getAllSellers= (res) => {
 };
 
 //Récupère la liste de tous les acheteurs.
-exports.getAllBuyers= (res) => {
+exports.getAllBuyers= (req, res, next) => {
     usersCollection.find({ role: 'Acheteur' }).then(
         (buyers) => {
             res.status(200).json(buyers);

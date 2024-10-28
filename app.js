@@ -13,8 +13,8 @@ const apiUrl = process.env.API_URL;
 const secret = process.env.SECRET;
 
 mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@atlascluster.xqnftpq.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=AtlasCluster`)
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use(cors({
   origin: apiUrl,
@@ -31,6 +31,6 @@ app.use(session({
 }));
 
 app.use(express.json());
-app.use('/api/utlisateur', userRoutes);
+app.use('/api/utilisateur', userRoutes);
 
 module.exports = app;

@@ -9,7 +9,7 @@ const session = require('express-session');
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
 const dbName = process.env.DB_NAME;
-const apiUrl = process.env.API_URL;
+const apiUrlFront = process.env.API_URL;
 const secret = process.env.SECRET;
 
 mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@atlascluster.xqnftpq.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=AtlasCluster`)
@@ -17,7 +17,7 @@ mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@atlascluster.xqnftpq.mon
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use(cors({
-  origin: apiUrl,
+  origin: apiUrlFront,
   credentials: true
 }));
 

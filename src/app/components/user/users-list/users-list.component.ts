@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
+
 import { Utilisateur } from '../../../models/user';
 import { UserDetailsComponent } from '../user-details/user-details.component';
-import { MatTableModule } from '@angular/material/table';
 import { UsersService } from '../../../services/users.service';
+
+import { MatTableModule } from '@angular/material/table';
 import { MatButton } from '@angular/material/button';
-import { Router } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
-import {MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users-list',

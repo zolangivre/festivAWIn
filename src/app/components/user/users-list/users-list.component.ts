@@ -1,15 +1,18 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { Utilisateur } from '../../../models/user';
 import { UserDetailsComponent } from '../user-details/user-details.component';
 import { MatTableModule } from '@angular/material/table';
 import { UsersService } from '../../../services/users.service';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
-import { UserEditComponent } from '../user-edit/user-edit.component';
+import { MatListModule } from '@angular/material/list';
+import {MatInputModule} from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [UserDetailsComponent, MatTableModule, MatButton, UserEditComponent],
+  imports: [UserDetailsComponent, MatTableModule, MatButton, MatListModule, MatInputModule, MatFormFieldModule],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.css'
 })
@@ -17,6 +20,7 @@ import { UserEditComponent } from '../user-edit/user-edit.component';
 export class UsersListComponent {
   utilisateurs: Utilisateur[] = [];
   utilisateur!: Utilisateur;
+  selectedRole: string = 'all';
   selectedUser: Utilisateur | null = null;
 
   constructor(private usersService: UsersService, private router : Router ) {}
@@ -26,28 +30,53 @@ export class UsersListComponent {
   }
 
   getUsers(): void {
-    this.usersService.getUsers().subscribe(utilisateurs => this.utilisateurs = utilisateurs);
-  }
-
-  deleteUser(utilisateur: Utilisateur): void {
-    console.log(utilisateur.idUtilisateur);
-    if (utilisateur.idUtilisateur != null) {
-      this.usersService.deleteUser(utilisateur.idUtilisateur).subscribe(() => {
-        this.getUsers();
+    if (this.selectedRole === 'all') {
+      this.usersService.getUsers().subscribe(utilisateurs => {
+        this.utilisateurs = utilisateurs;
       });
     } else {
-      console.error("Impossible de supprimer l'utilisateur");
+      this.usersService.getUsersByRole(this.selectedRole).subscribe(utilisateurs => {
+        this.utilisateurs = utilisateurs;
+      });
     }
-  }
-
-  navigateToEdit(utilisateur: Utilisateur): void {
-    this.selectedUser = utilisateur;
-    this.router.navigate(['/edit/utilisateur/', utilisateur.idUtilisateur], {
-      state: { utilisateur: this.selectedUser }
-    });
   }
 
   navigateToAdd(): void {
     this.router.navigate(['/add/utilisateur/']);
+  }
+
+  filterUsers(role: string): void {
+    this.selectedRole = role;
+    this.getUsers();
+  }
+
+  showDetails(utilisateur: Utilisateur): void {
+    this.selectedUser = utilisateur;
+  }
+
+  onUserDeleted(): void {
+    this.getUsers();
+    this.selectedUser = null;
+  }
+
+  onUserUpdated(): void {
+    this.getUsers();
+    this.selectedUser = this.selectedUser;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    if (filterValue.trim() === '') {
+      this.getUsers();
+    } else {
+      this.utilisateurs = this.utilisateurs.filter(utilisateur => 
+      utilisateur.nom.toLowerCase().includes(filterValue.trim().toLowerCase()) || 
+      utilisateur.prenom.toLowerCase().includes(filterValue.trim().toLowerCase())
+      );
+    }
+  }
+
+  trackByFn(index: number, item: Utilisateur): string {
+    return item._id;
   }
 }

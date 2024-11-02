@@ -12,21 +12,41 @@ export class ItemService {
 
   constructor(private http: HttpClient) { }
 
-  getItems(): Observable<(JeuDepot & { cols: number; rows: number })[]> {
+  getItems(): Observable<(JeuDepot & { rows: number })[]> {
     return this.http.get<JeuDepot[]>(this.apiUrl).pipe(
       map(items =>
         items.map(item => ({
           ...item,
-          cols: Math.floor(Math.random() * 2) + 1,  // Valeur aléatoire entre 1 et 2 pour les colonnes
-          rows: Math.floor(Math.random() * 2) + 1   // Valeur aléatoire entre 1 et 2 pour les lignes
+          rows: Math.floor(Math.random() * 3) + 3   // Valeur aléatoire entre 3 et 5 pour les lignes
         }))
       )
     );
   }
 
-  getItemById(id: number): Observable<JeuDepot | undefined> {
-    return this.http.get<JeuDepot[]>(`${this.apiUrl}?idJeuDepot=${id}`).pipe(
-      map(items => items.length > 0 ? items[0] : undefined)
+  getFilteredItems(
+    searchTerm: string,
+    minPrice: number | null,
+    maxPrice: number | null,
+    availabilityFilter: string
+  ): Observable<(JeuDepot & { rows: number })[]> {
+    return this.getItems().pipe(
+      map(items =>
+        items.filter(item => {
+          // Filtrer les noms des jeuDepot
+          const matchesSearch = !searchTerm || item.nomJeu.toLowerCase().startsWith(searchTerm.toLowerCase());
+
+          // Filtrer les jeuDepot en fontction de leur prix
+          const matchesMinPrice = minPrice === null || item.prixJeu >= minPrice;
+          const matchesMaxPrice = maxPrice === null || item.prixJeu <= maxPrice;
+
+          // Filtrr les jeuDepot en fonction de leur disponibilité
+          const matchesAvailability = availabilityFilter === 'all' ||
+            (availabilityFilter === 'available' && item.statutJeu === 'Disponible') ||
+            (availabilityFilter === 'soldout' && item.statutJeu === 'SoldOut');
+
+          return matchesSearch && matchesMinPrice && matchesMaxPrice && matchesAvailability;
+        })
+      )
     );
   }
 }

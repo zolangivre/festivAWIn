@@ -4,10 +4,11 @@ import { JeuDepot } from '../../../models/item';
 import { RouterLink } from '@angular/router';
 import { CommonModule, NgForOf } from '@angular/common';
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardModule } from '@angular/material/card';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
   selector: 'app-items-list',
@@ -24,37 +25,54 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatCardFooter,
     MatCardModule,
     MatFormField,
-    CommonModule,
+    MatInputModule,
     FormsModule,
-    MatButtonToggleModule,
-    MatLabel
+    CommonModule,
+    MatRadioModule
   ],
   styleUrls: ['./items-list.component.css']
 })
+
 export class ItemsListComponent implements OnInit {
-  items: (JeuDepot & { cols: number; rows: number })[] = [];
+  items: (JeuDepot & { rows: number })[] = [];
+  filteredItems: (JeuDepot & { rows: number })[] = [];
   searchTerm: string = '';
   minPrice: number | null = null;
   maxPrice: number | null = null;
-  statusFilter: string = '';
+  showExtraFilters: boolean = false;
+  availabilityFilter: string = 'all';
 
   constructor(private itemService: ItemService) { }
 
   ngOnInit(): void {
     this.itemService.getItems().subscribe((data) => {
       this.items = data;
+      this.filteredItems = data;
     });
   }
 
-  filteredItems() {
-    return this.items.filter(item => {
-      const matchesName = item.nomJeu.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchesMinPrice = this.minPrice !== null ? item.prixJeu >= this.minPrice : true;
-      const matchesMaxPrice = this.maxPrice !== null ? item.prixJeu <= this.maxPrice : true;
-      const matchesStatus = this.statusFilter ? item.statutJeu === this.statusFilter : true;
-
-      return matchesName && matchesMinPrice && matchesMaxPrice && matchesStatus;
-    });
+  applySearchFilter(): void {
+    this.loadFilteredItems();
   }
 
+  applyExtraFilter(): void {
+    this.loadFilteredItems();
+  }
+
+  toggleExtraFilters(): void {
+    this.showExtraFilters = !this.showExtraFilters;
+  }
+
+  resetFilters(): void {
+    this.searchTerm = '';
+    this.maxPrice = null;
+    this.minPrice = null;
+    this.availabilityFilter = 'all';
+    this.filteredItems = [...this.items];
+  }
+
+  private loadFilteredItems(): void {
+    this.itemService.getFilteredItems(this.searchTerm, this.minPrice, this.maxPrice, this.availabilityFilter)
+      .subscribe(filteredItems => this.filteredItems = filteredItems);
+  }
 }

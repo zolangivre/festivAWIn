@@ -49,4 +49,8 @@ export class ItemService {
       )
     );
   }
+
+  addItem(item: JeuDepot): Observable<JeuDepot> {
+    return this.http.post<JeuDepot>(this.apiUrl, item);
+  }
 }

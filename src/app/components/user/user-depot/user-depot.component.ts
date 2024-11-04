@@ -1,8 +1,4 @@
-import {
-  Component,
-  Input,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   FormGroup,
@@ -14,6 +10,7 @@ import {
 import { Utilisateur } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
 import { UserDetailsComponent } from '../user-details/user-details.component';
+import { ItemService } from '../../../services/item.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -51,9 +48,12 @@ export class UserDepotComponent {
     'editeurJeu',
     'prixJeu',
     'quantiteJeu',
+    'fraisDepot',
+    'remiseDepot',
   ];
   constructor(
     private usersService: UsersService,
+    private itemService: ItemService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef
@@ -63,12 +63,16 @@ export class UserDepotComponent {
       editeurJeu: ['', [Validators.required, Validators.minLength(2)]],
       prixJeu: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       quantiteJeu: ['', [Validators.required, Validators.pattern('^[1-9]*$')]],
+      remiseDepot: ['', [Validators.required, Validators.pattern('^[1-9]*$')]],
     });
   }
 
   addJeu(): void {
     if (this.jeuDepotForm.valid) {
       this.depotList.push(this.jeuDepotForm.value);
+      this.depotList[this.depotList.length - 1].fraisDepot = parseFloat(
+        (this.depotList[this.depotList.length - 1].prixJeu * 0.15).toFixed(3)
+      );
       this.jeux = [...this.depotList];
       this.jeuDepotForm.reset();
       this.cdr.detectChanges();
@@ -81,7 +85,14 @@ export class UserDepotComponent {
     this.cdr.detectChanges();
   }
 
-  onSubmit(): void {
-    // Handle form submission
+  makeDeposit(): void {
+    for (let i = 0; i < this.depotList.length; i++) {
+      this.depotList[i].vendeur = this.utilisateur._id;
+      this.depotList[i].statutJeu = 'Disponible';
+      this.depotList[i].dateDepot = new Date().toLocaleDateString();
+      this.itemService.addItem(this.depotList[i]).subscribe();
+    }
+    this.depotList = [];
+    this.jeux = [];
   }
 }

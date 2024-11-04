@@ -19,6 +19,14 @@
                     <th mat-header-cell *matHeaderCellDef> Quantité </th>
                     <td mat-cell *matCellDef="let element"> {{ element.quantiteJeu }} </td>
                 </ng-container>
+                <ng-container matColumnDef="fraisDepot">
+                    <th mat-header-cell *matHeaderCellDef> Frais unitaire (en €) </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.fraisDepot }} </td>
+                </ng-container>
+                <ng-container matColumnDef="remiseDepot">
+                    <th mat-header-cell *matHeaderCellDef> Remise (en %) </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.remiseDepot }} </td>
+                </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
@@ -27,7 +35,7 @@
             </div>
         </div>
     </div>
-    <form [formGroup]="jeuDepotForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="jeuDepotForm" (ngSubmit)="makeDeposit()">
         <div>
             <mat-form-field for="nomJeu">
                 <mat-label>Nom :</mat-label>
@@ -44,6 +52,10 @@
             <mat-form-field for="quantiteJeu">
                 <mat-label>Quantité : </mat-label>
                 <input matInput id="quantiteJeu" formControlName="quantiteJeu" />
+            </mat-form-field>
+            <mat-form-field for="remiseDepot">
+                <mat-label>Remise (en %) : </mat-label>
+                <input matInput id="remiseDepot" formControlName="remiseDepot" />
             </mat-form-field>
         </div>
         <div class="button">

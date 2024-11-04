@@ -1,6 +1,6 @@
 interface TJeuDepot {
-  idJeuDepot: number | null;
-  idUtilisateur: number | null;
+  _id: string;
+  vendeur: string;
   nomJeu: string;
   editeurJeu: string;
   prixJeu: number;
@@ -12,8 +12,8 @@ interface TJeuDepot {
 }
 
 export class JeuDepot implements TJeuDepot {
-  public idJeuDepot: number | null;
-  public idUtilisateur: number | null;
+  public _id: string;
+  public vendeur: string;
   public nomJeu: string;
   public editeurJeu: string;
   public prixJeu: number;
@@ -24,7 +24,7 @@ export class JeuDepot implements TJeuDepot {
   public remiseDepot: number;
 
   constructor(
-    idUtilisateur: number | null,
+    vendeur: string,
     nomJeu: string,
     editeurJeu: string,
     prixJeu: number,
@@ -33,9 +33,9 @@ export class JeuDepot implements TJeuDepot {
     dateDepot: string,
     fraisDepot: number,
     remiseDepot: number,
-    idJeuDepot: number | null = null
+    _id: string
   ) {
-    this.idUtilisateur = idUtilisateur;
+    this.vendeur = vendeur;
     this.nomJeu = nomJeu;
     this.editeurJeu = editeurJeu;
     this.prixJeu = prixJeu;
@@ -44,6 +44,6 @@ export class JeuDepot implements TJeuDepot {
     this.dateDepot = dateDepot;
     this.fraisDepot = fraisDepot;
     this.remiseDepot = remiseDepot;
-    this.idJeuDepot = idJeuDepot;
+    this._id = _id;
   }
 }

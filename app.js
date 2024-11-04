@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const userRoutes = require('./routes/utilisateur');
+const jeuDepotRoutes = require('./routes/jeuDepot');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -13,8 +14,8 @@ const apiUrlFront = process.env.API_URL;
 const secret = process.env.SECRET;
 
 mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@atlascluster.xqnftpq.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=AtlasCluster`)
-    .then(() => console.log('Connexion à MongoDB réussie !'))
-    .catch(() => console.log('Connexion à MongoDB échouée !'));
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use(cors({
   origin: apiUrlFront,
@@ -31,6 +32,8 @@ app.use(session({
 }));
 
 app.use(express.json());
+
 app.use('/api/utilisateur', userRoutes);
+app.use('/api/jeuDepot', jeuDepotRoutes);
 
 module.exports = app;

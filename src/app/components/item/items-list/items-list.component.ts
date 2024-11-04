@@ -43,7 +43,6 @@ export class ItemsListComponent implements OnInit {
   availabilityFilter: string = 'all';
 
   constructor(private itemService: ItemService) { }
-  constructor(private itemService: ItemService) { }
 
   ngOnInit(): void {
     this.itemService.getItems().subscribe((data) => {

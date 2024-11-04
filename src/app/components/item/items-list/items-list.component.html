@@ -1,72 +1,70 @@
 <div class="container">
   <h1>Liste des jeux</h1>
-  <div class="container">
-    <h1>Liste des jeux</h1>
 
-    <div class="filter-bar">
-      <mat-form-field appearance="outline">
-        <mat-label>Rechercher un jeu</mat-label>
-        <input matInput [(ngModel)]="searchTerm" (input)="applySearchFilter()" placeholder="Nom du jeu">
-      </mat-form-field>
+  <div class="filter-bar">
+    <mat-form-field appearance="outline">
+      <mat-label>Rechercher un jeu</mat-label>
+      <input matInput [(ngModel)]="searchTerm" (input)="applySearchFilter()" placeholder="Nom du jeu">
+    </mat-form-field>
 
-      <button mat-button (click)="toggleExtraFilters()">
-        {{ showExtraFilters ? 'Masquer les filtres' : '+ de filtres' }}
-      </button>
-    </div>
-
-    <div *ngIf="showExtraFilters" class="extra-filters">
-      <mat-form-field appearance="outline">
-        <mat-label>Prix minimum</mat-label>
-        <input matInput type="number" [(ngModel)]="minPrice" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Prix maximum</mat-label>
-        <input matInput type="number" [(ngModel)]="maxPrice" />
-      </mat-form-field>
-
-      <mat-radio-group [(ngModel)]="availabilityFilter">
-        <mat-radio-button value="available">Disponibles</mat-radio-button>
-        <mat-radio-button value="Soldout">Sold Out</mat-radio-button>
-      </mat-radio-group>
-
-      <button mat-raised-button color="primary" (click)="applyExtraFilter()">Appliquer</button>
-      <button mat-raised-button color="warn" (click)="resetFilters()">Réinitialiser</button>
-    </div>
-
-    <mat-grid-list cols="3" rowHeight="4:1" class="grid-list">
-      <mat-grid-tile *ngFor="let item of filteredItems" [rowspan]="item.rows">
-        <div class="card-container flip-card">
-          <div class="flip-card-inner">
-
-            <!-- Face avant de la carte : Header -->
-            <div class="flip-card-front">
-              <mat-card class="game-card">
-                <mat-card-header>
-                  <mat-card-title>{{ item.nomJeu }}</mat-card-title>
-                  <mat-card-subtitle>{{ item.editeurJeu }}</mat-card-subtitle>
-                </mat-card-header>
-              </mat-card>
-            </div>
-
-            <!-- Face arrière de la carte : Content et footer -->
-            <div class="flip-card-back">
-              <mat-card class="game-card">
-                <mat-card-content>
-                  <p>Prix : {{ item.prixJeu }} €</p>
-                  <p>Quantité : {{ item.quantiteJeu }}</p>
-                  <p>Statut : {{ item.statutJeu }}</p>
-                  <p>Frais de dépôt : {{ item.fraisDepot }} €</p>
-                  <p>Remise : {{ item.remiseDepot }}%</p>
-                </mat-card-content>
-                <mat-card-footer>
-                  <p>Déposé le : {{ item.dateDepot }}</p>
-                </mat-card-footer>
-              </mat-card>
-            </div>
-
-          </div>
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list>
+    <button mat-button (click)="toggleExtraFilters()">
+      {{ showExtraFilters ? 'Masquer les filtres' : '+ de filtres' }}
+    </button>
   </div>
+
+  <div *ngIf="showExtraFilters" class="extra-filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Prix minimum</mat-label>
+      <input matInput type="number" [(ngModel)]="minPrice" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Prix maximum</mat-label>
+      <input matInput type="number" [(ngModel)]="maxPrice" />
+    </mat-form-field>
+
+    <mat-radio-group [(ngModel)]="availabilityFilter">
+      <mat-radio-button value="available">Disponibles</mat-radio-button>
+      <mat-radio-button value="Soldout">Sold Out</mat-radio-button>
+    </mat-radio-group>
+
+    <button mat-raised-button color="primary" (click)="applyExtraFilter()">Appliquer</button>
+    <button mat-raised-button color="warn" (click)="resetFilters()">Réinitialiser</button>
+  </div>
+
+  <mat-grid-list cols="3" rowHeight="4:1" class="grid-list">
+    <mat-grid-tile *ngFor="let item of filteredItems" [rowspan]="item.rows">
+      <div class="card-container flip-card">
+        <div class="flip-card-inner">
+
+          <!-- Face avant de la carte : Header -->
+          <div class="flip-card-front">
+            <mat-card class="game-card">
+              <mat-card-header>
+                <mat-card-title>{{ item.nomJeu }}</mat-card-title>
+                <mat-card-subtitle>{{ item.editeurJeu }}</mat-card-subtitle>
+              </mat-card-header>
+            </mat-card>
+          </div>
+
+          <!-- Face arrière de la carte : Content et footer -->
+          <div class="flip-card-back">
+            <mat-card class="game-card">
+              <mat-card-content>
+                <p>Prix : {{ item.prixJeu }} €</p>
+                <p>Quantité : {{ item.quantiteJeu }}</p>
+                <p>Statut : {{ item.statutJeu }}</p>
+                <p>Frais de dépôt : {{ item.fraisDepot }} €</p>
+                <p>Remise : {{ item.remiseDepot }}%</p>
+              </mat-card-content>
+              <mat-card-footer>
+                <p>Déposé le : {{ item.dateDepot }}</p>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const jeuDepotSchema = mongoose.Schema({
     vendeur: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Utilisateur',
         required: true
     },

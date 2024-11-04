@@ -1,5 +1,5 @@
 interface TUtilisateur {
-  idUtilisateur: number | null;
+  _id: string;
   nom: string;
   prenom: string;
   mail: string;
@@ -9,7 +9,7 @@ interface TUtilisateur {
 }
 
 export class Utilisateur implements TUtilisateur {
-  public idUtilisateur: number | null;
+  public _id: string;
   public nom: string;
   public prenom: string;
   public mail: string;
@@ -17,12 +17,12 @@ export class Utilisateur implements TUtilisateur {
   public adresse: string;
   public role: string;
 
-  constructor(nom : string, prenom : string, mail : string, telephone : string ="", adresse : string = "", role : string, idUtilisateur : number | null = null) {
+  constructor(nom : string, prenom : string, mail : string, telephone : string ="", adresse : string = "", role : string, _id : string) {
     this.nom = nom;
     this.prenom = prenom;
     this.telephone = telephone;
     this.adresse = adresse;
-    this.idUtilisateur = idUtilisateur;
+    this._id = _id;
     this.role = role;
     if (mail && !this.validateEmail(mail)) {
       throw new Error('Invalid email');

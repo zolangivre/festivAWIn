@@ -1,8 +1,12 @@
-import { Component, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+
 import { Utilisateur } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
-import { CommonModule } from '@angular/common';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { UserDepotComponent } from '../user-depot/user-depot.component';
+
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,19 +14,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatIconModule, MatDividerModule, MatButtonModule, MatTableModule],
+  imports: [CommonModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatIconModule, MatDividerModule, MatButtonModule, MatTableModule, ReactiveFormsModule, UserDepotComponent],
   templateUrl: './user-edit.component.html',
   styleUrl: './user-edit.component.css'
 })
-
-export class UserEditComponent implements OnChanges{
+export class UserEditComponent implements OnInit{
   @Input() utilisateur!: Utilisateur;
+  @Output() userUpdated = new EventEmitter<Utilisateur>();
   userForm: FormGroup;
+  roles: string[] = ['Admin', 'Gestionnaire', 'Vendeur', 'Acheteur'];
 
   constructor(private usersService: UsersService, private route: ActivatedRoute, private fb: FormBuilder) {
     this.userForm = this.fb.group({
@@ -36,38 +40,23 @@ export class UserEditComponent implements OnChanges{
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('idUtilisateur');
-      if (id) {
-        this.usersService.getUser(+id).subscribe(utilisateur => {
-          this.utilisateur = utilisateur;
-          this.userForm.patchValue(utilisateur);
-        });
-      }
-    });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['user'] && this.utilisateur) {
-      this.userForm.patchValue({
-        nom: this.utilisateur.nom,
-        prenom: this.utilisateur.prenom,
-        mail: this.utilisateur.mail,
-        telephone: this.utilisateur.telephone,
-        adresse: this.utilisateur.adresse,
-        role: this.utilisateur.role,
-      });
+    if (this.utilisateur) {
+      this.userForm.patchValue(this.utilisateur);
     }
   }
 
-  updateUser(): void {
-    if (this.userForm.valid && this.utilisateur) {
-      this.utilisateur.nom = this.userForm.value.nom;
-      this.utilisateur.prenom = this.userForm.value.prenom;
-      this.utilisateur.mail = this.userForm.value.mail;
-      this.utilisateur.telephone = this.userForm.value.telephone;
-      this.utilisateur.adresse = this.userForm.value.adresse;
-      this.utilisateur.role = this.userForm.value.role;
+  onSubmit(): void {
+    if (this.userForm.valid) {
+      const updatedUser = { ...this.utilisateur, ...this.userForm.value };
+      this.usersService.updateUser(updatedUser).subscribe({
+        next: () => {
+          console.log('Utilisateur mis à jour avec succès');
+          this.userUpdated.emit(updatedUser);
+        },
+        error: (error) => {
+          console.error('Erreur lors de la mise à jour de l\'utilisateur', error);
+        }
+      });
     }
   }
 }

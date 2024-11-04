@@ -1,6 +1,37 @@
 <h1>Liste des utilisateurs</h1>
-<div class="display">
-  @for (utilisateur of utilisateurs; track utilisateurs) {
-    <app-user-details [utilisateur]="utilisateur"></app-user-details>
-  }
+<div class="container">
+  <div class="list-container">
+    <div class="filter-container">
+      <div class="addButton">
+        <button mat-raised-button (click)="navigateToAdd()">Ajouter un utilisateur</button>
+      </div>
+      <div class="search">
+        <mat-form-field>
+          <mat-label>Rechercher</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Jean" #input>
+        </mat-form-field>
+      </div>
+      <div class="filter">
+        <button mat-raised-button (click)="filterUsers('all')">Tous</button>
+        <button mat-raised-button (click)="filterUsers('acheteurs')">Acheteurs</button>
+        <button mat-raised-button (click)="filterUsers('vendeurs')">Vendeurs</button>
+      </div>
+    </div>
+    <div class="list">
+      @for (utilisateur of utilisateurs; track trackByFn) {
+      <mat-list role="list" class="scrollable-list">
+        <mat-list-item role="listitem">
+          <button mat-button (click)="showDetails(utilisateur)">
+            <h3 mat-line>{{utilisateur.nom}} {{utilisateur.prenom}}</h3>
+          </button>
+        </mat-list-item>
+      </mat-list>
+      }
+    </div>
+  </div>
+  <div class="details">
+    @if (selectedUser) {
+      <app-user-details [utilisateur]="selectedUser" (userDeleted)="onUserDeleted()" (userUpdated)="onUserUpdated()"></app-user-details>
+    }
+  </div>
 </div>

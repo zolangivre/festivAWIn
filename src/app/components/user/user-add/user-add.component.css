@@ -1,4 +1,4 @@
-.container {
+.add {
   margin: 20px;
   padding: 20px;
   border: 1px solid #ccc;
@@ -6,23 +6,19 @@
   background-color: #f9f9f9;
 }
 
-.display {
-  margin-bottom: 20px;
-}
-
-table {
+mat-form-field {
   width: 100%;
   margin-bottom: 20px;
 }
 
-.mat-header-cell, .mat-cell {
-  padding: 8px;
-  text-align: left;
+h1 {
+  display: flex;
+  justify-content: center;
 }
 
 .button {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 button {

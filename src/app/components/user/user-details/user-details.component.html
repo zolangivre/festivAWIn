@@ -1,37 +1,52 @@
-@if (utilisateur) {
-  <div class="container">
-    <div class="display">
-      <table mat-table [dataSource]="[utilisateur]" class="mat-elevation-z8">
-        <ng-container matColumnDef="nom">
-          <th mat-header-cell *matHeaderCellDef> Nom </th>
-          <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.nom }} </td>
-        </ng-container>
-        <ng-container matColumnDef="prenom">
-          <th mat-header-cell *matHeaderCellDef> Prénom </th>
-          <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.prenom }} </td>
-        </ng-container>
-        <ng-container matColumnDef="mail">
-          <th mat-header-cell *matHeaderCellDef> Email </th>
-          <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.mail }} </td>
-        </ng-container>
-        <ng-container matColumnDef="telephone">
-          <th mat-header-cell *matHeaderCellDef> Telephone </th>
-          <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.telephone }} </td>
-        </ng-container>
-        <ng-container matColumnDef="adresse">
-          <th mat-header-cell *matHeaderCellDef> Adresse </th>
-          <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.adresse }} </td>
-        </ng-container>
-        <ng-container matColumnDef="role">
-          <th mat-header-cell *matHeaderCellDef> Role </th>
-          <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.role }} </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </div>
-    <div class="editButton">
-      <button mat-raised-button (click)="navigateToEdit()">Modifier</button>
+@if (!editMode && utilisateur && !depotMode) {
+<div class="container">
+  <div class="display">
+    <table mat-table [dataSource]="[utilisateur]" class="mat-elevation-z8">
+      <ng-container matColumnDef="nom">
+        <th mat-header-cell *matHeaderCellDef> Nom </th>
+        <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.nom }} </td>
+      </ng-container>
+      <ng-container matColumnDef="prenom">
+        <th mat-header-cell *matHeaderCellDef> Prénom </th>
+        <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.prenom }} </td>
+      </ng-container>
+      <ng-container matColumnDef="mail">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.mail }} </td>
+      </ng-container>
+      <ng-container matColumnDef="telephone">
+        <th mat-header-cell *matHeaderCellDef> Telephone </th>
+        <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.telephone }} </td>
+      </ng-container>
+      <ng-container matColumnDef="adresse">
+        <th mat-header-cell *matHeaderCellDef> Adresse </th>
+        <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.adresse }} </td>
+      </ng-container>
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef> Role </th>
+        <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.role }} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div class="button>">
+      <button mat-raised-button (click)="deleteUser(utilisateur)">Supprimer</button>
+      <button mat-raised-button (click)="editMode = true">Modifier</button>
+      @if (utilisateur.role === 'Vendeur') {
+      <button mat-raised-button (click)="depotMode = true">Effectuer un dépôt</button>
+      }
+      @if (utilisateur.role === 'Acheteur') {
+      <button mat-raised-button>Acheter un jeu</button>
+      }
     </div>
   </div>
+</div>
+}
+
+@if (editMode && utilisateur && !depotMode) {
+<app-user-edit [utilisateur]="utilisateur" (userUpdated)="onUserUpdated()"></app-user-edit>
+}
+
+@if (depotMode && utilisateur && !editMode) {
+<app-user-depot [utilisateur]="utilisateur"></app-user-depot>
 }

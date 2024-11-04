@@ -17,7 +17,15 @@ export class Utilisateur implements TUtilisateur {
   public adresse: string;
   public role: string;
 
-  constructor(nom : string, prenom : string, mail : string, telephone : string ="", adresse : string = "", role : string, _id : string) {
+  constructor(
+    nom: string,
+    prenom: string,
+    mail: string,
+    telephone: string = '',
+    adresse: string = '',
+    role: string,
+    _id: string
+  ) {
     this.nom = nom;
     this.prenom = prenom;
     this.telephone = telephone;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,5 +11,25 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './root.component.html',
   styleUrl: './root.component.css'
 })
+
 export class RootComponent {
+  buttonText: string = '';
+
+  constructor(private router: Router) { }
+
+  ngOnInit(): void {
+    this.updateButtonText();
+  }
+
+  updateButtonText(): void {
+    this.buttonText = this.router.url === '/jeuDepot'
+      ? 'Vue Gestionnaire 🖲️'
+      : 'Vue Acheteurs 🎲 et vendeurs 💶';
+  }
+
+  toggleRoute(): void {
+    const newRoute = this.router.url === '/jeuDepot' ? '/utilisateur' : '/jeuDepot';
+    this.router.navigate([newRoute]).then(() => this.updateButtonText());
+  }
+
 }

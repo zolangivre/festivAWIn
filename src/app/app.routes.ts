@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { UsersListComponent } from './components/user/users-list/users-list.component';
 import { UserDetailsComponent } from './components/user/user-details/user-details.component';
 import { ItemsListComponent } from './components/item/items-list/items-list.component';
@@ -13,6 +12,6 @@ export const routes: Routes = [
   { path: 'jeuDepot', component: ItemsListComponent },
   { path: 'jeuDepot/:idJeuDepot', component: ItemDetailsComponent },
   { path: 'edit/jeuDepot/:idJeuDepot', component: ItemDetailsComponent },
-  { path: 'App', component: AppComponent },
-  { path: '', redirectTo: '/App', pathMatch: 'full' }
+  { path: '', redirectTo: 'jeuDepot', pathMatch: 'full' },
+  { path: '**', redirectTo: 'jeuDepot', pathMatch: 'full' }
 ];

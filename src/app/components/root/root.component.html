@@ -1,14 +1,5 @@
-<button mat-button [matMenuTriggerFor]="menu">Menu</button>
-<mat-menu #menu="matMenu">
-  <button mat-menu-item routerLink="/App" routerLinkActive="active">
-    App
-  </button>
-  <button mat-menu-item routerLink="/utilisateur" routerLinkActive="active">
-    User List
-  </button>
-  <button mat-menu-item routerLink="/jeuDepot" routerLinkActive="active">
-    Items List
-  </button>
-</mat-menu>
+<button mat-button class="top-right-button" (click)="toggleRoute()">
+  {{ buttonText }}
+</button>
 
 <router-outlet></router-outlet>

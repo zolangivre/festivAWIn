@@ -1,0 +1,26 @@
+.top-right-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #f45050;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+}
+
+.top-right-button:hover {
+    background-color: #f44050;
+}
+
+.top-right-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5);
+}
+
+.mat-mdc-button:not(:disabled) {
+    color: #fff;
+}

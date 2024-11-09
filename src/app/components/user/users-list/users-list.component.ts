@@ -26,7 +26,7 @@ export class UsersListComponent {
   selectedRole: string = 'all';
   selectedUser: Utilisateur | null = null;
 
-  constructor(private usersService: UsersService, private router : Router ) {}
+  constructor(private usersService: UsersService, private router: Router) { }
 
   ngOnInit(): void {
     this.getUsers();
@@ -72,9 +72,9 @@ export class UsersListComponent {
     if (filterValue.trim() === '') {
       this.getUsers();
     } else {
-      this.utilisateurs = this.utilisateurs.filter(utilisateur => 
-      utilisateur.nom.toLowerCase().includes(filterValue.trim().toLowerCase()) || 
-      utilisateur.prenom.toLowerCase().includes(filterValue.trim().toLowerCase())
+      this.utilisateurs = this.utilisateurs.filter(utilisateur =>
+        utilisateur.nom.toLowerCase().includes(filterValue.trim().toLowerCase()) ||
+        utilisateur.prenom.toLowerCase().includes(filterValue.trim().toLowerCase())
       );
     }
   }

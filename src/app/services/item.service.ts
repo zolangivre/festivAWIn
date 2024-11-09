@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { JeuDepot } from '../models/item';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
 
-  private apiUrl = 'http://localhost:3002/api/jeuDepot';
+  private apiUrl = environment.apiUrl + '/jeuDepot';
 
   constructor(private http: HttpClient) { }
 

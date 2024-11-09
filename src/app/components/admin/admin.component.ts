@@ -1,0 +1,118 @@
+import { Component } from '@angular/core';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { SessionService } from '../../services/session.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+
+@Component({
+  selector: 'app-admin',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+  ],
+  templateUrl: './admin.component.html',
+  styleUrl: './admin.component.css',
+})
+export class AdminComponent {
+  sessionForm: FormGroup;
+  constructor(private fb: FormBuilder, private sessionService: SessionService) {
+    this.sessionForm = this.fb.group(
+      {
+        dateDebut: ['', [Validators.required]],
+        heureDebut: ['', [Validators.required]],
+        dateFin: ['', [Validators.required]],
+        heureFin: ['', [Validators.required]],
+        fraisDepot: [
+          '',
+          [
+            Validators.required,
+            Validators.min(0),
+            Validators.max(50),
+            Validators.pattern('^[0-9]*$'),
+          ],
+        ],
+      },
+      { validators: this.dateTimeValidator }
+    );
+  }
+
+  addSession(): void {
+    if (this.sessionForm.valid) {
+      const formValues = this.sessionForm.value;
+      const startDate = new Date(formValues.dateDebut);
+      const [startHours, startMinutes] = formValues.heureDebut.split(':');
+      startDate.setHours(startHours, startMinutes);
+
+      const endDate = new Date(formValues.dateFin);
+      const [endHours, endMinutes] = formValues.heureFin.split(':');
+      endDate.setHours(endHours, endMinutes);
+
+      // Fonction pour formater les dates en "YYYY-MM-DDTHH:mm:ss"
+      const formatDateToLocalISO = (date: Date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+      };
+
+      const startDateTimeISO = formatDateToLocalISO(startDate);
+      const endDateTimeISO = formatDateToLocalISO(endDate);
+
+      const startDateTime = new Date(startDateTimeISO);
+      const endDateTime = new Date(endDateTimeISO);
+
+      const session = {
+        dateDebut: startDate,
+        dateFin: endDate,
+        fraisDepot: Number(formValues.fraisDepot),
+        statutSession: 'Planifiee',
+      };
+      this.sessionService.addSession(session).subscribe(
+        response => {
+          console.log('Session ajoutée avec succès', response);
+        },
+        error => {
+          console.error('Erreur lors de l\'ajout de la session', error);
+        }
+      );
+    }
+  }
+
+  dateTimeValidator(group: FormGroup): { [key: string]: any } | null {
+    const dateDebut = group.get('dateDebut')?.value;
+    const heureDebut = group.get('heureDebut')?.value;
+    const dateFin = group.get('dateFin')?.value;
+    const heureFin = group.get('heureFin')?.value;
+
+    if (dateDebut && heureDebut && dateFin && heureFin) {
+      const startDate = new Date(dateDebut);
+      const [startHours, startMinutes] = heureDebut.split(':');
+      startDate.setHours(startHours, startMinutes);
+
+      const endDate = new Date(dateFin);
+      const [endHours, endMinutes] = heureFin.split(':');
+      endDate.setHours(endHours, endMinutes);
+
+      if (startDate >= endDate) {
+        return { dateTimeInvalid: true };
+      }
+    }
+    return null;
+  }
+}

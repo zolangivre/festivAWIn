@@ -32,4 +32,8 @@ export class RootComponent {
     this.router.navigate([newRoute]).then(() => this.updateButtonText());
   }
 
+  toggleHome(): void {
+    this.router.navigate(['/']).then(() => this.updateButtonText());
+  }
+
 }

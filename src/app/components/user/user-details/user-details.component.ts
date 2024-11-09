@@ -6,6 +6,7 @@ import {
   OnChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { Utilisateur } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
@@ -51,13 +52,11 @@ export class UserDetailsComponent implements OnChanges {
     'role',
   ];
   editMode: boolean = false;
-  depotMode: boolean = false;
 
-  constructor(private usersService: UsersService) { }
+  constructor(private usersService: UsersService, private router: Router) { }
 
   ngOnChanges(): void {
     this.editMode = false;
-    this.depotMode = false;
   }
 
   onUserUpdated(): void {
@@ -94,5 +93,9 @@ export class UserDetailsComponent implements OnChanges {
     } else {
       console.error("Impossible de supprimer l'utilisateur");
     }
+  }
+
+  toggleDepotMode(): void {
+    this.router.navigate(['utilisateur/depot', this.utilisateur._id]);
   }
 }

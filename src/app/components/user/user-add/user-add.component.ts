@@ -20,7 +20,7 @@ import { MatTableModule } from '@angular/material/table';
 
 export class UserAddComponent {
   userForm: FormGroup;
-  roles: string[] = ['Admin', 'Gestionnaire', 'Vendeur', 'Acheteur'];
+  roles: string[] = ['Vendeur', 'Acheteur'];
 
   constructor(private usersService: UsersService, private fb: FormBuilder) {
     this.userForm = this.fb.group({
@@ -37,5 +37,9 @@ export class UserAddComponent {
     this.usersService.addUser(this.userForm.value).subscribe(() => {
       this.userForm.reset();
     });
+  }
+
+  goBack(): void {
+    window.history.back();
   }
 }

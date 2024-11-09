@@ -5,7 +5,6 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angula
 
 import { Utilisateur } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
-import { UserDepotComponent } from '../user-depot/user-depot.component';
 
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -18,7 +17,7 @@ import { MatTableModule } from '@angular/material/table';
 @Component({
   selector: 'app-user-edit',
   standalone: true,
-  imports: [CommonModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatIconModule, MatDividerModule, MatButtonModule, MatTableModule, ReactiveFormsModule, UserDepotComponent],
+  imports: [CommonModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatIconModule, MatDividerModule, MatButtonModule, MatTableModule, ReactiveFormsModule],
   templateUrl: './user-edit.component.html',
   styleUrl: './user-edit.component.css'
 })
@@ -26,7 +25,7 @@ export class UserEditComponent implements OnInit{
   @Input() utilisateur!: Utilisateur;
   @Output() userUpdated = new EventEmitter<Utilisateur>();
   userForm: FormGroup;
-  roles: string[] = ['Admin', 'Gestionnaire', 'Vendeur', 'Acheteur'];
+  roles: string[] = ['Vendeur', 'Acheteur'];
 
   constructor(private usersService: UsersService, private route: ActivatedRoute, private fb: FormBuilder) {
     this.userForm = this.fb.group({

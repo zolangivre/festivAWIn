@@ -6,10 +6,10 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { Utilisateur } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
-import { UserDetailsComponent } from '../user-details/user-details.component';
 import { ItemService } from '../../../services/item.service';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,7 +28,6 @@ import { JeuDepot } from '../../../models/item';
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
-    UserDetailsComponent,
     MatInputModule,
     MatIconModule,
     MatDividerModule,
@@ -51,12 +50,14 @@ export class UserDepotComponent {
     'fraisDepot',
     'remiseDepot',
   ];
+
   constructor(
     private usersService: UsersService,
     private itemService: ItemService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {
     this.jeuDepotForm = this.fb.group({
       nomJeu: ['', [Validators.required, Validators.minLength(2)]],
@@ -65,6 +66,19 @@ export class UserDepotComponent {
       quantiteJeu: ['', [Validators.required, Validators.pattern('^[1-9]*$')]],
       remiseDepot: ['', [Validators.required, Validators.pattern('^[1-9]*$')]],
     });
+  }
+
+  ngOnInit(): void {
+    // Récupérer l'utilisateur correspondant à partir de l'ID dans l'URL
+    const userId = this.route.snapshot.paramMap.get('idUtilisateur');
+    if (userId) {
+      this.usersService.getUser(userId).subscribe((user) => {
+        this.utilisateur = user;
+        console.log(this.utilisateur);
+      });
+    } else {
+      console.error('User ID is null');
+    }
   }
 
   addJeu(): void {
@@ -94,5 +108,9 @@ export class UserDepotComponent {
     }
     this.depotList = [];
     this.jeux = [];
+  }
+
+  goBack(): void {
+    window.history.back();
   }
 }

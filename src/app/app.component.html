@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="message">
+        <div> 
+            <h1> Bienvenue sur FestivAWIn </h1>
+        </div>
+        @if (isActive == true) {
+            <div>La session a commencé</div>
+        }
+        @if (isActive == false) {
+            <app-countdown></app-countdown>
+        }
+    </div>
+    <button mat-raised-button (click)="redirectToAdmin()" class="admin-button">Go to Admin</button>
+</div>
+
+<router-outlet></router-outlet>

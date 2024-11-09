@@ -1,17 +1,32 @@
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
 .container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 100vh;
+  height: 85vh;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.haut {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 10px;
+}
+
+.haut h1 {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.addbutton {
+  align-self: flex-start;
+  margin-left: 100px;
+  margin-top: 5px;
 }
 
 .list-container {
@@ -19,8 +34,8 @@ html, body {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  background-color:beige;
+  border-radius: 50px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-right: 10px;
 }
@@ -33,78 +48,28 @@ html, body {
 .details {
   flex: 1;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  border-radius: 50px;
+  background-color: beige;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-left: 10px;
 }
 
-h1 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 2em;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-th.mat-header-cell {
-  background-color: #3f51b5;
-  color: white;
-  text-align: left;
-  padding: 10px;
-  font-size: 1.1em;
-}
-
-td.mat-cell {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  font-size: 1em;
-}
-
-tr.mat-row:hover {
-  background-color: #f1f1f1;
-}
-
-.ng-container {
-  display: table-cell;
-}
-
-.button {
-  display: flex;
-  justify-content: center; /* Center the button horizontally */
-}
-
 button {
-  margin-right: 10px;
-}
-
-.addButton {
   display: flex;
   justify-content: center;
+  margin: 5px;
 }
 
 .filter {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-}
-
-.scrollable-list {
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
+  margin: 20px;
 }
 
 .search {
-  margin-bottom: 10px;
   text-align: center;
   position: sticky;
   top: 0;
-  background-color: #f9f9f9;
   z-index: 1;
   padding: 10px 0;
 }

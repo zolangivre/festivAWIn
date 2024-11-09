@@ -9,6 +9,7 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-items-list',
@@ -28,7 +29,8 @@ import { MatRadioModule } from '@angular/material/radio';
     MatInputModule,
     FormsModule,
     CommonModule,
-    MatRadioModule
+    MatRadioModule,
+    MatButton
   ],
   styleUrls: ['./items-list.component.css']
 })

@@ -40,7 +40,7 @@ export class AppComponent {
       this.sessionService.updateSessionStatus().subscribe();
     }, 1000);
   }
-  redirectToAdmin(): void {
-    this.router.navigate(['/admin']);
+  redirectToLogin(): void {
+    this.router.navigate(['/login']);
   }
 }

@@ -3,17 +3,21 @@ import { UsersListComponent } from './components/user/users-list/users-list.comp
 import { ItemsListComponent } from './components/item/items-list/items-list.component';
 import { UserAddComponent } from './components/user/user-add/user-add.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { AddSessionComponent } from './components/admin/add-session/add-session.component';
 import { SessionGuard } from './guards/session.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { AppComponent } from './app.component';
 import { UserDepotComponent } from './components/user/user-depot/user-depot.component';
 import { UserJeuComponent } from './components/user/user-jeu/user-jeu.component';
 import { SessionComponent } from './components/admin/session/session.component';
-
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
   { path: 'accueil', component: AppComponent },
-  { path: 'admin', component: AdminComponent },
-  { path: 'session', component: SessionComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+  { path: 'addSession', component: AddSessionComponent, canActivate: [AuthGuard] },
+  { path: 'session', component: SessionComponent, canActivate: [AuthGuard] },
   { path: 'utilisateur', component: UsersListComponent, canActivate: [SessionGuard] },
   { path: 'utilisateur/depot/:idUtilisateur', component: UserDepotComponent, canActivate: [SessionGuard] },
   { path: 'utilisateur/jeu/:idUtilisateur', component: UserJeuComponent, canActivate: [SessionGuard] },

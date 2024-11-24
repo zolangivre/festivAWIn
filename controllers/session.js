@@ -3,7 +3,7 @@ const sessionCollection = require('../models/session');
 //Recupere la session dont le statut est Planifiée
 
 exports.getSessionPlanifiee = (req, res, next) => {
-    sessionCollection.find({ statutSession: 'Planifiée' }).then(
+    sessionCollection.find({ statutSession: 'Planifiee' }).then(
         (session) => {
         res.status(200).json(session);
         }
@@ -45,7 +45,7 @@ exports.isSessionActive = async (req, res, next) => {
 //Recupere la session dont le statut est En cours
 
 exports.getSessionEnCours = (req, res, next) => {
-    sessionCollection.find({ statutSession: 'En cours' }).then(
+    sessionCollection.findOne({ statutSession: 'En Cours' }).then(
         (session) => {
         res.status(200).json(session);
         }
@@ -102,3 +102,35 @@ exports.updateSessionStatus = async (req, res, next) => {
         res.status(400).json({ error });
     }
 };
+
+//Recuperer toutes les sessions
+exports.getAllSessions = (req, res, next) => {
+    sessionCollection.find().then(
+        (sessions) => {
+        res.status(200).json(sessions);
+        }
+    ).catch(
+        (error) => {
+        res.status(400).json({
+            error: error
+        });
+        }
+    );
+}
+
+//Supprimer une session
+exports.deleteSession = (req, res, next) => {
+    sessionCollection.deleteOne({ _id: req.params.id }).then(
+        () => {
+        res.status(200).json({
+            message: 'Session supprimée !'
+        });
+        }
+    ).catch(
+        (error) => {
+        res.status(400).json({
+            error: error
+        });
+        }
+    );
+}

@@ -46,3 +46,66 @@ exports.filterJeuxDepot = async (req, res) => {
         res.status(500).json({ message: 'Erreur lors du filtrage des jeux', error });
     }
 };
+
+//Récupérer tout les jeux d'un utlisateur par son id
+exports.getJeuxDepotByUserId = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const jeux = await JeuDepot.find({ vendeur: userId });
+        res.status(200).json(jeux);
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la récupération des jeux', error });
+    }
+}
+
+//Supprimer un jeu
+exports.deleteJeuDepot = async (req, res) => {
+    const { jeuId } = req.params;
+    try {
+        await JeuDepot.findByIdAndDelete(jeuId);
+        res.status(204).end();
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la suppression du jeu', error });
+    }
+};
+
+//Supprimer tout les jeux d'un utilisateur
+
+exports.deleteAllJeuxDepotByUserId = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        await JeuDepot.deleteMany({ vendeur: userId });
+        res.status(204).end();
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la suppression des jeux', error });
+    }
+}
+
+//Modifier un jeu
+exports.updateJeuDepot = async (req, res) => {
+    const { jeuId } = req.params;
+    const updates = req.body;
+
+    try {
+        const jeu = await JeuDepot.findByIdAndUpdate(jeuId, updates, { new: true });
+        if (!jeu) {
+            return res.status(404).json({ message: 'Jeu non trouvé' });
+        }
+        res.status(200).json(jeu);
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour :', error);
+        res.status(500).json({ message: 'Erreur lors de la modification du jeu', error });
+    }
+};
+
+
+//Récupérer un jeu par son id
+exports.getJeuDepotById = async (req, res) => {
+    const { jeuId } = req.params;
+    try {
+        const jeu = await JeuDepot.findById(jeuId);
+        res.status(200).json(jeu);
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la récupération du jeu', error });
+    }
+}

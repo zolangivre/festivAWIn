@@ -5,12 +5,14 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { SessionService } from '../../services/session.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin',
@@ -22,13 +24,14 @@ import { MatButtonModule } from '@angular/material/button';
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
+    MatSnackBarModule,
   ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css',
 })
 export class AdminComponent {
   sessionForm: FormGroup;
-  constructor(private fb: FormBuilder, private sessionService: SessionService) {
+  constructor(private fb: FormBuilder, private sessionService: SessionService, private snackBar: MatSnackBar, private router: Router) {
     this.sessionForm = this.fb.group(
       {
         dateDebut: ['', [Validators.required]],
@@ -60,23 +63,6 @@ export class AdminComponent {
       const [endHours, endMinutes] = formValues.heureFin.split(':');
       endDate.setHours(endHours, endMinutes);
 
-      // Fonction pour formater les dates en "YYYY-MM-DDTHH:mm:ss"
-      const formatDateToLocalISO = (date: Date) => {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
-        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-      };
-
-      const startDateTimeISO = formatDateToLocalISO(startDate);
-      const endDateTimeISO = formatDateToLocalISO(endDate);
-
-      const startDateTime = new Date(startDateTimeISO);
-      const endDateTime = new Date(endDateTimeISO);
-
       const session = {
         dateDebut: startDate,
         dateFin: endDate,
@@ -86,6 +72,11 @@ export class AdminComponent {
       this.sessionService.addSession(session).subscribe(
         response => {
           console.log('Session ajoutée avec succès', response);
+          this.snackBar.open('Session ajoutée avec succès', 'Fermer', {
+            duration: 3000,
+          });
+          this.sessionForm.reset();
+          this.router.navigate(['/']);
         },
         error => {
           console.error('Erreur lors de l\'ajout de la session', error);
@@ -114,5 +105,13 @@ export class AdminComponent {
       }
     }
     return null;
+  }
+
+  goBack(): void {
+    window.history.back();
+  }
+
+  goToSession(): void {
+    this.router.navigate(['/session']);
   }
 }

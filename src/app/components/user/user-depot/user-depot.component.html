@@ -64,7 +64,7 @@
                 <button mat-raised-button [disabled]="jeuDepotForm.invalid" (click)="addJeu()">Ajouter au dépôt</button>
             </div>
             <div class="submit-button">
-                <button mat-raised-button type="submit">Effectuer le dépôt</button>
+                <button mat-raised-button type="submit" [disabled]="depot_vide">Effectuer le dépôt</button>
             </div>
         </form>
     </div>

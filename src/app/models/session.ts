@@ -1,4 +1,5 @@
 interface TSession {
+  _id?: string;
   dateDebut: Date;
   dateFin: Date;
   fraisDepot: Number;
@@ -6,6 +7,7 @@ interface TSession {
 }
 
 export class Session implements TSession {
+  public _id?: string;
   public dateDebut: Date;
   public dateFin: Date;
   public fraisDepot: Number;
@@ -22,5 +24,6 @@ export class Session implements TSession {
     this.dateFin = dateFin;
     this.fraisDepot = fraisDepot;
     this.statutSession = statutSession;
+    this._id = _id;
   }
 }

@@ -37,4 +37,12 @@ export class SessionService {
   updateSessionStatus(): Observable<any> {
     return this.http.put<any>(this.apiUrl + '/update', {});
   }
+
+  getAllSessions(): Observable<Session[]> {
+    return this.http.get<Session[]>(this.apiUrl);
+  }
+
+  deleteSession(idSession: string): Observable<Session> {
+    return this.http.delete<Session>(`${this.apiUrl}/${idSession}`);
+  }
 }

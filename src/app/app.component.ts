@@ -37,18 +37,8 @@ export class AppComponent {
     );
     // Mettre à jour le statut des sessions régulièrement
     setInterval(() => {
-      this.sessionService.updateSessionStatus().subscribe(
-        (response) => {
-          console.log('Statuts des sessions mis à jour:', response);
-        },
-        (error) => {
-          console.error(
-            'Erreur lors de la mise à jour des statuts des sessions:',
-            error
-          );
-        }
-      );
-    }, 60000); // Vérifier toutes les minutes
+      this.sessionService.updateSessionStatus().subscribe();
+    }, 1000);
   }
   redirectToAdmin(): void {
     this.router.navigate(['/admin']);

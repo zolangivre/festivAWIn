@@ -6,7 +6,7 @@ interface TJeuDepot {
   prixJeu: number;
   quantiteJeu: number;
   statutJeu: string;
-  dateDepot: string;
+  dateDepot: string|Date;
   fraisDepot: number;
   remiseDepot: number;
 }
@@ -19,7 +19,7 @@ export class JeuDepot implements TJeuDepot {
   public prixJeu: number;
   public quantiteJeu: number;
   public statutJeu: string;
-  public dateDepot: string;
+  public dateDepot: string|Date;
   public fraisDepot: number;
   public remiseDepot: number;
 
@@ -30,7 +30,7 @@ export class JeuDepot implements TJeuDepot {
     prixJeu: number,
     quantiteJeu: number,
     statutJeu: string,
-    dateDepot: string,
+    dateDepot: string|Date,
     fraisDepot: number,
     remiseDepot: number,
     _id: string

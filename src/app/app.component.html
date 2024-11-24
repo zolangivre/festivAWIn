@@ -4,7 +4,7 @@
             <h1> Bienvenue sur FestivAWIn </h1>
         </div>
         @if (isActive == true) {
-            <div>La session a commencé</div>
+            <app-countdown></app-countdown>
         }
         @if (isActive == false) {
             <app-countdown></app-countdown>

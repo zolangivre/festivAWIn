@@ -6,12 +6,14 @@ import {
   OnChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { Utilisateur } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
-import { UserDepotComponent } from '../user-depot/user-depot.component';
+import { ItemService } from '../../../services/item.service';
 import { UserEditComponent } from '../user-edit/user-edit.component';
 import { UserVenteComponent } from "../user-vente/user-vente.component";
+import { DeleteComponent } from '../../dialogue/delete/delete.component';
 
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -20,6 +22,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-details',
@@ -33,9 +37,10 @@ import { MatTableModule } from '@angular/material/table';
     MatDividerModule,
     MatButtonModule,
     MatTableModule,
-    UserDepotComponent,
     UserEditComponent,
     UserVenteComponent
+    MatDialogModule,
+    MatSnackBarModule,
   ],
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.css',
@@ -53,14 +58,18 @@ export class UserDetailsComponent implements OnChanges {
     'role',
   ];
   editMode: boolean = false;
-  depotMode: boolean = false;
   venteMode: boolean = false;
 
-  constructor(private usersService: UsersService) { }
+  constructor(
+    private usersService: UsersService,
+    private itemService: ItemService,
+    private router: Router,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnChanges(): void {
     this.editMode = false;
-    this.depotMode = false;
     this.venteMode = false;
   }
 
@@ -91,13 +100,38 @@ export class UserDetailsComponent implements OnChanges {
   }
 
   deleteUser(utilisateur: Utilisateur): void {
-    if (utilisateur._id != null) {
-      this.usersService.deleteUser(utilisateur._id).subscribe(() => {
-        this.userDeleted.emit();
-      });
-    } else {
-      console.error("Impossible de supprimer l'utilisateur");
-    }
+    const dialogRef = this.dialog.open(DeleteComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (utilisateur._id != null) {
+          this.usersService.deleteUser(utilisateur._id).subscribe(() => {
+            this.userDeleted.emit();
+            this.itemService
+              .deleteAllJeuDepotUser(utilisateur._id)
+              .subscribe(() => {
+                console.log('Utilisateur et ses jeux supprimés avec succès');
+                this.snackBar.open(
+                  'Utilisateur supprimé avec succès',
+                  'Fermer',
+                  {
+                    duration: 3000,
+                  }
+                );
+              });
+          });
+        } else {
+          console.error("Impossible de supprimer l'utilisateur");
+        }
+      }
+    });
+  }
+
+  toggleDepotMode(): void {
+    this.router.navigate(['utilisateur/depot', this.utilisateur._id]);
+  }
+
+  toggleUserJeuMode(): void {
+    this.router.navigate(['utilisateur/jeu', this.utilisateur._id]);
   }
 
 }

@@ -7,30 +7,32 @@
       <input matInput [(ngModel)]="searchTerm" (input)="applySearchFilter()" placeholder="Nom du jeu">
     </mat-form-field>
 
-    <button mat-button (click)="toggleExtraFilters()">
+    <button mat-raised-button (click)="toggleExtraFilters()">
       {{ showExtraFilters ? 'Masquer les filtres' : '+ de filtres' }}
     </button>
   </div>
 
-  <div *ngIf="showExtraFilters" class="extra-filters">
-    <mat-form-field appearance="outline">
-      <mat-label>Prix minimum</mat-label>
-      <input matInput type="number" [(ngModel)]="minPrice" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Prix maximum</mat-label>
-      <input matInput type="number" [(ngModel)]="maxPrice" />
-    </mat-form-field>
-
-    <mat-radio-group [(ngModel)]="availabilityFilter">
-      <mat-radio-button value="available">Disponibles</mat-radio-button>
-      <mat-radio-button value="Soldout">Sold Out</mat-radio-button>
-    </mat-radio-group>
-
-    <button mat-raised-button color="primary" (click)="applyExtraFilter()">Appliquer</button>
-    <button mat-raised-button color="warn" (click)="resetFilters()">Réinitialiser</button>
-  </div>
+  @if (showExtraFilters) {
+      <div class="extra-filters">
+        <mat-form-field appearance="outline">
+          <mat-label>Prix minimum</mat-label>
+          <input matInput type="number" [(ngModel)]="minPrice" />
+        </mat-form-field>
+      
+        <mat-form-field appearance="outline">
+          <mat-label>Prix maximum</mat-label>
+          <input matInput type="number" [(ngModel)]="maxPrice" />
+        </mat-form-field>
+      
+        <mat-radio-group [(ngModel)]="availabilityFilter">
+          <mat-radio-button value="available">Disponibles</mat-radio-button>
+          <mat-radio-button value="Soldout">Sold Out</mat-radio-button>
+        </mat-radio-group>
+      
+        <button mat-raised-button color="primary" (click)="applyExtraFilter()">Appliquer</button>
+        <button mat-raised-button color="warn" (click)="resetFilters()">Réinitialiser</button>
+      </div>
+  }
 
   <mat-grid-list cols="3" rowHeight="4:1" class="grid-list">
     <mat-grid-tile *ngFor="let item of filteredItems" [rowspan]="item.rows">

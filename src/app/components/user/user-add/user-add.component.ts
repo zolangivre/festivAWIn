@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
-import { UsersService } from '../../../services/users.service';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+
+import { UsersService } from '../../../services/users.service';
+
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,20 +16,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-add',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatIconModule, MatDividerModule, MatButtonModule, MatTableModule],
+  imports: [CommonModule, ReactiveFormsModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatIconModule, MatDividerModule, MatButtonModule, MatTableModule, MatSnackBarModule],
   templateUrl: './user-add.component.html',
   styleUrl: './user-add.component.css'
 })
 
 export class UserAddComponent {
   userForm: FormGroup;
-  roles: string[] = ['Admin', 'Gestionnaire', 'Vendeur', 'Acheteur'];
+  roles: string[] = ['Vendeur', 'Acheteur'];
 
-  constructor(private usersService: UsersService, private fb: FormBuilder) {
+  constructor(private usersService: UsersService, private fb: FormBuilder, private snackBar: MatSnackBar, private router: Router) {
     this.userForm = this.fb.group({
       nom: ['', [Validators.required, Validators.minLength(2)]],
       prenom: ['', [Validators.required, Validators.minLength(2)]],
@@ -36,6 +45,18 @@ export class UserAddComponent {
   addUser(): void {
     this.usersService.addUser(this.userForm.value).subscribe(() => {
       this.userForm.reset();
+      this.snackBar.open(
+        'Utilisateur ajouté avec succès',
+        'Fermer',
+        {
+          duration: 3000,
+        }
+      );
+      this.router.navigate(['/utilisateur']);
     });
+  }
+
+  goBack(): void {
+    window.history.back();
   }
 }

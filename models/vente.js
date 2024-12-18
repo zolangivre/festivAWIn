@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const venteSchema = ongoose.Schema({
+const venteSchema = mongoose.Schema({
     acheteur: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Utilisateur',
         required: true
     },
     vendeur: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Utilisateur',
         required: true
     },
@@ -17,7 +17,7 @@ const venteSchema = ongoose.Schema({
     },
     dateVente: {
         type: Date,
-        required: true
+        default: Date.now
     },
     montantTotal: {
         type: Number,

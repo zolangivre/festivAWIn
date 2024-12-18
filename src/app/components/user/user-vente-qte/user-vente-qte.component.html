@@ -1,0 +1,10 @@
+<div>
+    <h3>Sélectionnez la quantité pour {{ game.nomJeu }}</h3>
+    <p>Quantité disponible : {{ game.quantiteJeu }}</p>
+    <mat-form-field appearance="fill">
+        <mat-label>Quantité</mat-label>
+        <input matInput type="number" [(ngModel)]="quantity" [max]="game.quantiteJeu" [min]="1" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="confirmSelection()">Confirmer</button>
+    <button mat-raised-button color="warn" (click)="cancelSelection()">Annuler</button>
+</div>

@@ -11,6 +11,7 @@ import { Utilisateur } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
 import { UserDepotComponent } from '../user-depot/user-depot.component';
 import { UserEditComponent } from '../user-edit/user-edit.component';
+import { UserVenteComponent } from "../user-vente/user-vente.component";
 
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -34,6 +35,7 @@ import { MatTableModule } from '@angular/material/table';
     MatTableModule,
     UserDepotComponent,
     UserEditComponent,
+    UserVenteComponent
   ],
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.css',
@@ -52,12 +54,14 @@ export class UserDetailsComponent implements OnChanges {
   ];
   editMode: boolean = false;
   depotMode: boolean = false;
+  venteMode: boolean = false;
 
   constructor(private usersService: UsersService) { }
 
   ngOnChanges(): void {
     this.editMode = false;
     this.depotMode = false;
+    this.venteMode = false;
   }
 
   onUserUpdated(): void {
@@ -95,4 +99,5 @@ export class UserDetailsComponent implements OnChanges {
       console.error("Impossible de supprimer l'utilisateur");
     }
   }
+
 }

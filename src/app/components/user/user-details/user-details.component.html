@@ -1,4 +1,4 @@
-@if (!editMode && utilisateur && !depotMode) {
+@if (!editMode && utilisateur && !depotMode && !venteMode) {
 <div class="container">
   <div class="display">
     <table mat-table [dataSource]="[utilisateur]" class="mat-elevation-z8">
@@ -33,20 +33,25 @@
       <button mat-raised-button (click)="deleteUser(utilisateur)">Supprimer</button>
       <button mat-raised-button (click)="editMode = true">Modifier</button>
       @if (utilisateur.role === 'Vendeur') {
-      <button mat-raised-button (click)="depotMode = true">Effectuer un dépôt</button>
+      <button mat-raised-button (click)="depotMode = true">Effectuer un
+        dépôt</button>
       }
       @if (utilisateur.role === 'Acheteur') {
-      <button mat-raised-button>Acheter un jeu</button>
+      <button mat-raised-button (click)="venteMode = true">Acheter un jeu</button>
       }
     </div>
   </div>
 </div>
 }
 
-@if (editMode && utilisateur && !depotMode) {
+@if (editMode && utilisateur && !depotMode && !venteMode) {
 <app-user-edit [utilisateur]="utilisateur" (userUpdated)="onUserUpdated()"></app-user-edit>
 }
 
-@if (depotMode && utilisateur && !editMode) {
+@if (depotMode && utilisateur && !editMode && !venteMode) {
 <app-user-depot [utilisateur]="utilisateur"></app-user-depot>
+}
+
+@if (venteMode && utilisateur && !editMode && !depotMode) {
+<app-user-vente [utilisateur]="utilisateur"></app-user-vente>
 }

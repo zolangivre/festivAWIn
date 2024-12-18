@@ -46,3 +46,14 @@ exports.filterJeuxDepot = async (req, res) => {
         res.status(500).json({ message: 'Erreur lors du filtrage des jeux', error });
     }
 };
+
+// Met a jour un jeuDepot (requete pour modifier la quantité du jeuDepot lors d'un achat)
+exports.updateJeuDepot = async (req, res) => {
+    try {
+        const updatedItem = await JeuDepot.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedItem) return res.status(404).send('Item not found');
+        res.status(200).json(updatedItem);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}

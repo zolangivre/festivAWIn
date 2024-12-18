@@ -5,6 +5,7 @@ const app = express();
 const userRoutes = require('./routes/utilisateur');
 const jeuDepotRoutes = require('./routes/jeuDepot');
 const sessionRoutes = require('./routes/session');
+const venteRoutes = require('./routes/vente');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -37,6 +38,6 @@ app.use(express.json());
 app.use('/api/utilisateur', userRoutes);
 app.use('/api/jeuDepot', jeuDepotRoutes);
 app.use('/api/session', sessionRoutes);
-
+app.use('/api/vente', venteRoutes);
 
 module.exports = app;

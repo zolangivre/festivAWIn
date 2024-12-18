@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 const venteJeuSchema = mongoose.Schema({
     idJeuDepot: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'JeuDepot',
         required: true
     },
     idVente: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Vente',
         required: true
     },

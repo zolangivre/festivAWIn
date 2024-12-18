@@ -47,13 +47,80 @@ exports.filterJeuxDepot = async (req, res) => {
     }
 };
 
+
+// exports.updateJeuDepot = async (req, res) => {
+//     try {
+//         const updatedItem = await JeuDepot.findByIdAndUpdate(req.params.id, req.body, { new: true });
+//         if (!updatedItem) return res.status(404).send('Item not found');
+//         res.status(200).json(updatedItem);
+//     } catch (error) {
+//         res.status(500).send(error.message);
+//     }
+// }
+
+//Récupérer tout les jeux d'un utlisateur par son id
+exports.getJeuxDepotByUserId = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const jeux = await JeuDepot.find({ vendeur: userId });
+        res.status(200).json(jeux);
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la récupération des jeux', error });
+    }
+}
+
+
+
 // Met a jour un jeuDepot (requete pour modifier la quantité du jeuDepot lors d'un achat)
 exports.updateJeuDepot = async (req, res) => {
+    const { jeuId } = req.params;
+    const updates = req.body;
+
     try {
-        const updatedItem = await JeuDepot.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!updatedItem) return res.status(404).send('Item not found');
-        res.status(200).json(updatedItem);
+        const jeu = await JeuDepot.findByIdAndUpdate(jeuId, updates, { new: true });
+        if (!jeu) {
+            return res.status(404).json({ message: 'Jeu non trouvé' });
+        }
+        res.status(200).json(jeu);
     } catch (error) {
-        res.status(500).send(error.message);
+        console.error('Erreur lors de la mise à jour :', error);
+        res.status(500).json({ message: 'Erreur lors de la modification du jeu', error });
+    }
+};
+
+//Supprimer un jeu
+exports.deleteJeuDepot = async (req, res) => {
+    const { jeuId } = req.params;
+    try {
+        await JeuDepot.findByIdAndDelete(jeuId);
+        res.status(204).end();
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la suppression du jeu', error });
+    }
+};
+
+//Supprimer tout les jeux d'un utilisateur
+
+exports.deleteAllJeuxDepotByUserId = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        await JeuDepot.deleteMany({ vendeur: userId });
+        res.status(204).end();
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la suppression des jeux', error });
+    }
+}
+
+
+
+
+//Récupérer un jeu par son id
+exports.getJeuDepotById = async (req, res) => {
+    const { jeuId } = req.params;
+    try {
+        const jeu = await JeuDepot.findById(jeuId);
+        res.status(200).json(jeu);
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la récupération du jeu', error });
     }
 }

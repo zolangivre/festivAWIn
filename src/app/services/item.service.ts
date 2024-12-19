@@ -63,12 +63,10 @@ export class ItemService {
     return this.http.post<JeuDepot>(this.apiUrl, item);
   }
 
-<<<<<<< HEAD
   updateItem(id: string, updatedFields: Partial<JeuDepot>): Observable<JeuDepot> {
     return this.http.put<JeuDepot>(`${this.apiUrl}/${id}`, updatedFields);
   }
 
-=======
   getItemsByUser(idUtilisateur: string): Observable<JeuDepot[]> {
     return this.http.get<JeuDepot[]>(`${this.apiUrl}/user/${idUtilisateur}`);
   }
@@ -88,5 +86,4 @@ export class ItemService {
   getJeuDepot(idJeuDepot: string): Observable<JeuDepot> {
     return this.http.get<JeuDepot>(`${this.apiUrl}/${idJeuDepot}`);
   }
->>>>>>> zolan
 }

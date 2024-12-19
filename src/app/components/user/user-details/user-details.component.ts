@@ -38,7 +38,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     MatTableModule,
     UserEditComponent,
-    UserVenteComponent
+    UserVenteComponent,
     MatDialogModule,
     MatSnackBarModule,
   ],

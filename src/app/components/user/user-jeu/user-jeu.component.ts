@@ -14,6 +14,7 @@ import { ItemService } from '../../../services/item.service';
 import { UsersService } from '../../../services/users.service';
 import { JeuDepot } from '../../../models/item';
 import { ItemEditComponent } from '../../dialogue/item-edit/item-edit.component';
+import { DeleteComponent } from '../../dialogue/delete/delete.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -122,9 +123,27 @@ export class UserJeuComponent implements AfterViewInit {
   }
 
   deleteJeu(jeu: JeuDepot) {
-    this.itemService.deleteJeuDepot(jeu._id).subscribe(() => {
-      this.jeux = this.jeux.filter((j) => j._id !== jeu._id);
-      this.dataSource.data = this.jeux;
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      data: { type: "ce jeu"},
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (jeu._id != null) {
+          this.itemService.deleteJeuDepot(jeu._id).subscribe(() => {
+          this.jeux = this.jeux.filter((j) => j._id !== jeu._id);
+            this.dataSource.data = this.jeux;
+            this.snackBar.open(
+              'Jeu supprimé avec succès',
+              'Fermer',
+              {
+                duration: 3000,
+              }
+            );
+          });
+        } else {
+          console.error("Impossible de supprimer le jeu");
+        }
+      }
     });
   }
 

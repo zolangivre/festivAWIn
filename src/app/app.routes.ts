@@ -11,6 +11,7 @@ import { UserDepotComponent } from './components/user/user-depot/user-depot.comp
 import { UserJeuComponent } from './components/user/user-jeu/user-jeu.component';
 import { SessionComponent } from './components/admin/session/session.component';
 import { LoginComponent } from './components/login/login.component';
+import { UserVenteComponent } from './components/user/user-vente/user-vente.component';
 
 export const routes: Routes = [
   { path: 'accueil', component: AppComponent },
@@ -21,6 +22,7 @@ export const routes: Routes = [
   { path: 'utilisateur', component: UsersListComponent, canActivate: [SessionGuard] },
   { path: 'utilisateur/depot/:idUtilisateur', component: UserDepotComponent, canActivate: [SessionGuard] },
   { path: 'utilisateur/jeu/:idUtilisateur', component: UserJeuComponent, canActivate: [SessionGuard] },
+  { path: 'utilisateur/achat/:idUtilisateur', component: UserVenteComponent, canActivate: [SessionGuard] },
   { path: 'add/utilisateur', component: UserAddComponent, canActivate: [SessionGuard] },
   { path: 'jeuDepot', component: ItemsListComponent, canActivate: [SessionGuard] },
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },

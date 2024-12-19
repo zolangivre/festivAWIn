@@ -3,12 +3,16 @@ import { Component, inject, AfterViewInit, ViewChild } from '@angular/core';
 import { SessionService } from '../../../services/session.service';
 import { Session } from '../../../models/session';
 
+import { DeleteComponent } from '../../dialogue/delete/delete.component';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
@@ -28,6 +32,7 @@ registerLocaleData(localeFr, 'fr');
     MatPaginatorModule,
     MatInputModule,
     CommonModule,
+    MatDialogModule,
   ],
   templateUrl: './session.component.html',
   styleUrl: './session.component.css',
@@ -47,7 +52,11 @@ export class SessionComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private sessionService: SessionService) {}
+  constructor(
+    private sessionService: SessionService,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
+) {}
 
   ngOnInit(): void {
     this.sessionService.getAllSessions().subscribe(
@@ -83,11 +92,27 @@ export class SessionComponent implements AfterViewInit {
   }
 
   deleteSession(session: Session) {
-    if (session._id !== undefined) {
-      this.sessionService.deleteSession(session._id).subscribe(() => {
-        this.sessions = this.sessions.filter((s) => s._id !== session._id);
-        this.dataSource.data = this.sessions;
-      });
-    }
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      data: { type: 'cette session' },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (session._id !== undefined) {
+          this.sessionService.deleteSession(session._id).subscribe(() => {
+            this.sessions = this.sessions.filter((s) => s._id !== session._id);
+            this.dataSource.data = this.sessions;
+            this.snackBar.open(
+              'Session supprimé avec succès',
+              'Fermer',
+              {
+                duration: 3000,
+              }
+            );
+          });
+        } else {
+          console.error("Impossible de supprimer l'utilisateur");
+        }
+      }
+    });
   }
 }

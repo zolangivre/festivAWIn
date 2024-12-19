@@ -1,5 +1,5 @@
 <div class="container">
-  @if (!editMode && utilisateur && !venteMode) {
+  @if (!editMode && utilisateur) {
   <div class="details">
     <div class="display">
       <table mat-table [dataSource]="[utilisateur]" class="mat-elevation-z8">
@@ -39,17 +39,13 @@
       <button mat-raised-button (click)="toggleUserJeuMode()">Voir les jeux</button>
       }
       @if (utilisateur.role === 'Acheteur') {
-      <button mat-raised-button (click)="venteMode = true">Acheter un jeu</button>
+      <button mat-raised-button (click)="toggleUserAchatMode()">Acheter un jeu</button>
       }
     </div>
   </div>
   }
 </div>
 
-@if (editMode && utilisateur && !venteMode) {
+@if (editMode && utilisateur) {
 <app-user-edit [utilisateur]="utilisateur" (userUpdated)="onUserUpdated()"></app-user-edit>
-}
-
-@if (venteMode && utilisateur && !editMode) {
-<app-user-vente [utilisateur]="utilisateur"></app-user-vente>
 }

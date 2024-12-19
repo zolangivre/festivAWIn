@@ -12,7 +12,6 @@ import { Utilisateur } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
 import { ItemService } from '../../../services/item.service';
 import { UserEditComponent } from '../user-edit/user-edit.component';
-import { UserVenteComponent } from "../user-vente/user-vente.component";
 import { DeleteComponent } from '../../dialogue/delete/delete.component';
 
 import { MatSelectModule } from '@angular/material/select';
@@ -38,7 +37,6 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     MatTableModule,
     UserEditComponent,
-    UserVenteComponent,
     MatDialogModule,
     MatSnackBarModule,
   ],
@@ -100,7 +98,9 @@ export class UserDetailsComponent implements OnChanges {
   }
 
   deleteUser(utilisateur: Utilisateur): void {
-    const dialogRef = this.dialog.open(DeleteComponent);
+    const dialogRef = this.dialog.open(DeleteComponent, {
+      data: { type: 'cet utilisateur' },
+    });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (utilisateur._id != null) {
@@ -134,4 +134,7 @@ export class UserDetailsComponent implements OnChanges {
     this.router.navigate(['utilisateur/jeu', this.utilisateur._id]);
   }
 
+  toggleUserAchatMode(): void {
+    this.router.navigate(['utilisateur/achat', this.utilisateur._id]);
+  }
 }

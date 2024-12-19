@@ -1,0 +1,58 @@
+.venteMode {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 85vh;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.selected-games {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: beige;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 10px;
+}
+
+.available-games {
+    flex: 1.1;
+    padding: 20px;
+    border-radius: 50px;
+    background-color: beige;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-right: 10px;
+}
+
+mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+h1,
+h2 {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    margin-right: 10px;
+}
+
+.quantity-selector {
+    margin-top: 20px;
+}
+
+.total p {
+    display: flex;
+    justify-content: center;
+    font-size: 1.5em;
+}

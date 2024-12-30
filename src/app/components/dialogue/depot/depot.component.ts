@@ -4,11 +4,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-depot',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
-  templateUrl: './depot.component.html',
-  styleUrl: './depot.component.css',
+    selector: 'app-depot',
+    imports: [MatDialogModule, MatButtonModule],
+    templateUrl: './depot.component.html',
+    styleUrl: './depot.component.css'
 })
 export class DepotComponent {
   constructor(

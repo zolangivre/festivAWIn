@@ -30,20 +30,19 @@ import { JeuDepot } from '../../../models/item';
 registerLocaleData(localeFr, 'fr');
 
 @Component({
-  selector: 'app-vente-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatInputModule,
-  ],
-  templateUrl: './vente-list.component.html',
-  styleUrl: './vente-list.component.css',
-  providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
+    selector: 'app-vente-list',
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatInputModule,
+    ],
+    templateUrl: './vente-list.component.html',
+    styleUrl: './vente-list.component.css',
+    providers: [{ provide: LOCALE_ID, useValue: 'fr' }]
 })
 export class VenteListComponent implements AfterViewInit {
   private _liveAnnouncer = inject(LiveAnnouncer);

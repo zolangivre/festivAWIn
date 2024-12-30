@@ -22,22 +22,21 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-user-add',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatDividerModule,
-    MatButtonModule,
-    MatTableModule,
-    MatSnackBarModule,
-  ],
-  templateUrl: './user-add.component.html',
-  styleUrl: './user-add.component.css',
+    selector: 'app-user-add',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatDividerModule,
+        MatButtonModule,
+        MatTableModule,
+        MatSnackBarModule,
+    ],
+    templateUrl: './user-add.component.html',
+    styleUrl: './user-add.component.css'
 })
 export class UserAddComponent {
   userForm: FormGroup;

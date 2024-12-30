@@ -29,22 +29,21 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-user-depot',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatIconModule,
-    MatDividerModule,
-    MatButtonModule,
-    MatTableModule,
-    MatDialogModule,
-    MatSnackBarModule,
-  ],
-  templateUrl: './user-depot.component.html',
-  styleUrl: './user-depot.component.css',
+    selector: 'app-user-depot',
+    imports: [
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatIconModule,
+        MatDividerModule,
+        MatButtonModule,
+        MatTableModule,
+        MatDialogModule,
+        MatSnackBarModule,
+    ],
+    templateUrl: './user-depot.component.html',
+    styleUrl: './user-depot.component.css'
 })
 export class UserDepotComponent {
   jeuDepotForm: FormGroup;

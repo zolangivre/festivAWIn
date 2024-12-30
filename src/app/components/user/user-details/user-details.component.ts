@@ -25,23 +25,22 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-user-details',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatSelectModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatDividerModule,
-    MatButtonModule,
-    MatTableModule,
-    UserEditComponent,
-    MatDialogModule,
-    MatSnackBarModule,
-  ],
-  templateUrl: './user-details.component.html',
-  styleUrl: './user-details.component.css',
+    selector: 'app-user-details',
+    imports: [
+        CommonModule,
+        MatSelectModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatDividerModule,
+        MatButtonModule,
+        MatTableModule,
+        UserEditComponent,
+        MatDialogModule,
+        MatSnackBarModule,
+    ],
+    templateUrl: './user-details.component.html',
+    styleUrl: './user-details.component.css'
 })
 export class UserDetailsComponent implements OnChanges {
   @Input() utilisateur!: Utilisateur;

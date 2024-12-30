@@ -13,18 +13,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-item-edit',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-  ],
-  templateUrl: './item-edit.component.html',
-  styleUrl: './item-edit.component.css',
+    selector: 'app-item-edit',
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatDialogModule,
+    ],
+    templateUrl: './item-edit.component.html',
+    styleUrl: './item-edit.component.css'
 })
 export class ItemEditComponent {
   editForm: FormGroup;

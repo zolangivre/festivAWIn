@@ -14,19 +14,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-users-list',
-  standalone: true,
-  imports: [
-    UserDetailsComponent,
-    MatTableModule,
-    MatButton,
-    MatListModule,
-    MatInputModule,
-    MatFormFieldModule,
-    BilanComponent,
-  ],
-  templateUrl: './users-list.component.html',
-  styleUrl: './users-list.component.css',
+    selector: 'app-users-list',
+    imports: [
+        UserDetailsComponent,
+        MatTableModule,
+        MatButton,
+        MatListModule,
+        MatInputModule,
+        MatFormFieldModule,
+        BilanComponent,
+    ],
+    templateUrl: './users-list.component.html',
+    styleUrl: './users-list.component.css'
 })
 export class UsersListComponent {
   utilisateurs: Utilisateur[] = [];

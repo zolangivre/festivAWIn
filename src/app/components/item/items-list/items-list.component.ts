@@ -12,27 +12,26 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-items-list',
-  templateUrl: './items-list.component.html',
-  standalone: true,
-  imports: [
-    RouterLink,
-    NgForOf,
-    MatGridList,
-    MatGridTile,
-    MatCard,
-    MatCardHeader,
-    MatCardContent,
-    MatCardFooter,
-    MatCardModule,
-    MatFormField,
-    MatInputModule,
-    FormsModule,
-    CommonModule,
-    MatRadioModule,
-    MatButton
-  ],
-  styleUrls: ['./items-list.component.css']
+    selector: 'app-items-list',
+    templateUrl: './items-list.component.html',
+    imports: [
+        RouterLink,
+        NgForOf,
+        MatGridList,
+        MatGridTile,
+        MatCard,
+        MatCardHeader,
+        MatCardContent,
+        MatCardFooter,
+        MatCardModule,
+        MatFormField,
+        MatInputModule,
+        FormsModule,
+        CommonModule,
+        MatRadioModule,
+        MatButton
+    ],
+    styleUrls: ['./items-list.component.css']
 })
 
 export class ItemsListComponent implements OnInit {

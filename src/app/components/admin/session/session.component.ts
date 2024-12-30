@@ -22,22 +22,21 @@ import localeFr from '@angular/common/locales/fr'; // Importer la locale frança
 registerLocaleData(localeFr, 'fr'); 
 
 @Component({
-  selector: 'app-session',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatButtonModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatInputModule,
-    CommonModule,
-    MatDialogModule,
-    MatSnackBarModule,
-  ],
-  templateUrl: './session.component.html',
-  styleUrl: './session.component.css',
-  providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
+    selector: 'app-session',
+    imports: [
+        MatFormFieldModule,
+        MatButtonModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatInputModule,
+        CommonModule,
+        MatDialogModule,
+        MatSnackBarModule,
+    ],
+    templateUrl: './session.component.html',
+    styleUrl: './session.component.css',
+    providers: [{ provide: LOCALE_ID, useValue: 'fr' }]
 })
 export class SessionComponent implements AfterViewInit {
   private _liveAnnouncer = inject(LiveAnnouncer);

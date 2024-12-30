@@ -10,6 +10,7 @@ import { SessionService } from '../../../services/session.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -22,7 +23,6 @@ registerLocaleData(localeFr);
 
 @Component({
   selector: 'app-add-session',
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -31,12 +31,11 @@ registerLocaleData(localeFr);
     MatNativeDateModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatTimepickerModule,
   ],
   templateUrl: './add-session.component.html',
   styleUrl: './add-session.component.css',
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
-  ],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
 })
 export class AddSessionComponent {
   sessionForm: FormGroup;

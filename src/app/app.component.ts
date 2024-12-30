@@ -5,11 +5,10 @@ import { CountdownComponent } from './components/countdown/countdown.component';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-app',
-  standalone: true,
-  imports: [ RouterModule, CountdownComponent, MatButtonModule ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+    selector: 'app-app',
+    imports: [RouterModule, CountdownComponent, MatButtonModule],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent {
   public isActive: boolean = false;

@@ -26,20 +26,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { VenteComponent } from '../../dialogue/vente/vente.component';
 
 @Component({
-  selector: 'app-user-vente',
-  standalone: true,
-  imports: [
-    MatTableModule,
-    UserVenteQteComponent,
-    CommonModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatDialogModule,
-    MatSnackBarModule,
-  ],
-  templateUrl: './user-vente.component.html',
-  styleUrl: './user-vente.component.css',
+    selector: 'app-user-vente',
+    imports: [
+        MatTableModule,
+        UserVenteQteComponent,
+        CommonModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatDialogModule,
+        MatSnackBarModule,
+    ],
+    templateUrl: './user-vente.component.html',
+    styleUrl: './user-vente.component.css'
 })
 export class UserVenteComponent {
   @Input() utilisateur!: Utilisateur;

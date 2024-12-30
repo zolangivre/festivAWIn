@@ -33,22 +33,21 @@ import localeFr from '@angular/common/locales/fr'; // Importer la locale frança
 registerLocaleData(localeFr, 'fr');
 
 @Component({
-  selector: 'app-user-jeu',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatInputModule,
-    MatDialogModule,
-    MatSnackBarModule,
-  ],
-  templateUrl: './user-jeu.component.html',
-  styleUrl: './user-jeu.component.css',
-  providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
+    selector: 'app-user-jeu',
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatInputModule,
+        MatDialogModule,
+        MatSnackBarModule,
+    ],
+    templateUrl: './user-jeu.component.html',
+    styleUrl: './user-jeu.component.css',
+    providers: [{ provide: LOCALE_ID, useValue: 'fr' }]
 })
 export class UserJeuComponent implements AfterViewInit {
   private _liveAnnouncer = inject(LiveAnnouncer);

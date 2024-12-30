@@ -4,14 +4,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-vente',
-  standalone: true,
-  imports: [
-    MatDialogModule,
-    MatButtonModule,
-  ],
-  templateUrl: './vente.component.html',
-  styleUrl: './vente.component.css',
+    selector: 'app-vente',
+    imports: [
+        MatDialogModule,
+        MatButtonModule,
+    ],
+    templateUrl: './vente.component.html',
+    styleUrl: './vente.component.css'
 })
 export class VenteComponent {
   constructor(

@@ -3,11 +3,10 @@ import { SessionService } from '../../services/session.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-countdown',
-  standalone: true,
-  imports: [],
-  templateUrl: './countdown.component.html',
-  styleUrl: './countdown.component.css',
+    selector: 'app-countdown',
+    imports: [],
+    templateUrl: './countdown.component.html',
+    styleUrl: './countdown.component.css'
 })
 export class CountdownComponent {
   countdown: string = '';

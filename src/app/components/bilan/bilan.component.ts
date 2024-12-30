@@ -5,13 +5,12 @@ import { Utilisateur } from '../../models/user';
 import { Bilan } from '../../models/bilan';
 
 @Component({
-  selector: 'app-bilan',
-  standalone: true,
-  imports: [
-    CommonModule,
-  ],
-  templateUrl: './bilan.component.html',
-  styleUrl: './bilan.component.css',
+    selector: 'app-bilan',
+    imports: [
+        CommonModule,
+    ],
+    templateUrl: './bilan.component.html',
+    styleUrl: './bilan.component.css'
 })
 export class BilanComponent implements OnChanges {
   @Input() utilisateur!: Utilisateur;

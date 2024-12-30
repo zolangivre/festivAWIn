@@ -4,11 +4,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-delete',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
-  templateUrl: './delete.component.html',
-  styleUrl: './delete.component.css',
+    selector: 'app-delete',
+    imports: [MatDialogModule, MatButtonModule],
+    templateUrl: './delete.component.html',
+    styleUrl: './delete.component.css'
 })
 export class DeleteComponent {
   constructor(

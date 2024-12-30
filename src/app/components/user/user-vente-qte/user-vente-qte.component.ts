@@ -7,11 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'app-user-vente-qte',
-  standalone: true,
-  imports: [MatFormField, MatLabel, CommonModule, FormsModule, MatButtonModule, MatInputModule],
-  templateUrl: './user-vente-qte.component.html',
-  styleUrls: ['./user-vente-qte.component.css'],
+    selector: 'app-user-vente-qte',
+    imports: [MatFormField, MatLabel, CommonModule, FormsModule, MatButtonModule, MatInputModule],
+    templateUrl: './user-vente-qte.component.html',
+    styleUrls: ['./user-vente-qte.component.css']
 })
 export class UserVenteQteComponent {
   @Input() game!: JeuDepot;

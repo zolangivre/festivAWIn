@@ -23,23 +23,22 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-user-edit',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatSelectModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatDividerModule,
-    MatButtonModule,
-    MatTableModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatDialogModule,
-  ],
-  templateUrl: './user-edit.component.html',
-  styleUrl: './user-edit.component.css',
+    selector: 'app-user-edit',
+    imports: [
+        CommonModule,
+        MatSelectModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatDividerModule,
+        MatButtonModule,
+        MatTableModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatDialogModule,
+    ],
+    templateUrl: './user-edit.component.html',
+    styleUrl: './user-edit.component.css'
 })
 export class UserEditComponent implements OnInit {
   @Input() utilisateur!: Utilisateur;

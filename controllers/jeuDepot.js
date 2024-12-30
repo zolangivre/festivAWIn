@@ -13,8 +13,10 @@ exports.getJeuxDepot = async (req, res) => {
 // Ajouter un jeu
 exports.createJeuDepot = async (req, res) => {
     const jeuDepot = new JeuDepot(req.body);
+    console.log(jeuDepot);
     try {
         const nouveauJeu = await jeuDepot.save();
+        console.log(nouveauJeu);
         res.status(201).json(nouveauJeu);
     } catch (error) {
         res.status(400).json({ message: 'Erreur lors de la création du jeu', error });
@@ -77,10 +79,17 @@ exports.updateJeuDepot = async (req, res) => {
     const updates = req.body;
 
     try {
-        const jeu = await JeuDepot.findByIdAndUpdate(jeuId, updates, { new: true });
+        let jeu = await JeuDepot.findByIdAndUpdate(jeuId, updates, { new: true });
         if (!jeu) {
             return res.status(404).json({ message: 'Jeu non trouvé' });
         }
+
+        // Vérifier si la quantité est 0 et mettre à jour le statut
+        if (jeu.quantiteJeu === 0) {
+            jeu.statutJeu = 'Vendu';
+            jeu = await jeu.save(); // Sauvegarder les modifications
+        }
+
         res.status(200).json(jeu);
     } catch (error) {
         console.error('Erreur lors de la mise à jour :', error);
@@ -110,9 +119,6 @@ exports.deleteAllJeuxDepotByUserId = async (req, res) => {
         res.status(500).json({ message: 'Erreur lors de la suppression des jeux', error });
     }
 }
-
-
-
 
 //Récupérer un jeu par son id
 exports.getJeuDepotById = async (req, res) => {

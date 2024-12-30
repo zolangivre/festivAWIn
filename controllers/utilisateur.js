@@ -62,20 +62,26 @@ exports.getUserById = (req, res, next) => {
     });
 };
 
-//Crée un nouvel utilisateur (vendeur, acheteur, gestionnaire ou administrateur).
+//Crée un nouvel utilisateur (vendeur, acheteur).
 exports.createUser = (req, res, next) => {
-    const user = new usersCollection({
-        nom: req.body.nom,
-        prenom: req.body.prenom,
-        mail: req.body.mail,
-        telephone: req.body.telephone,
-        adresse: req.body.adresse,
-        role: req.body.role
-    });
-    user.save()
-        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-        .catch(error => res.status(400).json({ error }));
-}
+  const user = new usersCollection({
+    nom: req.body.nom,
+    prenom: req.body.prenom,
+    mail: req.body.mail,
+    telephone: req.body.telephone,
+    adresse: req.body.adresse,
+    role: req.body.role
+  });
+
+  user.save()
+    .then((savedUser) => {
+      res.status(201).json({
+        message: 'Utilisateur créé !',
+        user: savedUser // Retourne l'utilisateur créé
+      });
+    })
+    .catch(error => res.status(400).json({ error }));
+};
 
 //Met à jour les informations d’un utilisateur existant par son idUtilisateur.
 exports.updateUser = (req, res, next) => {

@@ -4,7 +4,7 @@ const jeuDepotController = require('../controllers/jeuDepot');
 
 router.get('/', jeuDepotController.getJeuxDepot);
 router.post('/', jeuDepotController.createJeuDepot);
-router.put('/:id', jeuDepotController.updateJeuDepot);
+// router.put('/:id', jeuDepotController.updateJeuDepot);
 router.get('/filter', jeuDepotController.filterJeuxDepot);
 
 // Route pour obtenir les jeux d'un utilisateur

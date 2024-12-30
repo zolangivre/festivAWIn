@@ -1,5 +1,4 @@
 const Vente = require('../models/vente');
-const Utilisateur = require('../models/utilisateur');
 const VenteJeu = require('../models/vente_jeu');
 const JeuDepot = require('../models/jeuDepot');
 const mongoose = require('mongoose')
@@ -67,3 +66,41 @@ exports.createVente = async (req, res) => {
         res.status(500).json({ message: 'Erreur lors de la création de la vente', error: error.message });
     }
 };
+
+//Récupérer toutes les ventes
+exports.getAllVentes = async (req, res) => {
+    try {
+        const ventes = await Vente.find();
+        res.status(200).json(ventes);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des ventes:', error);
+        res.status(500).json({ message: 'Erreur lors de la récupération des ventes', error: error.message });
+    }
+}
+
+//Récupérer une vente par l'id de l'acheteur
+
+exports.getVenteByAcheteurId = async (req, res) => {
+    const acheteurId = req.params.acheteurId;
+    try {
+        const ventes = await Vente.find({ acheteur: acheteurId });
+        res.status(200).json(ventes);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des ventes:', error);
+        res.status(500).json({ message: 'Erreur lors de la récupération des ventes', error: error.message });
+    }
+}
+
+//Récupérer une vente par l'id du vendeur
+
+exports.getVenteByVendeurId = async (req, res) => {
+    const vendeurId = req.params.vendeurId;
+    try {
+        const ventes = await Vente.find({ vendeur: vendeurId });
+        res.status(200).json(ventes);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des ventes:', error);
+        res.status(500).json({ message: 'Erreur lors de la récupération des ventes', error: error.message });
+    }
+}
+

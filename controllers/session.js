@@ -65,6 +65,7 @@ exports.createSession = (req, res, next) => {
         dateDebut: req.body.dateDebut,
         dateFin: req.body.dateFin,
         fraisDepot: req.body.fraisDepot,
+        commission: req.body.commission,
         statutSession: req.body.statutSession
     });
     session.save().then(

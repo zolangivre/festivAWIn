@@ -36,4 +36,12 @@ export class UsersService {
   getUsersByRole(role: string): Observable<Utilisateur[]> {
     return this.http.get<Utilisateur[]>(`${this.apiUrl}/${role}`);
   }
+
+  getUserById(idUtilisateur: string): Observable<Utilisateur> {
+    return this.http.get<Utilisateur>(`${this.apiUrl}/${idUtilisateur}`);
+  }
+
+  getVendeurs(): Observable<Utilisateur[]> {
+    return this.http.get<Utilisateur[]>(`${this.apiUrl}/vendeurs`);
+  }
 }

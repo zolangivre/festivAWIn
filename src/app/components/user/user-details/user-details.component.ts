@@ -56,7 +56,6 @@ export class UserDetailsComponent implements OnChanges {
     'role',
   ];
   editMode: boolean = false;
-  venteMode: boolean = false;
 
   constructor(
     private usersService: UsersService,
@@ -68,7 +67,6 @@ export class UserDetailsComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.editMode = false;
-    this.venteMode = false;
   }
 
   onUserUpdated(): void {
@@ -136,5 +134,9 @@ export class UserDetailsComponent implements OnChanges {
 
   toggleUserAchatMode(): void {
     this.router.navigate(['utilisateur/achat', this.utilisateur._id]);
+  }
+
+  toggleUserListeAchatMode(): void {
+    this.router.navigate(['utilisateur/liste-achat', this.utilisateur._id]);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, inject, AfterViewInit, ViewChild, LOCALE_ID } from '@angular/core';
 
 import { SessionService } from '../../../services/session.service';
 import { Session } from '../../../models/session';
@@ -33,9 +33,11 @@ registerLocaleData(localeFr, 'fr');
     MatInputModule,
     CommonModule,
     MatDialogModule,
+    MatSnackBarModule,
   ],
   templateUrl: './session.component.html',
   styleUrl: './session.component.css',
+  providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
 })
 export class SessionComponent implements AfterViewInit {
   private _liveAnnouncer = inject(LiveAnnouncer);
@@ -45,6 +47,7 @@ export class SessionComponent implements AfterViewInit {
     'dateDebut',
     'dateFin',
     'fraisDepot',
+    'commission',
     'statutSession',
     'actions',
   ];

@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { VenteJeu } from '../models/vente-jeu';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VenteService {
 
-  private apiUrl = 'http://localhost:3002/api/vente';
+  private apiUrl = environment.apiUrl+ '/vente';
 
   constructor(private http: HttpClient) { }
 
@@ -18,5 +19,16 @@ export class VenteService {
     return this.http.post<any>(this.apiUrl, venteData);
   }
 
+  getVentes(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
+  }
+
+  getVentesByAcheteurId(acheteurId: string): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '/acheteur/' + acheteurId);
+  }
+
+  getVentesByVendeurId(vendeurId: string): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '/vendeur/' + vendeurId);
+  }
 }
 

@@ -1,1 +1,23 @@
-<p>bilan works!</p>
+<div class="bilan-container">
+    <h2>Bilan</h2>
+    <div class="bilan-row">
+        <div class="bilan-section">
+            <h2>Montant frais</h2>
+            <p>{{ bilan.totalFrais | number:'1.2-2' }} €</p>
+        </div>
+        <div class="bilan-section">
+            <h2>Montant commissions</h2>
+            <p>{{ bilan.totalCommissions | number:'1.2-2' }} €</p>
+        </div>
+    </div>
+    <div class="bilan-row">
+        <div class="bilan-section">
+            <h2>Montant des ventes</h2>
+            <p>{{ bilan.gains | number:'1.2-2' }} €</p>
+        </div>
+        <div class="bilan-section">
+            <h2>Sommes dues</h2>
+            <p>{{ bilan.sommeDues | number:'1.2-2' }} €</p>
+        </div>
+    </div>
+</div>

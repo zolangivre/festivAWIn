@@ -33,7 +33,13 @@
   </div>
   <div class="details">
     @if (selectedUser) {
+      <h2>Détails de l'utilisateur {{selectedUser.nom}} {{selectedUser.prenom}}</h2>
       <app-user-details [utilisateur]="selectedUser" (userDeleted)="onUserDeleted()" (userUpdated)="onUserUpdated()"></app-user-details>
     }
+  <div class="bilan">
+        @if (selectedUser && selectedUser.role === 'Vendeur') {
+        <app-bilan [utilisateur]="selectedUser"></app-bilan>
+        }
+  </div>
   </div>
 </div>

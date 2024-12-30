@@ -31,3 +31,16 @@ button {
 button:last-child {
     margin-right: 0;
 }
+
+.time-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+}

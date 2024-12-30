@@ -39,6 +39,7 @@
       <button mat-raised-button (click)="toggleUserJeuMode()">Voir les jeux</button>
       }
       @if (utilisateur.role === 'Acheteur') {
+      <button mat-raised-button (click)="toggleUserListeAchatMode()">Voir les achats</button>
       <button mat-raised-button (click)="toggleUserAchatMode()">Acheter un jeu</button>
       }
     </div>

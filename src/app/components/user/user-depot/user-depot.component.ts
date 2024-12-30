@@ -8,11 +8,14 @@ import {
 } from '@angular/forms';
 
 import { Utilisateur } from '../../../models/user';
+import { JeuDepot } from '../../../models/item';
+import { Session } from '../../../models/session';
+
 import { UsersService } from '../../../services/users.service';
 import { ItemService } from '../../../services/item.service';
 import { SessionService } from '../../../services/session.service';
-import { JeuDepot } from '../../../models/item';
-import { Session } from '../../../models/session';
+import { BilanService } from '../../../services/bilan.service';
+
 import { DepotComponent } from '../../dialogue/depot/depot.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -67,6 +70,7 @@ export class UserDepotComponent {
     private usersService: UsersService,
     private itemService: ItemService,
     private sessionService: SessionService,
+    private bilanService: BilanService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
@@ -109,7 +113,7 @@ export class UserDepotComponent {
         (
           this.depotList[this.depotList.length - 1].prixJeu *
           (Number(this.sessionActive.fraisDepot) / 100)
-        ).toFixed(3)
+        ).toFixed(2)
       );
       this.jeux = [...this.depotList];
       //frais_jeu_totale est le frais totale sur un jeu cest a dire frais de depot * quantite de jeu car frais_depot est le frais unitaire du jeu
@@ -150,9 +154,26 @@ export class UserDepotComponent {
         for (let i = 0; i < this.depotList.length; i++) {
           this.depotList[i].vendeur = this.utilisateur._id;
           this.depotList[i].statutJeu = 'Disponible';
-          this.depotList[i].dateDepot = new Date().toLocaleDateString();
           this.itemService.addItem(this.depotList[i]).subscribe();
         }
+        this.bilanService.getBilanById(this.utilisateur._id).subscribe({
+          next: (bilan) => {
+            console.log('Bilan récupéré :', bilan);
+            this.bilanService
+              .updateBilan(bilan._id, {
+                ...bilan,
+                sommeDues: bilan.sommeDues + this.somme_frais_depot,
+                totalFrais: bilan.totalFrais + this.somme_frais_depot,
+              })
+              .subscribe({
+                next: () => console.log('Bilan mis à jour avec succès'),
+                error: (err) =>
+                  console.error('Erreur lors de la mise à jour du bilan :', err),
+              });
+          },
+          error: (err) =>
+            console.error('Erreur lors de la récupération du bilan :', err),
+        });
         this.depotList = [];
         this.jeux = [];
         this.snackBar.open('Dépôt effectué avec succès', 'Fermer', {

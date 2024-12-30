@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { Utilisateur } from '../../../models/user';
 import { UserDetailsComponent } from '../user-details/user-details.component';
+import { BilanComponent } from '../../bilan/bilan.component';
 import { UsersService } from '../../../services/users.service';
 
 import { MatTableModule } from '@angular/material/table';
@@ -15,18 +16,25 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [UserDetailsComponent, MatTableModule, MatButton, MatListModule, MatInputModule, MatFormFieldModule],
+  imports: [
+    UserDetailsComponent,
+    MatTableModule,
+    MatButton,
+    MatListModule,
+    MatInputModule,
+    MatFormFieldModule,
+    BilanComponent,
+  ],
   templateUrl: './users-list.component.html',
-  styleUrl: './users-list.component.css'
+  styleUrl: './users-list.component.css',
 })
-
 export class UsersListComponent {
   utilisateurs: Utilisateur[] = [];
   utilisateur!: Utilisateur;
   selectedRole: string = 'all';
   selectedUser: Utilisateur | null = null;
 
-  constructor(private usersService: UsersService, private router: Router) { }
+  constructor(private usersService: UsersService, private router: Router) {}
 
   ngOnInit(): void {
     this.getUsers();
@@ -34,13 +42,15 @@ export class UsersListComponent {
 
   getUsers(): void {
     if (this.selectedRole === 'all') {
-      this.usersService.getUsers().subscribe(utilisateurs => {
+      this.usersService.getUsers().subscribe((utilisateurs) => {
         this.utilisateurs = utilisateurs;
       });
     } else {
-      this.usersService.getUsersByRole(this.selectedRole).subscribe(utilisateurs => {
-        this.utilisateurs = utilisateurs;
-      });
+      this.usersService
+        .getUsersByRole(this.selectedRole)
+        .subscribe((utilisateurs) => {
+          this.utilisateurs = utilisateurs;
+        });
     }
   }
 
@@ -72,9 +82,14 @@ export class UsersListComponent {
     if (filterValue.trim() === '') {
       this.getUsers();
     } else {
-      this.utilisateurs = this.utilisateurs.filter(utilisateur =>
-        utilisateur.nom.toLowerCase().includes(filterValue.trim().toLowerCase()) ||
-        utilisateur.prenom.toLowerCase().includes(filterValue.trim().toLowerCase())
+      this.utilisateurs = this.utilisateurs.filter(
+        (utilisateur) =>
+          utilisateur.nom
+            .toLowerCase()
+            .includes(filterValue.trim().toLowerCase()) ||
+          utilisateur.prenom
+            .toLowerCase()
+            .includes(filterValue.trim().toLowerCase())
       );
     }
   }

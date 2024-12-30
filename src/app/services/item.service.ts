@@ -63,9 +63,9 @@ export class ItemService {
     return this.http.post<JeuDepot>(this.apiUrl, item);
   }
 
-  updateItem(id: string, updatedFields: Partial<JeuDepot>): Observable<JeuDepot> {
-    return this.http.put<JeuDepot>(`${this.apiUrl}/${id}`, updatedFields);
-  }
+  // updateItem(id: string, updatedFields: Partial<JeuDepot>): Observable<JeuDepot> {
+  //   return this.http.put<JeuDepot>(`${this.apiUrl}/${id}`, updatedFields);
+  // }
 
   getItemsByUser(idUtilisateur: string): Observable<JeuDepot[]> {
     return this.http.get<JeuDepot[]>(`${this.apiUrl}/user/${idUtilisateur}`);

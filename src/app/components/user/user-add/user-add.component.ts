@@ -8,6 +8,8 @@ import {
 } from '@angular/forms';
 
 import { UsersService } from '../../../services/users.service';
+import { BilanService } from '../../../services/bilan.service';
+import { Utilisateur } from '../../../models/user'
 
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -22,16 +24,32 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-user-add',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatIconModule, MatDividerModule, MatButtonModule, MatTableModule, MatSnackBarModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatTableModule,
+    MatSnackBarModule,
+  ],
   templateUrl: './user-add.component.html',
-  styleUrl: './user-add.component.css'
+  styleUrl: './user-add.component.css',
 })
-
 export class UserAddComponent {
   userForm: FormGroup;
   roles: string[] = ['Vendeur', 'Acheteur'];
 
-  constructor(private usersService: UsersService, private fb: FormBuilder, private snackBar: MatSnackBar, private router: Router) {
+  constructor(
+    private usersService: UsersService,
+    private bilanService: BilanService,
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {
     this.userForm = this.fb.group({
       nom: ['', [Validators.required, Validators.minLength(2)]],
       prenom: ['', [Validators.required, Validators.minLength(2)]],
@@ -43,17 +61,30 @@ export class UserAddComponent {
   }
 
   addUser(): void {
-    this.usersService.addUser(this.userForm.value).subscribe(() => {
-      this.userForm.reset();
-      this.snackBar.open(
-        'Utilisateur ajouté avec succès',
-        'Fermer',
-        {
-          duration: 3000,
+    this.usersService
+      .addUser(this.userForm.value)
+      .subscribe((response : any) => {
+        const user = response.user;
+         console.log('Utilisateur créé :', user.role);
+        if (user.role === 'Vendeur') {
+          this.bilanService.createBilan(user._id).subscribe(() => {
+            this.snackBar.open(
+              'Vendeur ajouté avec succès',
+              'Fermer',
+              {
+                duration: 3000,
+              }
+            );
+            this.router.navigate(['/utilisateur']);
+          });
+        } else {
+          this.snackBar.open('Acheteur ajouté avec succès', 'Fermer', {
+            duration: 3000,
+          });
+          this.router.navigate(['/utilisateur']);
         }
-      );
-      this.router.navigate(['/utilisateur']);
-    });
+        this.userForm.reset();
+      });
   }
 
   goBack(): void {

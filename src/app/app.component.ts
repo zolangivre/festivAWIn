@@ -43,4 +43,8 @@ export class AppComponent {
   redirectToLogin(): void {
     this.router.navigate(['/login']);
   }
+
+  redirectToVente(): void {
+    this.router.navigate(['/vente']);
+  }
 }

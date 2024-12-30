@@ -13,6 +13,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr);
 
 @Component({
   selector: 'app-add-session',
@@ -28,6 +34,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   ],
   templateUrl: './add-session.component.html',
   styleUrl: './add-session.component.css',
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
+  ],
 })
 export class AddSessionComponent {
   sessionForm: FormGroup;
@@ -52,6 +61,15 @@ export class AddSessionComponent {
             Validators.pattern('^[0-9]*$'),
           ],
         ],
+        commission: [
+          '',
+          [
+            Validators.required,
+            Validators.min(0),
+            Validators.max(50),
+            Validators.pattern('^[0-9]*$'),
+          ],
+        ],
       },
       { validators: this.dateTimeValidator }
     );
@@ -60,10 +78,13 @@ export class AddSessionComponent {
   addSession(): void {
     if (this.sessionForm.valid) {
       const formValues = this.sessionForm.value;
+
+      // Date de début avec heure
       const startDate = new Date(formValues.dateDebut);
       const [startHours, startMinutes] = formValues.heureDebut.split(':');
       startDate.setHours(startHours, startMinutes);
 
+      // Date de fin avec heure
       const endDate = new Date(formValues.dateFin);
       const [endHours, endMinutes] = formValues.heureFin.split(':');
       endDate.setHours(endHours, endMinutes);
@@ -72,8 +93,10 @@ export class AddSessionComponent {
         dateDebut: startDate,
         dateFin: endDate,
         fraisDepot: Number(formValues.fraisDepot),
+        commission: Number(formValues.commission),
         statutSession: 'Planifiee',
       };
+
       this.sessionService.addSession(session).subscribe(
         (response) => {
           console.log('Session ajoutée avec succès', response);

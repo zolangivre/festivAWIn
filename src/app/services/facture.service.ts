@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { VenteJeu } from '../models/vente-jeu';
 import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
-export class VenteJeuService {
-  private apiUrl = environment.apiUrl + '/venteJeu';
+export class FactureService {
+  private apiUrl = environment.apiUrl + '/facture';
 
   constructor(private http: HttpClient) {}
 
-  getJeuxByVenteId(idVente: string): Observable<VenteJeu[]> {
-    return this.http.get<VenteJeu[]>(`${this.apiUrl}/${idVente}`);
+  telechargerFacture(venteId: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/telecharger/${venteId}`, {
+      responseType: 'blob',
+    });
   }
 }

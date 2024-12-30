@@ -21,9 +21,9 @@
         <div class="time-container">
             <mat-form-field appearance="fill">
                 <mat-label>Heure de début</mat-label>
-                <input matInput [formControl]="formControl" [matTimepicker]="picker" formControlName="heureDebut">
-                <mat-timepicker-toggle matIconSuffix [for]="picker" />
-                <mat-timepicker #picker />
+                <input matInput [matTimepicker]="timePicker" formControlName="heureDebut">
+                <mat-timepicker-toggle matIconSuffix [for]="timePicker"></mat-timepicker-toggle>
+                <mat-timepicker #timePicker></mat-timepicker>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Heure de fin</mat-label>

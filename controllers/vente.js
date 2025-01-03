@@ -68,7 +68,7 @@ exports.createVente = async (req, res) => {
 //Récupérer toutes les ventes
 exports.getAllVentes = async (req, res) => {
     try {
-        const ventes = await Vente.find();
+        const ventes = await Vente.find({}).sort({ dateVente: -1 });
         res.status(200).json(ventes);
     } catch (error) {
         console.error('Erreur lors de la récupération des ventes:', error);
@@ -81,7 +81,7 @@ exports.getAllVentes = async (req, res) => {
 exports.getVenteByAcheteurId = async (req, res) => {
     const acheteurId = req.params.acheteurId;
     try {
-        const ventes = await Vente.find({ acheteur: acheteurId });
+        const ventes = await Vente.find({ acheteur: acheteurId }).sort({ dateVente: -1 });
         res.status(200).json(ventes);
     } catch (error) {
         console.error('Erreur lors de la récupération des ventes:', error);
@@ -94,7 +94,7 @@ exports.getVenteByAcheteurId = async (req, res) => {
 exports.getVenteByVendeurId = async (req, res) => {
     const vendeurId = req.params.vendeurId;
     try {
-        const ventes = await Vente.find({ vendeur: vendeurId });
+        const ventes = await Vente.find({ vendeur: vendeurId }).sort({ dateVente: -1 });
         res.status(200).json(ventes);
     } catch (error) {
         console.error('Erreur lors de la récupération des ventes:', error);

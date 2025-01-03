@@ -16,7 +16,7 @@ exports.initAdmin = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const admin = new Admin({ username, password: hashedPassword });
+        const admin = new Admin({ username, password: hashedPassword, statut: 'Admin' });
         await admin.save();
 
         res.status(201).json({ message: 'Admin créé avec succès' });
@@ -25,7 +25,28 @@ exports.initAdmin = async (req, res) => {
     }
 };
 
-// Connexion d'un administrateur
+// Initialiser un compte gestionnaire
+exports.initGestionnaire = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        const existingAdmin = await Admin.findOne({ username });
+        if (existingAdmin) {
+            return res.status(400).json({ message: 'Gestionnaire déjà existant' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const admin = new Admin({ username, password: hashedPassword, statut: 'Gestionnaire' });
+        await admin.save();
+
+        res.status(201).json({ message: 'Gestionnaire créé avec succès' });
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur serveur', error });
+    }
+};
+
+// Connexion d'un admin ou gestionnaire
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -40,16 +61,27 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: 'Utilisateur ou mot de passe incorrect' });
         }
 
-        const token = jwt.sign({ id: admin._id, username: admin.username }, SECRET_KEY, { expiresIn: '1h' });
+        if (!admin.statut || !['Admin', 'Gestionnaire'].includes(admin.statut)) {
+            return res.status(400).json({ message: 'Rôle invalide' });
+        }
 
+        // Créer le payload du JWT (inclus des informations comme l'ID et le rôle)
+        const payload = {
+            id: admin._id,
+            username: admin.username,
+            statut: admin.statut, // Admin ou Gestionnaire
+        };
+
+        // Créer le token JWT
+        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '24h' });
+        
         res.status(200).json({ message: 'Connexion réussie', token });
     } catch (error) {
         res.status(500).json({ message: 'Erreur serveur', error });
     }
 };
 
-//Deconnexion d'un administrateur
-
+//Deconnexion d'un admin ou gestionnaire
 exports.logout = async (req, res) => {
     try {
         const { username } = req.body;
@@ -70,14 +102,14 @@ exports.logout = async (req, res) => {
 
 // Middleware d'authentification pour vérifier le token
 exports.authenticateToken = (req, res, next) => {
-    const token = req.headers['authorization'];
+    const token = req.header('Authorization')?.split(' ')[1];
 
     if (!token) {
         return res.status(403).json({ message: 'Accès interdit' });
     }
 
     try {
-        const decoded = jwt.verify(token.split(' ')[1], SECRET_KEY);
+        const decoded = jwt.verify(token, SECRET_KEY);
         req.user = decoded;
         next();
     } catch (error) {

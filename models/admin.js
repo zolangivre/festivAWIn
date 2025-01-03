@@ -8,6 +8,11 @@ const adminSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    statut: {
+        type: String,
+        enum: ['Admin', 'Gestionnaire'],
+        required: true
     }
 });
 

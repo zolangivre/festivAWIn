@@ -3,7 +3,7 @@ const JeuDepot = require('../models/jeuDepot');
 // Récupérer tous les jeux qui ne sont pas supprimés
 exports.getJeuxDepotPasSupprimés = async (req, res) => {
     try {
-        const jeux = await JeuDepot.find({ statutJeu: { $ne: 'Supprimé' } });
+        const jeux = await JeuDepot.find({ statutJeu: { $ne: 'Supprimé' } }).sort({ dateDepot: -1 });
         res.status(200).json(jeux);
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la récupération des jeux', error });
@@ -13,7 +13,7 @@ exports.getJeuxDepotPasSupprimés = async (req, res) => {
 // Récupérer tous les jeux
 exports.getJeuxDepot = async (req, res) => {
     try {
-        const jeux = await JeuDepot.find();
+        const jeux = await JeuDepot.find().sort({ dateDepot: -1 });
         res.status(200).json(jeux);
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la récupération des jeux', error });
@@ -36,7 +36,7 @@ exports.createJeuDepot = async (req, res) => {
 exports.getJeuxDepotByUserId = async (req, res) => {
     const { userId } = req.params;
     try {
-        const jeux = await JeuDepot.find({ vendeur: userId });
+        const jeux = await JeuDepot.find({ vendeur: userId }).sort({ dateDepot: -1 });
         res.status(200).json(jeux);
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la récupération des jeux', error });

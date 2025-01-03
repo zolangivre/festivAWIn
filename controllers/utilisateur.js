@@ -1,4 +1,5 @@
 const usersCollection = require('../models/utilisateur');
+const Bilan = require('../models/bilan');
 
 //Récupère la liste de tous les utilisateurs (vendeurs, acheteurs, gestionnaires, administrateurs).
 exports.getAllUsers = (req, res, next) => {
@@ -78,10 +79,22 @@ exports.createUser = (req, res, next) => {
 
   user.save()
     .then((savedUser) => {
-      res.status(201).json({
-        message: 'Utilisateur créé !',
-        user: savedUser // Retourne l'utilisateur créé
+      // Créer un bilan pour le nouvel utilisateur
+      const bilan = new Bilan({
+        vendeurId: savedUser._id,
+        sommeDues: 0,
+        totalFrais: 0,
+        totalCommissions: 0,
+        gains: 0
       });
+
+      return bilan.save()
+        .then(() => {
+          res.status(201).json({
+            message: 'Utilisateur et bilan créés !',
+            user: savedUser
+          });
+        });
     })
     .catch(error => res.status(400).json({ error }));
 };

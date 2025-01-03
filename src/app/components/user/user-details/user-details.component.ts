@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { Utilisateur } from '../../../models/user';
 import { UsersService } from '../../../services/users.service';
 import { ItemService } from '../../../services/item.service';
+import { AuthService } from '../../../services/auth.service';
 import { UserEditComponent } from '../user-edit/user-edit.component';
 import { DeleteComponent } from '../../dialogue/delete/delete.component';
 import { BilanComponent } from '../../bilan/bilan.component';
@@ -20,6 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -42,6 +44,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
       MatSnackBarModule,
       BilanComponent,
       BilanAcheteurComponent,
+      MatTooltipModule,
     ],
     templateUrl: './user-details.component.html',
     styleUrl: './user-details.component.css'
@@ -62,14 +65,20 @@ export class UserDetailsComponent implements OnChanges {
     'role',
   ];
   editMode: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(
     private usersService: UsersService,
     private itemService: ItemService,
     private router: Router,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private authService: AuthService
+  ) { }
+  
+  ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
+  }
 
   ngOnChanges(): void {
     this.editMode = false;

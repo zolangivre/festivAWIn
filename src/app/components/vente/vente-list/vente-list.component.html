@@ -10,11 +10,6 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Vendeur </th>
             <td mat-cell *matCellDef="let vente"> {{ vente.vendeurNom ? vente.vendeurNom : 'Vendeur supprimé' }} </td>
         </ng-container>
-        <ng-container matColumnDef="commissionVente">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Commission
-            </th>
-            <td mat-cell *matCellDef="let vente"> {{ vente.commissionVente | currency:'EUR' }} </td>
-        </ng-container>
         <ng-container matColumnDef="dateVente">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="dateVente"> Date </th>
             <td mat-cell *matCellDef="let vente"> {{ vente.dateVente | date:'shortDate':'fr' }} </td>

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AuthService } from '../../services/auth.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -22,28 +24,26 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class RootComponent {
   buttonText: string = '';
   idUtilisateur: string | null = null;
+  isGestionnaire: boolean = false;
+  isAdmin: boolean = false;
+  isAuthentified: boolean = false;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.updateButtonText();
+    this.updateAuthStatus();
+
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.updateAuthStatus();
+      });
   }
 
-  updateButtonText(): void {
-    this.buttonText =
-      this.router.url === '/jeuDepot'
-        ? 'Interface gestionnaire'
-        : 'Interface utilisateur';
-  }
-
-  toggleRoute(): void {
-    const newRoute =
-      this.router.url === '/jeuDepot' ? '/utilisateur' : '/jeuDepot';
-    this.router.navigate([newRoute]).then(() => this.updateButtonText());
-  }
-
-  toggleHome(): void {
-    this.router.navigate(['/']).then(() => this.updateButtonText());
+  updateAuthStatus(): void {
+    this.isGestionnaire = this.authService.isGestionnaire();
+    this.isAdmin = this.authService.isAdmin();
+    this.isAuthentified = this.authService.isAuthenticated();
   }
 
   goBack(): void {
@@ -52,10 +52,31 @@ export class RootComponent {
       const segementUrl = url.split('/');
       const idUtilisateur = segementUrl[segementUrl.length - 1];
       this.router.navigate(['/utilisateur'], {
-      queryParams: { idUtilisateur },
+        queryParams: { idUtilisateur },
       });
     } else {
       window.history.back();
     }
+  }
+
+  toggleHome(): void {
+    this.router.navigate(['/accueil']);
+  }
+
+  connexion(): void {
+    this.router.navigate(['/login']);
+  }
+
+  deconnexion(): void {
+    this.authService.logout();
+    this.router.navigate(['/']);
+  }
+
+  gestionnaire(): void {
+    this.router.navigate(['/utilisateur']);
+  }
+
+  goToSession(): void {
+    this.router.navigate(['/session']);
   }
 }

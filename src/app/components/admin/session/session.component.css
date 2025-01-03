@@ -16,3 +16,7 @@ mat-paginator {
     padding: 8px;
     text-align: left;
 }
+
+.add-session-button {
+    margin-top: 20px;
+}

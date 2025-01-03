@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Utilisateur } from '../../../models/user';
 import { UserDetailsComponent } from '../user-details/user-details.component';
 import { UsersService } from '../../../services/users.service';
+import { AuthService } from '../../../services/auth.service';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatButton } from '@angular/material/button';
@@ -37,14 +38,17 @@ export class UsersListComponent {
   selectedRole: string = 'all';
   selectedUser: Utilisateur | null = null;
   editMode: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(
     private usersService: UsersService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
     this.getUsers();
     this.route.queryParams.subscribe((params) => {
       const userId = params['idUtilisateur'];
@@ -71,7 +75,7 @@ export class UsersListComponent {
   }
 
   navigateToAdd(): void {
-    this.router.navigate(['/add/utilisateur/']);
+    this.router.navigate(['utilisateur/add']);
   }
 
   filterUsers(role: string): void {

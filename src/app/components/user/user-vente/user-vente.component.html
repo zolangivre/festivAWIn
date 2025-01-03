@@ -53,12 +53,12 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Prix Unitaire</th>
                 <td mat-cell *matCellDef="let element"> {{ element.prixJeu | currency:'EUR' }} </td>
             </ng-container>
-            <ng-container matColumnDef="quantite">
+            <ng-container matColumnDef="quantiteVendus">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Quantité </th>
                 <td mat-cell *matCellDef="let element">{{ element.quantiteVendus | number }}</td>
             </ng-container>
-            <tr mat-header-row *matHeaderRowDef="['jeuNom', 'editeurNom', 'prixJeu', 'quantite']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['jeuNom', 'editeurNom', 'prixJeu', 'quantite'];" (click)="removeGameFromPurchase(row)">
+            <tr mat-header-row *matHeaderRowDef="['jeuNom', 'editeurNom', 'prixJeu', 'quantiteVendus']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['jeuNom', 'editeurNom', 'prixJeu', 'quantiteVendus'];" (click)="removeGameFromPurchase(row)">
             </tr>
         </table>
         <mat-paginator #selectedGamesPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of jeux">

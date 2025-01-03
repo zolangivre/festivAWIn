@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { UsersListComponent } from './components/user/users-list/users-list.component';
 import { ItemsListComponent } from './components/item/items-list/items-list.component';
 import { UserAddComponent } from './components/user/user-add/user-add.component';
-import { AdminComponent } from './components/admin/admin.component';
 import { AddSessionComponent } from './components/admin/add-session/add-session.component';
 import { SessionGuard } from './guards/session.guard';
 import { AuthGuard } from './guards/auth.guard';
@@ -20,17 +19,16 @@ import { BilanGeneralComponent } from './components/bilan/bilan-general/bilan-ge
 export const routes: Routes = [
   { path: 'accueil', component: AppComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
-  { path: 'addSession', component: AddSessionComponent, canActivate: [AuthGuard] },
+  { path: 'session/add', component: AddSessionComponent, canActivate: [AuthGuard] },
   { path: 'session', component: SessionComponent, canActivate: [AuthGuard] },
   { path: 'bilan/:idSession', component: BilanGeneralComponent, canActivate: [AuthGuard] },
-  { path: 'utilisateur', component: UsersListComponent, canActivate: [SessionGuard] },
-  { path: 'utilisateur/depot/:idUtilisateur', component: UserDepotComponent, canActivate: [SessionGuard] },
-  { path: 'utilisateur/jeu/:idUtilisateur', component: UserJeuComponent, canActivate: [SessionGuard] },
-  { path: 'utilisateur/achat/:idUtilisateur', component: UserVenteComponent, canActivate: [SessionGuard] },
-  { path: 'utilisateur/liste-achat/:idUtilisateur', component: UserAchatListComponent, canActivate: [SessionGuard] },
-  { path: 'utilisateur/liste-vente/:idUtilisateur', component: UserVenteListComponent, canActivate: [SessionGuard] },
-  { path: 'add/utilisateur', component: UserAddComponent, canActivate: [SessionGuard] },
+  { path: 'utilisateur', component: UsersListComponent, canActivate: [SessionGuard, AuthGuard] },
+  { path: 'utilisateur/depot/:idUtilisateur', component: UserDepotComponent, canActivate: [SessionGuard, AuthGuard] },
+  { path: 'utilisateur/jeu/:idUtilisateur', component: UserJeuComponent, canActivate: [SessionGuard, AuthGuard] },
+  { path: 'utilisateur/achat/:idUtilisateur', component: UserVenteComponent, canActivate: [SessionGuard, AuthGuard] },
+  { path: 'utilisateur/liste-achat/:idUtilisateur', component: UserAchatListComponent, canActivate: [SessionGuard, AuthGuard] },
+  { path: 'utilisateur/liste-vente/:idUtilisateur', component: UserVenteListComponent, canActivate: [SessionGuard, AuthGuard] },
+  { path: 'utilisateur/add', component: UserAddComponent, canActivate: [SessionGuard, AuthGuard] },
   { path: 'vente', component: VenteListComponent, canActivate: [SessionGuard] },
   { path: 'jeuDepot', component: ItemsListComponent, canActivate: [SessionGuard] },
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },

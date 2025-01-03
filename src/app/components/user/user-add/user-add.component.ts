@@ -22,21 +22,21 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-user-add',
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        MatSelectModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatDividerModule,
-        MatButtonModule,
-        MatTableModule,
-        MatSnackBarModule,
-    ],
-    templateUrl: './user-add.component.html',
-    styleUrl: './user-add.component.css'
+  selector: 'app-user-add',
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatTableModule,
+    MatSnackBarModule,
+  ],
+  templateUrl: './user-add.component.html',
+  styleUrl: './user-add.component.css',
 })
 export class UserAddComponent {
   userForm: FormGroup;
@@ -69,28 +69,26 @@ export class UserAddComponent {
   }
 
   addUser(): void {
-    this.usersService
-      .addUser(this.userForm.value)
-      .subscribe((response : any) => {
-        const user = response.user;
-        if (user.role === 'Vendeur') {
-          this.bilanService.createBilan(user._id).subscribe(() => {
-            this.snackBar.open(
-              'Vendeur ajouté avec succès',
-              'Fermer',
-              {
-                duration: 3000,
-              }
-            );
-            this.router.navigate(['/utilisateur']);
-          });
-        } else {
-          this.snackBar.open('Acheteur ajouté avec succès', 'Fermer', {
+    if (this.userForm.valid) {
+      this.usersService.addUser(this.userForm.value).subscribe({
+        next: () => {
+          this.snackBar.open('Utilisateur ajouté avec succès', 'Fermer', {
             duration: 3000,
           });
           this.router.navigate(['/utilisateur']);
-        }
-        this.userForm.reset();
+          this.userForm.reset();
+        },
+        error: (err: any) => {
+          this.snackBar.open(
+            "Erreur lors de l'ajout de l'utilisateur",
+            'Fermer',
+            {
+              duration: 3000,
+            }
+          );
+          console.error("Erreur lors de l'ajout de l'utilisateur:", err);
+        },
       });
+    }
   }
 }

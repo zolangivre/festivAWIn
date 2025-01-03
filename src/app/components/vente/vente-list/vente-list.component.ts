@@ -50,7 +50,6 @@ export class VenteListComponent implements AfterViewInit {
   displayedColumns: string[] = [
     'acheteurNom',
     'vendeurNom',
-    'commissionVente',
     'dateVente',
     'montantTotal',
   ];

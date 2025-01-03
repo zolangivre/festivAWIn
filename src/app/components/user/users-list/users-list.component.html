@@ -29,10 +29,11 @@
             <span>Vendeurs</span>
           </button>
         </mat-menu>
-
-        <button mat-icon-button (click)="navigateToAdd()" matTooltip="Ajouter un utilisateur" class="add-button">
-          <mat-icon>person_add</mat-icon>
-        </button>
+        @if (isAdmin) {
+          <button mat-icon-button (click)="navigateToAdd()" matTooltip="Ajouter un utilisateur" class="add-button">
+            <mat-icon>person_add</mat-icon>
+          </button>
+        }
       </div>
     </div>
     <div class="list">

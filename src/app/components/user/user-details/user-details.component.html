@@ -45,16 +45,32 @@
       </table>
     </div>
     <div class="button">
-      <button mat-raised-button (click)="deleteUser(utilisateur)">Supprimer</button>
-      <button mat-raised-button (click)="editMode = true">Modifier</button>
       @if (utilisateur.role === 'Vendeur') {
-      <button mat-raised-button (click)="toggleDepotMode()">Effectuer un dépôt</button>
-      <button mat-raised-button (click)="toggleUserListeVenteMode()">Voir les ventes</button>
-      <button mat-raised-button (click)="toggleUserJeuMode()">Voir les jeux</button>
+        <button mat-icon-button (click)="toggleDepotMode()" matTooltip="Effectuer un dépôt">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-icon-button (click)="toggleUserListeVenteMode()" matTooltip="Voir les ventes">
+          <mat-icon>payments</mat-icon>
+        </button>
+        <button mat-icon-button (click)="toggleUserJeuMode()" matTooltip="Voir les jeux">
+          <mat-icon>smart_toy</mat-icon>
+        </button>
       }
       @if (utilisateur.role === 'Acheteur') {
-      <button mat-raised-button (click)="toggleUserListeAchatMode()">Voir les achats</button>
-      <button mat-raised-button (click)="toggleUserAchatMode()">Acheter un jeu</button>
+      <button mat-icon-button (click)="toggleUserAchatMode()" matTooltip="Acheter des jeux">
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
+      <button mat-icon-button (click)="toggleUserListeAchatMode()" matTooltip="Voir les achats">
+        <mat-icon>shopping_bag</mat-icon>
+      </button>
+      }
+      @if (isAdmin) {
+      <button mat-icon-button (click)="editMode=true" matTooltip="Modifier l'utilisateur">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="deleteUser(utilisateur)" matTooltip="Supprimer l'utilisateur">
+        <mat-icon>delete</mat-icon>
+      </button>
       }
     </div>
   </div>

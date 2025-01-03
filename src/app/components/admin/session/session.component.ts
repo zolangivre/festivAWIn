@@ -1,4 +1,5 @@
 import { Component, inject, AfterViewInit, ViewChild, LOCALE_ID } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { SessionService } from '../../../services/session.service';
 import { Session } from '../../../models/session';
@@ -13,6 +14,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
@@ -22,21 +24,22 @@ import localeFr from '@angular/common/locales/fr'; // Importer la locale frança
 registerLocaleData(localeFr, 'fr'); 
 
 @Component({
-    selector: 'app-session',
-    imports: [
-        MatFormFieldModule,
-        MatButtonModule,
-        MatTableModule,
-        MatSortModule,
-        MatPaginatorModule,
-        MatInputModule,
-        CommonModule,
-        MatDialogModule,
-        MatSnackBarModule,
-    ],
-    templateUrl: './session.component.html',
-    styleUrl: './session.component.css',
-    providers: [{ provide: LOCALE_ID, useValue: 'fr' }]
+  selector: 'app-session',
+  imports: [
+    MatFormFieldModule,
+    MatButtonModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatInputModule,
+    CommonModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatIconModule,
+  ],
+  templateUrl: './session.component.html',
+  styleUrl: './session.component.css',
+  providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
 })
 export class SessionComponent implements AfterViewInit {
   private _liveAnnouncer = inject(LiveAnnouncer);
@@ -57,16 +60,17 @@ export class SessionComponent implements AfterViewInit {
   constructor(
     private sessionService: SessionService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
-) {}
+    private dialog: MatDialog,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.sessionService.getAllSessions().subscribe(
       (sessions) => {
         this.sessions = sessions;
         this.dataSource.data = this.sessions;
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       },
       (error) => {
         console.error('Error loading sessions:', error);
@@ -101,13 +105,9 @@ export class SessionComponent implements AfterViewInit {
           this.sessionService.deleteSession(session._id).subscribe(() => {
             this.sessions = this.sessions.filter((s) => s._id !== session._id);
             this.dataSource.data = this.sessions;
-            this.snackBar.open(
-              'Session supprimé avec succès',
-              'Fermer',
-              {
-                duration: 3000,
-              }
-            );
+            this.snackBar.open('Session supprimé avec succès', 'Fermer', {
+              duration: 3000,
+            });
           });
         } else {
           console.error("Impossible de supprimer l'utilisateur");
@@ -118,5 +118,9 @@ export class SessionComponent implements AfterViewInit {
 
   toggleBilanGeneral(session: Session) {
     window.location.href = `/bilan/${session._id}`;
+  }
+
+  goToAddSession(): void {
+    this.router.navigate(['session/add']);
   }
 }

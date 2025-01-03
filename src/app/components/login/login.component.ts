@@ -10,17 +10,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-    selector: 'app-login',
-    imports: [
-        CommonModule,
-        MatFormFieldModule,
-        MatButtonModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatIconModule,
-    ],
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.css'
+  selector: 'app-login',
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatIconModule,
+  ],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   errorMessage = '';
@@ -51,21 +51,15 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    this.authService
-      .login(this.loginForm.value.username, this.loginForm.value.password)
-      .subscribe({
-        next: (response) => {
-          this.loginForm.reset();
-          this.authService.setToken(response.token);
-          this.router.navigate(['/admin']);
-        },
-        error: (err) => {
-          this.errorMessage = 'Pseudo ou mot de passe incorrect';
-        },
-      });
-  }
-
-  goBack(): void {
-    this.router.navigate(['/']);
+    const { username, password } = this.loginForm.value;
+    this.authService.login(username!, password!).subscribe({
+      next: (response) => {
+        this.authService.setToken(response.token);
+        this.authService.redirectUser();
+      },
+      error: (err) => {
+        this.errorMessage = "Nom d'utilisateur ou mot de passe incorrect";
+      },
+    });
   }
 }

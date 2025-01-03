@@ -1,3 +1,4 @@
+@if (session) {
 <div class="bilan-general">
     <h1>Bilan Général</h1>
     <p>Session du {{ session.dateDebut | date }} au {{ session.dateFin | date }}</p>
@@ -92,3 +93,4 @@
         </mat-card>
     </div>
 </div>
+}

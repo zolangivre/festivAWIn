@@ -3,10 +3,11 @@ import { SessionService } from './services/session.service';
 import { Router, RouterModule } from '@angular/router';
 import { CountdownComponent } from './components/countdown/countdown.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-app',
-    imports: [RouterModule, CountdownComponent, MatButtonModule],
+    imports: [RouterModule, CountdownComponent, MatButtonModule, MatIconModule],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css'
 })
@@ -45,5 +46,9 @@ export class AppComponent {
 
   redirectToVente(): void {
     this.router.navigate(['/vente']);
+  }
+
+  redirectToJeux(): void {
+    this.router.navigate(['/jeuDepot']);
   }
 }

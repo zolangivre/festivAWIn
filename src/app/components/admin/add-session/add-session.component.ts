@@ -14,12 +14,19 @@ import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr';
-
-registerLocaleData(localeFr);
+// Fonction pour formater la date au format ISO avec heure
+function formatToISOString(date: Date, hour: Date): string {
+  const hours = hour.getHours();
+  const minutes = hour.getMinutes();
+  const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes
+    .toString()
+    .padStart(2, '0')}`;
+  const formattedDate = date.toISOString().split('T')[0];
+  const combinedDateTimeStr = `${formattedDate}T${formattedTime}:00`;
+  const isoDate = new Date(combinedDateTimeStr);
+  return isoDate.toISOString();
+}
 
 @Component({
   selector: 'app-add-session',
@@ -35,7 +42,6 @@ registerLocaleData(localeFr);
   ],
   templateUrl: './add-session.component.html',
   styleUrl: './add-session.component.css',
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }],
 })
 export class AddSessionComponent {
   sessionForm: FormGroup;
@@ -45,49 +51,44 @@ export class AddSessionComponent {
     private snackBar: MatSnackBar,
     private router: Router
   ) {
-    this.sessionForm = this.fb.group(
-      {
-        dateDebut: ['', [Validators.required]],
-        heureDebut: ['', [Validators.required]],
-        dateFin: ['', [Validators.required]],
-        heureFin: ['', [Validators.required]],
-        fraisDepot: [
-          '',
-          [
-            Validators.required,
-            Validators.min(0),
-            Validators.max(50),
-            Validators.pattern('^[0-9]*$'),
-          ],
+    this.sessionForm = this.fb.group({
+      dateDebut: ['', [Validators.required]],
+      heureDebut: ['', [Validators.required]],
+      dateFin: ['', [Validators.required]],
+      heureFin: ['', [Validators.required]],
+      fraisDepot: [
+        '',
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(50),
+          Validators.pattern('^[0-9]*$'),
         ],
-        commission: [
-          '',
-          [
-            Validators.required,
-            Validators.min(0),
-            Validators.max(50),
-            Validators.pattern('^[0-9]*$'),
-          ],
+      ],
+      commission: [
+        '',
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(50),
+          Validators.pattern('^[0-9]*$'),
         ],
-      },
-      { validators: this.dateTimeValidator }
-    );
+      ],
+    });
   }
 
   addSession(): void {
     if (this.sessionForm.valid) {
       const formValues = this.sessionForm.value;
 
-      // Date de début avec heure
+      // Créer des objets Date pour dateDebut et dateFin
       const startDate = new Date(formValues.dateDebut);
-      const [startHours, startMinutes] = formValues.heureDebut.split(':');
-      startDate.setHours(startHours, startMinutes);
+      const startDateTime = formatToISOString(startDate, formValues.heureDebut);
 
-      // Date de fin avec heure
       const endDate = new Date(formValues.dateFin);
-      const [endHours, endMinutes] = formValues.heureFin.split(':');
-      endDate.setHours(endHours, endMinutes);
+      const endDateTime = formatToISOString(endDate, formValues.heureFin);
 
+      // Créer un objet session avec dateDebut et dateFin sous forme de Date
       const session = {
         dateDebut: startDate,
         dateFin: endDate,
@@ -96,6 +97,14 @@ export class AddSessionComponent {
         statutSession: 'Planifiee',
       };
 
+      // Convertie dateDebut et dateFin au format ISO avant d'envoyer au backend
+      const sessionPayload = {
+        ...session,
+        dateDebut: startDateTime,
+        dateFin: endDateTime,
+      };
+
+      console.log('Session payload:', sessionPayload);
       this.sessionService.addSession(session).subscribe(
         (response) => {
           console.log('Session ajoutée avec succès', response);
@@ -106,35 +115,23 @@ export class AddSessionComponent {
           this.router.navigate(['/']);
         },
         (error) => {
-          console.error("Erreur lors de l'ajout de la session", error);
+          // Vérifie si l'erreur est liée à un chevauchement
+          if (error.status === 400 && error.error.message) {
+            this.snackBar.open(error.error.message, 'Fermer', {
+              duration: 3000,
+            });
+          } else {
+            console.error("Erreur lors de l'ajout de la session", error);
+            this.snackBar.open(
+              'Erreur inconnue, veuillez réessayer.',
+              'Fermer',
+              {
+                duration: 3000,
+              }
+            );
+          }
         }
       );
     }
-  }
-
-  dateTimeValidator(group: FormGroup): { [key: string]: any } | null {
-    const dateDebut = group.get('dateDebut')?.value;
-    const heureDebut = group.get('heureDebut')?.value;
-    const dateFin = group.get('dateFin')?.value;
-    const heureFin = group.get('heureFin')?.value;
-
-    if (dateDebut && heureDebut && dateFin && heureFin) {
-      const startDate = new Date(dateDebut);
-      const [startHours, startMinutes] = heureDebut.split(':');
-      startDate.setHours(startHours, startMinutes);
-
-      const endDate = new Date(dateFin);
-      const [endHours, endMinutes] = heureFin.split(':');
-      endDate.setHours(endHours, endMinutes);
-
-      if (startDate >= endDate) {
-        return { dateTimeInvalid: true };
-      }
-    }
-    return null;
-  }
-
-  goBack(): void {
-    window.history.back();
   }
 }

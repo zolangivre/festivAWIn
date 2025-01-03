@@ -1,5 +1,6 @@
 <div class="container">
   @if (!editMode && utilisateur) {
+  <h2>Détails de l'utilisateur {{utilisateur.nom}} {{utilisateur.prenom}}</h2>
   <div class="details">
     <div class="display">
       <table mat-table [dataSource]="[utilisateur]" class="mat-elevation-z8">
@@ -16,15 +17,27 @@
           <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.mail }} </td>
         </ng-container>
         <ng-container matColumnDef="telephone">
-          <th mat-header-cell *matHeaderCellDef> Telephone </th>
+          <th mat-header-cell *matHeaderCellDef> Téléphone </th>
           <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.telephone }} </td>
         </ng-container>
         <ng-container matColumnDef="adresse">
           <th mat-header-cell *matHeaderCellDef> Adresse </th>
           <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.adresse }} </td>
         </ng-container>
+        <ng-container matColumnDef="ville">
+          <th mat-header-cell *matHeaderCellDef> Ville </th>
+          <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.ville }} </td>
+        </ng-container>
+        <ng-container matColumnDef="codePostal">
+          <th mat-header-cell *matHeaderCellDef> CP </th>
+          <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.codePostal }} </td>
+        </ng-container>
+        <ng-container matColumnDef="pays">
+          <th mat-header-cell *matHeaderCellDef> Pays </th>
+          <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.pays }} </td>
+        </ng-container>
         <ng-container matColumnDef="role">
-          <th mat-header-cell *matHeaderCellDef> Role </th>
+          <th mat-header-cell *matHeaderCellDef> Rôle </th>
           <td mat-cell *matCellDef="let utilisateur"> {{ utilisateur.role }} </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -36,6 +49,7 @@
       <button mat-raised-button (click)="editMode = true">Modifier</button>
       @if (utilisateur.role === 'Vendeur') {
       <button mat-raised-button (click)="toggleDepotMode()">Effectuer un dépôt</button>
+      <button mat-raised-button (click)="toggleUserListeVenteMode()">Voir les ventes</button>
       <button mat-raised-button (click)="toggleUserJeuMode()">Voir les jeux</button>
       }
       @if (utilisateur.role === 'Acheteur') {
@@ -48,5 +62,22 @@
 </div>
 
 @if (editMode && utilisateur) {
+<div class="edit">
+  <button mat-icon-button (click)="cancelEdit()">
+    <mat-icon>close</mat-icon>
+  </button>
+  <h2>Modifier l'utilisateur {{utilisateur.nom}} {{utilisateur.prenom}}</h2>
+</div>
 <app-user-edit [utilisateur]="utilisateur" (userUpdated)="onUserUpdated()"></app-user-edit>
 }
+<div class="bilan-vendeur">
+  @if (utilisateur && utilisateur.role === 'Vendeur' && !editMode) {
+  <app-bilan [utilisateur]="utilisateur"></app-bilan>
+  }
+</div>
+
+<div class="bilan-acheteur">
+  @if (utilisateur && utilisateur.role === 'Acheteur' && !editMode) {
+  <app-bilan-acheteur [utilisateur]="utilisateur"></app-bilan-acheteur>
+  }
+</div>

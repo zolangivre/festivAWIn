@@ -4,16 +4,16 @@
         class="mat-elevation-z8">
         <ng-container matColumnDef="acheteurNom">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Acheteur </th>
-            <td mat-cell *matCellDef="let vente"> {{ vente.acheteurNom }} </td>
+            <td mat-cell *matCellDef="let vente"> {{ vente.acheteurNom ? vente.acheteurNom : 'Acheteur supprimé' }} </td>
         </ng-container>
         <ng-container matColumnDef="vendeurNom">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Vendeur </th>
-            <td mat-cell *matCellDef="let vente"> {{ vente.vendeurNom }} </td>
+            <td mat-cell *matCellDef="let vente"> {{ vente.vendeurNom ? vente.vendeurNom : 'Vendeur supprimé' }} </td>
         </ng-container>
         <ng-container matColumnDef="commissionVente">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Commission
             </th>
-            <td mat-cell *matCellDef="let vente"> {{ vente.commissionVente }} </td>
+            <td mat-cell *matCellDef="let vente"> {{ vente.commissionVente | currency:'EUR' }} </td>
         </ng-container>
         <ng-container matColumnDef="dateVente">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="dateVente"> Date </th>
@@ -22,7 +22,7 @@
         <ng-container matColumnDef="montantTotal">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Montant Total
             </th>
-            <td mat-cell *matCellDef="let vente"> {{ vente.montantTotal }} </td>
+            <td mat-cell *matCellDef="let vente"> {{ vente.montantTotal | currency:'EUR' }} </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="showJeux(row)"
@@ -34,27 +34,26 @@
     <h2>Jeux de la vente</h2>
     <table mat-table [dataSource]="jeuxVendusDataSource" matSort #jeuxSort="matSort" (matSortChange)="announceSortChange($event)"
         class="mat-elevation-z8">
-        <ng-container matColumnDef="nomJeu">
+        <ng-container matColumnDef="jeuNom">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Nom </th>
-            <td mat-cell *matCellDef="let jeu"> {{ jeu.nomJeu }} </td>
+            <td mat-cell *matCellDef="let jeu"> {{ jeu.jeuNom }} </td>
         </ng-container>
-        <ng-container matColumnDef="editeurJeu">
+        <ng-container matColumnDef="editeurNom">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Editeur </th>
-            <td mat-cell *matCellDef="let jeu"> {{ jeu.editeurJeu }} </td>
+            <td mat-cell *matCellDef="let jeu"> {{ jeu.editeurNom }} </td>
         </ng-container>
-        <ng-container matColumnDef="quantiteJeu">
+        <ng-container matColumnDef="quantiteVendus">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Quantité </th>
-            <td mat-cell *matCellDef="let jeu"> {{ jeu.quantite }} </td>
+            <td mat-cell *matCellDef="let jeu"> {{ jeu.quantiteVendus | number }} </td>
         </ng-container>
         <ng-container matColumnDef="prixJeu">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Prix </th>
-            <td mat-cell *matCellDef="let jeu"> {{ jeu.prixJeu }} </td>
+            <td mat-cell *matCellDef="let jeu"> {{ jeu.prixJeu | currency:'EUR' }} </td>
         </ng-container>
-        <tr mat-header-row *matHeaderRowDef="['nomJeu', 'editeurJeu', 'quantiteJeu', 'prixJeu']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['nomJeu', 'editeurJeu', 'quantiteJeu', 'prixJeu']"></tr>
+        <tr mat-header-row *matHeaderRowDef="['jeuNom', 'editeurNom', 'quantiteVendus', 'prixJeu']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['jeuNom', 'editeurNom', 'quantiteVendus', 'prixJeu']"></tr>
     </table>
     <mat-paginator #jeuxPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of jeux">
     </mat-paginator>
 }
-<button mat-raised-button (click)="goBack()" color="warn">Retour</button>
 </div>

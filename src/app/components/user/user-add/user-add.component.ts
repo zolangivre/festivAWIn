@@ -53,8 +53,17 @@ export class UserAddComponent {
       nom: ['', [Validators.required, Validators.minLength(2)]],
       prenom: ['', [Validators.required, Validators.minLength(2)]],
       mail: ['', [Validators.required, Validators.email]],
-      telephone: ['', [Validators.pattern('^[0-9]*$')]],
+      telephone: [
+        '',
+        [Validators.pattern('^[0-9]*$'), Validators.minLength(10)],
+      ],
       adresse: ['', [Validators.pattern, Validators.minLength(2)]],
+      ville: ['', [Validators.pattern, Validators.minLength(2)]],
+      codePostal: [
+        '',
+        [Validators.pattern('^[0-9]*$'), Validators.minLength(5)],
+      ],
+      pays: ['', [Validators.pattern, Validators.minLength(2)]],
       role: ['', [Validators.required, Validators.minLength(2)]],
     });
   }
@@ -64,7 +73,6 @@ export class UserAddComponent {
       .addUser(this.userForm.value)
       .subscribe((response : any) => {
         const user = response.user;
-         console.log('Utilisateur créé :', user.role);
         if (user.role === 'Vendeur') {
           this.bilanService.createBilan(user._id).subscribe(() => {
             this.snackBar.open(
@@ -84,9 +92,5 @@ export class UserAddComponent {
         }
         this.userForm.reset();
       });
-  }
-
-  goBack(): void {
-    window.history.back();
   }
 }

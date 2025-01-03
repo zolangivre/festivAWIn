@@ -3,7 +3,6 @@ import {
   inject,
   AfterViewInit,
   ViewChild,
-  LOCALE_ID,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -24,12 +23,9 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr'; // Importer la locale française
 import { JeuDepot } from '../../../models/item';
+import { VenteJeu } from '../../../models/vente-jeu';
 
-registerLocaleData(localeFr, 'fr');
 
 @Component({
     selector: 'app-user-achat-list',
@@ -44,16 +40,15 @@ registerLocaleData(localeFr, 'fr');
     ],
     templateUrl: './user-achat-list.component.html',
     styleUrl: './user-achat-list.component.css',
-    providers: [{ provide: LOCALE_ID, useValue: 'fr' }]
 })
 export class UserAchatListComponent implements AfterViewInit {
   private _liveAnnouncer = inject(LiveAnnouncer);
   utilisateur!: Utilisateur;
   achats: Vente[] = [];
-  jeuxAcheter: (JeuDepot & { quantite: number })[] = [];
+  jeuxAcheter: VenteJeu[] = [];
   dataSource: MatTableDataSource<Vente> = new MatTableDataSource<Vente>([]);
-  jeuxAcheterDataSource: MatTableDataSource<JeuDepot & { quantite: number }> =
-    new MatTableDataSource<JeuDepot & { quantite: number }>([]);
+  jeuxAcheterDataSource: MatTableDataSource<VenteJeu> =
+    new MatTableDataSource<VenteJeu>([]);
   selectedRow: Vente | null = null;
   displayedColumns: string[] = ['vendeurNom', 'dateVente', 'montantTotal'];
 
@@ -115,10 +110,6 @@ export class UserAchatListComponent implements AfterViewInit {
     }
   }
 
-  goBack() {
-    window.history.back();
-  }
-
   showJeuxAcheter(vente: Vente): void {
     this.selectedRow = vente;
     this.venteJeuService.getJeuxByVenteId(vente._id).subscribe((achatJeux) => {
@@ -128,8 +119,13 @@ export class UserAchatListComponent implements AfterViewInit {
           .getJeuDepot(achatJeu.idJeuDepot)
           .subscribe((jeuDepot) => {
             this.jeuxAcheter.push({
-              ...jeuDepot,
-              quantite: achatJeu.quantiteVendus,
+              _id: achatJeu._id,
+              idJeuDepot: achatJeu.idJeuDepot,
+              idVente: achatJeu.idVente,
+              jeuNom: jeuDepot.nomJeu,
+              editeurNom: jeuDepot.editeurJeu,
+              prixJeu: jeuDepot.prixJeu,
+              quantiteVendus: achatJeu.quantiteVendus,
             });
             this.jeuxAcheterDataSource = new MatTableDataSource(
               this.jeuxAcheter

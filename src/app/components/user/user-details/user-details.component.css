@@ -31,3 +31,25 @@ button {
 button:last-child {
   margin-right: 0;
 }
+
+.bilan-acheteur, .bilan-vendeur {
+  margin-top: 20px;
+}
+
+.edit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+}
+
+.edit button {
+  margin-right: auto;
+}
+
+.edit h2 {
+  margin-right: 320px;
+  text-align: center;
+}

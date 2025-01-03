@@ -1,14 +1,15 @@
 import {
   Component,
-  Input,
   inject,
   AfterViewInit,
   ViewChild,
-  LOCALE_ID,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Vente } from '../../../models/vente';
+import { JeuDepot } from '../../../models/item';
+import { VenteJeu } from '../../../models/vente-jeu';
+
 import { VenteService } from '../../../services/vente.service';
 import { UsersService } from '../../../services/users.service';
 import { VenteJeuService } from '../../../services/vente-jeu.service';
@@ -23,12 +24,6 @@ import { MatInputModule } from '@angular/material/input';
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr'; // Importer la locale française
-import { JeuDepot } from '../../../models/item';
-
-registerLocaleData(localeFr, 'fr');
-
 @Component({
     selector: 'app-vente-list',
     imports: [
@@ -42,15 +37,14 @@ registerLocaleData(localeFr, 'fr');
     ],
     templateUrl: './vente-list.component.html',
     styleUrl: './vente-list.component.css',
-    providers: [{ provide: LOCALE_ID, useValue: 'fr' }]
 })
 export class VenteListComponent implements AfterViewInit {
   private _liveAnnouncer = inject(LiveAnnouncer);
   ventes: Vente[] = [];
-  jeuxVendus: (JeuDepot & { quantite: number })[] = [];
+  jeuxVendus: VenteJeu[] = [];
   dataSource: MatTableDataSource<Vente> = new MatTableDataSource<Vente>([]);
-  jeuxVendusDataSource: MatTableDataSource<JeuDepot & { quantite: number }> =
-    new MatTableDataSource<JeuDepot & { quantite: number }>([]);
+  jeuxVendusDataSource: MatTableDataSource<VenteJeu> =
+    new MatTableDataSource<VenteJeu>([]);
   selectedRow: Vente | null = null;
 
   displayedColumns: string[] = [
@@ -93,6 +87,8 @@ export class VenteListComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.sort = this.ventesSort;
     this.dataSource.paginator = this.ventesPaginator;
+    this.jeuxVendusDataSource.sort = this.jeuxSort;
+    this.jeuxVendusDataSource.paginator = this.jeuxPaginator;
   }
 
   announceSortChange(sortState: Sort) {
@@ -107,10 +103,6 @@ export class VenteListComponent implements AfterViewInit {
     }
   }
 
-  goBack() {
-    window.history.back();
-  }
-
   showJeux(vente: Vente): void {
     this.selectedRow = vente;
     this.venteJeuService.getJeuxByVenteId(vente._id).subscribe((venteJeux) => {
@@ -120,8 +112,13 @@ export class VenteListComponent implements AfterViewInit {
           .getJeuDepot(venteJeu.idJeuDepot)
           .subscribe((jeuDepot) => {
             this.jeuxVendus.push({
-              ...jeuDepot,
-              quantite: venteJeu.quantiteVendus,
+              _id: venteJeu._id,
+              idJeuDepot: venteJeu.idJeuDepot,
+              idVente: venteJeu.idVente,
+              jeuNom: jeuDepot.nomJeu,
+              editeurNom: jeuDepot.editeurJeu,
+              prixJeu: jeuDepot.prixJeu,
+              quantiteVendus: venteJeu.quantiteVendus,
             });
             this.jeuxVendusDataSource = new MatTableDataSource(this.jeuxVendus);
             this.jeuxVendusDataSource.sort = this.jeuxSort;

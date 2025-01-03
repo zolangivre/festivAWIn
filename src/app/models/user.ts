@@ -5,6 +5,9 @@ interface TUtilisateur {
   mail: string;
   telephone: string;
   adresse: string;
+  ville: string;
+  codePostal: string;
+  pays: string;
   role: string;
 }
 
@@ -15,6 +18,9 @@ export class Utilisateur implements TUtilisateur {
   public mail: string;
   public telephone: string;
   public adresse: string;
+  public ville: string;
+  public codePostal: string;
+  public pays: string;
   public role: string;
 
   constructor(
@@ -23,6 +29,9 @@ export class Utilisateur implements TUtilisateur {
     mail: string,
     telephone: string = '',
     adresse: string = '',
+    ville: string = '',
+    codePostal: string = '',
+    pays: string = '',
     role: string,
     _id: string
   ) {
@@ -30,6 +39,9 @@ export class Utilisateur implements TUtilisateur {
     this.prenom = prenom;
     this.telephone = telephone;
     this.adresse = adresse;
+    this.ville = ville;
+    this.codePostal = codePostal;
+    this.pays = pays;
     this._id = _id;
     this.role = role;
     if (mail && !this.validateEmail(mail)) {

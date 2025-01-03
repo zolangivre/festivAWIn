@@ -16,6 +16,10 @@ export class SessionService {
     return this.http.get<Session>(this.apiUrl + '/nextsession');
   }
 
+  getSessionById(idSession: string): Observable<Session> {
+    return this.http.get<Session>(`${this.apiUrl}/${idSession}`);
+  }
+
   isSessionActive(): Observable<boolean> {
     return this.http
       .get<{ isActive: boolean }>(this.apiUrl + '/activesession')

@@ -1,5 +1,6 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ChangeDetectorRef, AfterViewInit, ViewChild, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import {
   FormGroup,
   FormBuilder,
@@ -24,29 +25,39 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatSortModule, Sort, MatSort } from '@angular/material/sort';
+
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
-    selector: 'app-user-depot',
-    imports: [
-        MatFormFieldModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatIconModule,
-        MatDividerModule,
-        MatButtonModule,
-        MatTableModule,
-        MatDialogModule,
-        MatSnackBarModule,
-    ],
-    templateUrl: './user-depot.component.html',
-    styleUrl: './user-depot.component.css'
+  selector: 'app-user-depot',
+  imports: [
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatIconModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatTableModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    CommonModule,
+    MatPaginatorModule,
+    MatSortModule,
+  ],
+  templateUrl: './user-depot.component.html',
+  styleUrl: './user-depot.component.css',
 })
-export class UserDepotComponent {
+export class UserDepotComponent implements AfterViewInit {
+  private _liveAnnouncer = inject(LiveAnnouncer);
   jeuDepotForm: FormGroup;
+  depotListDataSource: MatTableDataSource<JeuDepot> =
+    new MatTableDataSource<JeuDepot>([]);
   depotList: JeuDepot[] = [];
   jeux = this.depotList;
   utilisateur!: Utilisateur;
@@ -55,7 +66,7 @@ export class UserDepotComponent {
     'nomJeu',
     'editeurJeu',
     'prixJeu',
-    'quantiteJeu',
+    'quantiteJeuDisponible',
     'fraisDepot',
     'remiseDepot',
   ];
@@ -74,17 +85,25 @@ export class UserDepotComponent {
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private router: Router
+    private snackBar: MatSnackBar
   ) {
     this.jeuDepotForm = this.fb.group({
       nomJeu: ['', [Validators.required, Validators.minLength(2)]],
       editeurJeu: ['', [Validators.required, Validators.minLength(2)]],
-      prixJeu: ['', [Validators.required, Validators.pattern('^-?\\d*(\\.\\d+)?$')]],
-      quantiteJeu: ['', [Validators.required, Validators.min(1)]],
-      remiseDepot: ['', [Validators.required, Validators.min(0), Validators.max(100)]]
+      prixJeu: [
+      '',
+      [Validators.required, Validators.pattern('^-?\\d*(\\.\\d+)?$')],
+      ],
+      quantiteJeuDisponible: ['', [Validators.required, Validators.min(1), Validators.pattern('^-?\\d+$')]],
+      remiseDepot: [
+      '',
+      [Validators.required, Validators.min(0), Validators.max(100), Validators.pattern('^-?\\d*(\\.\\d+)?$')],
+      ],
     });
   }
+
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
     // Récupérer l'utilisateur correspondant à partir de l'ID dans l'URL
@@ -92,7 +111,6 @@ export class UserDepotComponent {
     if (userId) {
       this.usersService.getUser(userId).subscribe((user) => {
         this.utilisateur = user;
-        console.log(user);
       });
     } else {
       console.error('User ID is null');
@@ -103,11 +121,31 @@ export class UserDepotComponent {
     });
   }
 
+  ngAfterViewInit() {
+    this.depotListDataSource.sort = this.sort;
+    this.depotListDataSource.paginator = this.paginator;
+  }
+
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
   addJeu(): void {
     if (this.jeuDepotForm.valid) {
       this.frais_apres_remise = 0;
       this.frais_jeu_totale = 0;
       this.depotList.push(this.jeuDepotForm.value);
+      this.depotListDataSource.data = this.depotList;
+      this.depotListDataSource.sort = this.sort;
+      this.depotListDataSource.paginator = this.paginator;
       this.depotList[this.depotList.length - 1].fraisDepot = parseFloat(
         (
           this.depotList[this.depotList.length - 1].prixJeu *
@@ -118,12 +156,12 @@ export class UserDepotComponent {
       //frais_jeu_totale est le frais totale sur un jeu cest a dire frais de depot * quantite de jeu car frais_depot est le frais unitaire du jeu
       this.frais_jeu_totale =
         this.depotList[this.depotList.length - 1].fraisDepot *
-        this.depotList[this.depotList.length - 1].quantiteJeu;
+        this.depotList[this.depotList.length - 1].quantiteJeuDisponible;
       //frais_apres_remise est le frais de depot totale du jeu apres remise
       this.frais_apres_remise =
         this.frais_jeu_totale -
         this.frais_jeu_totale *
-        (this.depotList[this.depotList.length - 1].remiseDepot / 100);
+          (this.depotList[this.depotList.length - 1].remiseDepot / 100);
       this.tabFraisDepot.push(this.frais_apres_remise);
       this.depot_vide = false;
       this.jeuDepotForm.reset();
@@ -133,6 +171,7 @@ export class UserDepotComponent {
 
   deleteJeu(): void {
     this.depotList.pop();
+    this.depotListDataSource.data = this.depotList;
     this.tabFraisDepot.pop();
     if (this.depotList.length === 0) {
       this.depot_vide = true;
@@ -143,7 +182,9 @@ export class UserDepotComponent {
 
   makeDeposit(): void {
     for (let i = 0; i < this.tabFraisDepot.length; i++) {
-      this.somme_frais_depot = parseFloat((this.somme_frais_depot + this.tabFraisDepot[i]).toFixed(3));
+      this.somme_frais_depot = parseFloat(
+        (this.somme_frais_depot + this.tabFraisDepot[i]).toFixed(3)
+      );
     }
     const dialogRef = this.dialog.open(DepotComponent, {
       data: { sommeFraisDepot: this.somme_frais_depot },
@@ -153,11 +194,11 @@ export class UserDepotComponent {
         for (let i = 0; i < this.depotList.length; i++) {
           this.depotList[i].vendeur = this.utilisateur._id;
           this.depotList[i].statutJeu = 'Disponible';
+          this.depotList[i].quantiteJeuVendu = 0;
           this.itemService.addItem(this.depotList[i]).subscribe();
         }
         this.bilanService.getBilanById(this.utilisateur._id).subscribe({
           next: (bilan) => {
-            console.log('Bilan récupéré :', bilan);
             this.bilanService
               .updateBilan(bilan._id, {
                 ...bilan,
@@ -167,19 +208,22 @@ export class UserDepotComponent {
               .subscribe({
                 next: () => console.log('Bilan mis à jour avec succès'),
                 error: (err) =>
-                  console.error('Erreur lors de la mise à jour du bilan :', err),
+                  console.error(
+                    'Erreur lors de la mise à jour du bilan :',
+                    err
+                  ),
               });
           },
           error: (err) =>
             console.error('Erreur lors de la récupération du bilan :', err),
         });
         this.depotList = [];
+        this.depotListDataSource.data = this.depotList;
         this.jeux = [];
         this.snackBar.open('Dépôt effectué avec succès', 'Fermer', {
           duration: 3000,
         });
         this.depot_vide = true;
-        this.router.navigate(['utilisateur/jeu', this.utilisateur._id]);
       } else {
         this.snackBar.open('Dépôt annulé', 'Fermer', {
           duration: 3000,
@@ -187,9 +231,5 @@ export class UserDepotComponent {
         this.somme_frais_depot = 0;
       }
     });
-  }
-
-  goBack(): void {
-    window.history.back();
   }
 }

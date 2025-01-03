@@ -3,28 +3,22 @@
     flex-direction: row;
     justify-content: space-between;
     height: 85vh;
-    max-width: 1200px;
+    max-width: 1350px;
     margin: 0 auto;
+    height: auto;
 }
 
-.selected-games {
+.selected-games,
+.available-games {
     flex: 1;
     display: flex;
     flex-direction: column;
     padding: 20px;
     background-color: beige;
     border-radius: 50px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-left: 10px;
-}
-
-.available-games {
-    flex: 1.1;
-    padding: 20px;
-    border-radius: 50px;
-    background-color: beige;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-right: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    margin: 0 20px;
+    min-height: 150px;
 }
 
 mat-form-field {
@@ -45,10 +39,6 @@ h2 {
 
 button {
     margin-right: 10px;
-}
-
-.quantity-selector {
-    margin-top: 20px;
 }
 
 .total p {

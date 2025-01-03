@@ -1,36 +1,49 @@
 <div class="edit">
-    <h2>Modifier l'utilisateur {{utilisateur.nom}} {{utilisateur.prenom}}</h2>
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-        <div>
-            <mat-form-field for="nom">
-                <mat-label>Nom :</mat-label>
-                <input matInput id="nom" formControlName="nom" />
-            </mat-form-field>
-            <mat-form-field for="prenom">
-                <mat-label>Prénom :</mat-label>
-                <input matInput id="prenom" formControlName="prenom" />
-            </mat-form-field>
-            <mat-form-field for="mail">
-                <mat-label>Mail :</mat-label>
+            <div class="form-row">
+                <mat-form-field for="nom" appearance="outline" class="form-field">
+                    <mat-label>Nom</mat-label>
+                    <input matInput id="nom" formControlName="nom" />
+                </mat-form-field>
+                <mat-form-field for="prenom" appearance="outline" class="form-field">
+                    <mat-label>Prénom</mat-label>
+                    <input matInput id="prenom" formControlName="prenom" />
+                </mat-form-field>
+            </div>
+            <mat-form-field for="mail" appearance="outline">
+                <mat-label>Mail</mat-label>
                 <input matInput id="mail" formControlName="mail" />
             </mat-form-field>
-            <mat-form-field for="telephone">
-                <mat-label>Téléhone : </mat-label>
+            <mat-form-field for="telephone" appearance="outline">
+                <mat-label>Téléphone</mat-label>
                 <input matInput id="telephone" formControlName="telephone" />
             </mat-form-field>
-            <mat-form-field for="adresse">
-                <mat-label>Adresse : </mat-label>
+            <mat-form-field for="adresse" appearance="outline">
+                <mat-label>Adresse</mat-label>
                 <input matInput id="adresse" formControlName="adresse" />
             </mat-form-field>
-            <mat-form-field for="role">
-                <mat-label>Rôle :</mat-label>
+            <div class="form-row">
+                <mat-form-field for="ville" appearance="outline" class="form-field">
+                    <mat-label>Ville</mat-label>
+                    <input matInput id="ville" formControlName="ville" />
+                </mat-form-field>
+                <mat-form-field for="codePostal" appearance="outline" class="form-field">
+                    <mat-label>Code Postal</mat-label>
+                    <input matInput id="codePostal" formControlName="codePostal" />
+                </mat-form-field>
+                <mat-form-field for="pays" appearance="outline" class="form-field">
+                    <mat-label>Pays</mat-label>
+                    <input matInput id="pays" formControlName="pays" />
+                </mat-form-field>
+            </div>
+            <mat-form-field for="role" appearance="outline">
+                <mat-label>Rôle</mat-label>
                 <mat-select id="role" formControlName="role" [value]="roles">
                     @for (role of roles; track role) {
                     <mat-option [value]="role"> {{ role }} </mat-option>
                     }
                 </mat-select>
             </mat-form-field>
-        </div>
         <div class="button">
             <button mat-raised-button type="submit" [disabled]="userForm.invalid">Confirmer les changements</button>
         </div>

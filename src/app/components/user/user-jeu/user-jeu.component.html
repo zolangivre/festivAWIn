@@ -1,6 +1,8 @@
+@if (utilisateur) {
 <div class="container">
     <h1>Liste des jeux de {{utilisateur.nom}} {{utilisateur.prenom}}</h1>
-    <mat-form-field>
+    <!-- <button mat-raised-button color="primary" (click)="goBack()">retour</button> -->
+    <mat-form-field appearance="outline">
         <mat-label>Rechercher</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Monopoly" #input>
     </mat-form-field>
@@ -16,11 +18,15 @@
         </ng-container>
         <ng-container matColumnDef="prixJeu">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Prix </th>
-            <td mat-cell *matCellDef="let jeu"> {{ jeu.prixJeu }} </td>
+            <td mat-cell *matCellDef="let jeu"> {{ jeu.prixJeu | currency:'EUR' }} </td>
         </ng-container>
-        <ng-container matColumnDef="quantiteJeu">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Quantité </th>
-            <td mat-cell *matCellDef="let jeu"> {{ jeu.quantiteJeu }} </td>
+        <ng-container matColumnDef="quantiteJeuDisponible">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Quantité disponible </th>
+            <td mat-cell *matCellDef="let jeu"> {{ jeu.quantiteJeuDisponible | number }} </td>
+        </ng-container>
+        <ng-container matColumnDef="quantiteJeuVendu">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Quantité vendue </th>
+            <td mat-cell *matCellDef="let jeu"> {{ jeu.quantiteJeuVendu | number }} </td>
         </ng-container>
         <ng-container matColumnDef="statutJeu">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Statut </th>
@@ -33,18 +39,29 @@
         <ng-container matColumnDef="fraisDepot">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Frais de dépôt
             </th>
-            <td mat-cell *matCellDef="let jeu"> {{ jeu.fraisDepot }} </td>
+            <td mat-cell *matCellDef="let jeu"> {{ jeu.fraisDepot | currency:'EUR' }} </td>
         </ng-container>
         <ng-container matColumnDef="remiseDepot">
             <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Remise dépôt
             </th>
-            <td mat-cell *matCellDef="let jeu"> {{ jeu.remiseDepot }} </td>
+            <td mat-cell *matCellDef="let jeu"> {{ jeu.remiseDepot | number }} % </td>
         </ng-container>
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let jeu">
-                <button mat-button (click)="editJeu(jeu)">Modifier</button>
-                <button mat-button (click)="deleteJeu(jeu)"color="warn">Supprimer</button>
+                <button mat-icon-button (click)="editJeu(jeu)" matTooltip="Modifier">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                @if (jeu.statutJeu != "Supprimé") {
+                <button mat-icon-button color="warn" (click)="deleteJeu(jeu)" matTooltip="Supprimer">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                }
+                @if (jeu.statutJeu == "Supprimé") {
+                <button mat-icon-button color="warn" (click)="restoreJeu(jeu)" matTooltip="Restaurer">
+                    <mat-icon>add</mat-icon>
+                </button>
+                }
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -52,5 +69,5 @@
     </table>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of jeux">
     </mat-paginator>
-    <button mat-raised-button (click)="goBack()" color="warn">Retour</button>
 </div>
+}

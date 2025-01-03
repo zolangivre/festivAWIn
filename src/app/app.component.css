@@ -1,14 +1,18 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   text-align: center;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .message {
-  font-size: 2em;
-  font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+button {
+  margin: 0 10px;
 }

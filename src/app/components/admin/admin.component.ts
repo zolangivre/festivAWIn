@@ -15,10 +15,6 @@ export class AdminComponent {
   constructor(private router: Router, private authService: AuthService) {
   }
 
-  goBack(): void {
-    this.router.navigate(['/']);
-  }
-
   goToSession(): void {
     this.router.navigate(['/session']);
   }

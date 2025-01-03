@@ -3,7 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   height: 85vh;
-  max-width: 1200px;
+  max-width: 1350px;
   margin: 0 auto;
 }
 
@@ -11,8 +11,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   position: relative;
   padding: 10px;
+  height: 60px;
 }
 
 .haut h1 {
@@ -23,21 +25,17 @@
   transform: translate(-50%, -50%);
 }
 
-.addbutton {
-  align-self: flex-start;
-  margin-left: 100px;
-  margin-top: 5px;
-}
-
 .list-container {
   flex: 0.5;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background-color:beige;
+  background-color: beige;
   border-radius: 50px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-right: 10px;
+  justify-content: center;
+  perspective: 1000px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .list {
@@ -46,12 +44,13 @@
 }
 
 .details {
-  flex: 1;
+  flex: 2;
   padding: 20px;
   border-radius: 50px;
   background-color: beige;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   margin-left: 10px;
+  justify-content: center;
 }
 
 .bilan {
@@ -59,28 +58,46 @@
 }
 
 h2 {
-    display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-}
-
-button {
   display: flex;
-  justify-content: center;
-  margin: 5px;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
 
 .filter {
   display: flex;
-  justify-content: center;
-  margin: 20px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.search {
-  text-align: center;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  padding: 10px 0;
+.filter-button,
+.add-button {
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.filter-button:hover,
+.add-button:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
+
+.mat-icon {
+  font-size: 24px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+}
+
+.menu-item mat-icon {
+  margin-right: 10px;
+}
+
+.mat-menu-panel {
+  padding: 5px 0;
 }

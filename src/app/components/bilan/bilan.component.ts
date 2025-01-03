@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { BilanService } from '../../services/bilan.service';
 import { Utilisateur } from '../../models/user';
 import { Bilan } from '../../models/bilan';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-bilan',
     imports: [
-        CommonModule,
+      CommonModule,
+      NgClass,
     ],
     templateUrl: './bilan.component.html',
     styleUrl: './bilan.component.css'
@@ -15,12 +17,12 @@ import { Bilan } from '../../models/bilan';
 export class BilanComponent implements OnChanges {
   @Input() utilisateur!: Utilisateur;
   bilan: Bilan = new Bilan('', 0, 0, 0, 0, '');
+  montantFinal : number = 0;
   constructor(
     private bilanService: BilanService
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (changes['utilisateur'] && this.utilisateur) {
       this.updateBilan();
     }
@@ -29,6 +31,7 @@ export class BilanComponent implements OnChanges {
   updateBilan(): void {
     this.bilanService.getBilanById(this.utilisateur._id).subscribe((bilan) => {
       this.bilan = bilan;
+      this.montantFinal = this.bilan.gains - this.bilan.sommeDues;
     });
   }
 }

@@ -1,45 +1,58 @@
 <div class="haut">
   <h1>Liste des utilisateurs</h1>
-  <div class="addbutton">
-    <button mat-raised-button (click)="navigateToAdd()">Ajouter un utilisateur</button>
-  </div>
 </div>
 <div class="container">
   <div class="list-container">
     <div class="filter-container">
       <div class="search">
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Rechercher</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Jean" #input>
         </mat-form-field>
       </div>
       <div class="filter">
-        <button mat-raised-button (click)="filterUsers('all')">Tous</button>
-        <button mat-raised-button (click)="filterUsers('acheteurs')">Acheteurs</button>
-        <button mat-raised-button (click)="filterUsers('vendeurs')">Vendeurs</button>
+        <button mat-icon-button [matMenuTriggerFor]="filterMenu" matTooltip="Appliquer un filtre" class="filter-button">
+          <mat-icon>filter_alt</mat-icon>
+        </button>
+
+        <mat-menu #filterMenu="matMenu">
+          <button mat-menu-item (click)="filterUsers('all')" class="menu-item">
+            <mat-icon>group</mat-icon>
+            <span>Afficher tous</span>
+          </button>
+          <button mat-menu-item (click)="filterUsers('acheteurs')" class="menu-item">
+            <mat-icon>person</mat-icon>
+            <span>Acheteurs</span>
+          </button>
+          <button mat-menu-item (click)="filterUsers('vendeurs')" class="menu-item">
+            <mat-icon>store</mat-icon>
+            <span>Vendeurs</span>
+          </button>
+        </mat-menu>
+
+        <button mat-icon-button (click)="navigateToAdd()" matTooltip="Ajouter un utilisateur" class="add-button">
+          <mat-icon>person_add</mat-icon>
+        </button>
       </div>
     </div>
     <div class="list">
-      @for (utilisateur of utilisateurs; track trackByFn) {
-      <mat-list role="list" class="scrollable-list">
-        <mat-list-item role="listitem">
-          <button mat-button (click)="showDetails(utilisateur)">
-            <h3 mat-line>{{utilisateur.nom}} {{utilisateur.prenom}}</h3>
-          </button>
-        </mat-list-item>
-      </mat-list>
+      @for (utilisateur of utilisateurs; track utilisateur._id) {
+        <div class="scrollable-container">
+          <mat-list role="list" class="scrollable-list">
+            <mat-list-item role="listitem">
+              <button mat-button (click)="showDetails(utilisateur)">
+                <h3>{{utilisateur.nom}} {{utilisateur.prenom}}</h3>
+              </button>
+            </mat-list-item>
+          </mat-list>
+        </div>
       }
     </div>
   </div>
   <div class="details">
     @if (selectedUser) {
-      <h2>Détails de l'utilisateur {{selectedUser.nom}} {{selectedUser.prenom}}</h2>
-      <app-user-details [utilisateur]="selectedUser" (userDeleted)="onUserDeleted()" (userUpdated)="onUserUpdated()"></app-user-details>
+    <app-user-details [utilisateur]="selectedUser" (userDeleted)="onUserDeleted()"
+      (userUpdated)="onUserUpdated()"></app-user-details>
     }
-  <div class="bilan">
-        @if (selectedUser && selectedUser.role === 'Vendeur') {
-        <app-bilan [utilisateur]="selectedUser"></app-bilan>
-        }
-  </div>
   </div>
 </div>

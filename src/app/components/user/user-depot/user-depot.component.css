@@ -3,8 +3,9 @@
   flex-direction: row;
   justify-content: space-between;
   height: 85vh;
-  max-width: 1200px;
+  max-width: 1350px;
   margin: 0 auto;
+  height: auto;
 }
 
 .depot {
@@ -14,16 +15,16 @@
   padding: 20px;
   background-color: beige;
   border-radius: 50px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   margin-left: 10px;
 }
 
 .depot-list {
-  flex: 1.1;
+  flex: 1.9;
   padding: 20px;
   border-radius: 50px;
   background-color: beige;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   margin-right: 10px;
 }
 

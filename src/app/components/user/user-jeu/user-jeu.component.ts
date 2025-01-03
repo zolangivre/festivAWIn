@@ -1,20 +1,20 @@
 import {
   Component,
-  Input,
   inject,
   AfterViewInit,
   ViewChild,
-  LOCALE_ID,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Utilisateur } from '../../../models/user';
 import { ItemService } from '../../../services/item.service';
 import { UsersService } from '../../../services/users.service';
 import { JeuDepot } from '../../../models/item';
+
 import { ItemEditComponent } from '../../dialogue/item-edit/item-edit.component';
 import { DeleteComponent } from '../../dialogue/delete/delete.component';
+import { RestoreComponent } from '../../dialogue/restore/restore.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,30 +24,28 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr'; // Importer la locale française
-
-registerLocaleData(localeFr, 'fr');
-
 @Component({
-    selector: 'app-user-jeu',
-    imports: [
-        CommonModule,
-        MatFormFieldModule,
-        MatButtonModule,
-        MatTableModule,
-        MatSortModule,
-        MatPaginatorModule,
-        MatInputModule,
-        MatDialogModule,
-        MatSnackBarModule,
-    ],
-    templateUrl: './user-jeu.component.html',
-    styleUrl: './user-jeu.component.css',
-    providers: [{ provide: LOCALE_ID, useValue: 'fr' }]
+  selector: 'app-user-jeu',
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatInputModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatIconModule,
+    MatTooltipModule,
+  ],
+  templateUrl: './user-jeu.component.html',
+  styleUrl: './user-jeu.component.css',
 })
 export class UserJeuComponent implements AfterViewInit {
   private _liveAnnouncer = inject(LiveAnnouncer);
@@ -60,7 +58,8 @@ export class UserJeuComponent implements AfterViewInit {
     'nomJeu',
     'editeurJeu',
     'prixJeu',
-    'quantiteJeu',
+    'quantiteJeuDisponible',
+    'quantiteJeuVendu',
     'statutJeu',
     'dateDepot',
     'fraisDepot',
@@ -76,7 +75,8 @@ export class UserJeuComponent implements AfterViewInit {
     private usersService: UsersService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -89,9 +89,11 @@ export class UserJeuComponent implements AfterViewInit {
           .subscribe((data) => {
             this.jeux = data.map((jeu) => ({
               ...jeu,
-              dateDepot: new Date(jeu.dateDepot), // Convertir dateDepot en objet Date
+              dateDepot: new Date(jeu.dateDepot),
             }));
             this.dataSource.data = this.jeux;
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
           });
       });
     } else {
@@ -123,24 +125,41 @@ export class UserJeuComponent implements AfterViewInit {
 
   deleteJeu(jeu: JeuDepot) {
     const dialogRef = this.dialog.open(DeleteComponent, {
-      data: { type: "ce jeu"},
+      data: { type: 'ce jeu' },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (jeu._id != null) {
-          this.itemService.deleteJeuDepot(jeu._id).subscribe(() => {
-          this.jeux = this.jeux.filter((j) => j._id !== jeu._id);
-            this.dataSource.data = this.jeux;
-            this.snackBar.open(
-              'Jeu supprimé avec succès',
-              'Fermer',
-              {
-                duration: 3000,
-              }
-            );
+          jeu.statutJeu = 'Supprimé';
+          this.itemService.updateJeuDepot(jeu).subscribe(() => {
+            this.snackBar.open('Jeu supprimé avec succès', 'Fermer', {
+              duration: 3000,
+            });
           });
         } else {
-          console.error("Impossible de supprimer le jeu");
+          console.error('Impossible de supprimer le jeu');
+        }
+      }
+    });
+  }
+
+  restoreJeu(jeu: JeuDepot) {
+    const dialogRef = this.dialog.open(RestoreComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (jeu._id != null) {
+          if (jeu.quantiteJeuDisponible === 0) {
+            jeu.statutJeu = 'Vendu';
+          } else {
+            jeu.statutJeu = 'Disponible';
+          }
+          this.itemService.updateJeuDepot(jeu).subscribe(() => {
+            this.snackBar.open('Jeu restauré avec succès', 'Fermer', {
+              duration: 3000,
+            });
+          });
+        } else {
+          console.error('Impossible de restaurer le jeu');
         }
       }
     });
@@ -148,7 +167,6 @@ export class UserJeuComponent implements AfterViewInit {
 
   editJeu(jeu: JeuDepot) {
     const dialogRef = this.dialog.open(ItemEditComponent, {
-      width: '250px',
       data: { nomJeu: jeu.nomJeu, editeurJeu: jeu.editeurJeu },
     });
 
@@ -170,7 +188,9 @@ export class UserJeuComponent implements AfterViewInit {
     });
   }
 
-  goBack(): void {
-    window.history.back();
-  }
+  // goBack(): void {
+  //   this.router.navigate(['/utilisateur'], {
+  //     queryParams: { idUtilisateur: this.utilisateur._id },
+  //   });
+  // }
 }

@@ -65,6 +65,8 @@ export class SessionComponent implements AfterViewInit {
       (sessions) => {
         this.sessions = sessions;
         this.dataSource.data = this.sessions;
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
       },
       (error) => {
         console.error('Error loading sessions:', error);
@@ -87,10 +89,6 @@ export class SessionComponent implements AfterViewInit {
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
-  }
-
-  goBack(): void {
-    window.history.back();
   }
 
   deleteSession(session: Session) {
@@ -116,5 +114,9 @@ export class SessionComponent implements AfterViewInit {
         }
       }
     });
+  }
+
+  toggleBilanGeneral(session: Session) {
+    window.location.href = `/bilan/${session._id}`;
   }
 }

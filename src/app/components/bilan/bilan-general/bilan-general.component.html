@@ -1,0 +1,94 @@
+<div class="bilan-general">
+    <h1>Bilan Général</h1>
+    <p>Session du {{ session.dateDebut | date }} au {{ session.dateFin | date }}</p>
+    <div class="bilan-cards">
+        <mat-card class="bilan-card">
+            <mat-card-header>
+                <mat-card-title>Nombres de ventes</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ nbVentes | number }}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="bilan-card">
+            <mat-card-header>
+                <mat-card-title>Nombre de jeux vendus</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ nbJeuVendu | number }}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="bilan-card">
+            <mat-card-header>
+                <mat-card-title>Montant total des ventes</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ sommesDuesVendeurs | currency:'EUR' }}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="bilan-card">
+            <mat-card-header>
+                <mat-card-title>Commission Prélevée</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ commissionPrelevee | currency:'EUR' }}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="bilan-card">
+            <mat-card-header>
+                <mat-card-title>Nombre de dépôts</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ nbDepots | number }}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="bilan-card">
+            <mat-card-header>
+                <mat-card-title>Nombre de jeu déposé</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ nbJeuDepose | number }}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="bilan-card">
+            <mat-card-header>
+                <mat-card-title>Frais de dépôt remisés</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ fraisDepotRemises | currency:'EUR' }}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="bilan-card">
+            <mat-card-header>
+                <mat-card-title>Frais de dépôt encaissés</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ fraisDepotEncaisses | currency:'EUR' }}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="bilan-card">
+            <mat-card-header>
+                <mat-card-title>Montant total des jeux déposés</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ montantTotalJeuDepot | currency:'EUR' }}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="bilan-card">
+            <mat-card-header>
+                <mat-card-title>Nombre de jeux disponibles</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ nbJeuDisponible | number }}</p>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="bilan-card">
+            <mat-card-header>
+                <mat-card-title>Trésorerie Totale</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>{{ tresorerieTotale | currency:'EUR' }}</p>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

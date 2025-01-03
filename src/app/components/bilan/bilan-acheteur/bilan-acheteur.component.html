@@ -1,0 +1,21 @@
+<div class="bilan-container">
+    <h2>Bilan de {{utilisateur.nom}} {{utilisateur.prenom}}</h2>
+    <div class="bilan-row">
+        <div class="bilan-section">
+            <h2>Nombre d'achats</h2>
+            <p>{{ nbAchat | number }}</p>
+        </div>
+        <div class="bilan-section">
+            <h2>Quantité de jeux achetées</h2>
+            <p>{{ quantiteJeuAchete | number }}</p>
+        </div>
+    </div>
+    <div class="bilan-row">
+        <div class="bilan-section">
+            <h2>Somme dépensés</h2>
+            <p [ngClass]="{'positive-amount': sommesDepenses > 0}">
+                {{ sommesDepenses | currency: "EUR"}}
+            </p>
+        </div>
+    </div>
+</div>

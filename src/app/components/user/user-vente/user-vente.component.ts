@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit, ViewChild, inject } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -15,40 +16,51 @@ import { VenteService } from '../../../services/vente.service';
 import { BilanService } from '../../../services/bilan.service';
 import { SessionService } from '../../../services/session.service';
 
-import { UserVenteQteComponent } from '../user-vente-qte/user-vente-qte.component';
+import { SelectionQuantiteComponent } from '../../dialogue/selection-quantite/selection-quantite.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { VenteComponent } from '../../dialogue/vente/vente.component';
 
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+
 @Component({
-    selector: 'app-user-vente',
-    imports: [
-        MatTableModule,
-        UserVenteQteComponent,
-        CommonModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatDialogModule,
-        MatSnackBarModule,
-    ],
-    templateUrl: './user-vente.component.html',
-    styleUrl: './user-vente.component.css'
+  selector: 'app-user-vente',
+  imports: [
+    MatTableModule,
+    CommonModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatPaginatorModule,
+    MatSortModule,
+  ],
+  templateUrl: './user-vente.component.html',
+  styleUrl: './user-vente.component.css',
 })
-export class UserVenteComponent {
+export class UserVenteComponent implements AfterViewInit {
+  private _liveAnnouncer = inject(LiveAnnouncer);
   @Input() utilisateur!: Utilisateur;
   vendeurs: Utilisateur[] = [];
   availableGames: JeuDepot[] = [];
+  availableGamesDataSource = new MatTableDataSource<JeuDepot>();
   selectedGames = new MatTableDataSource<VenteJeu>();
   totalAmount: number = 0;
-  selectedGameForQuantity: JeuDepot | null = null;
   vendeurForm: FormGroup;
   sessionActive!: Session;
+
+  @ViewChild('availablesGamesSort') availablesGamesSort!: MatSort;
+  @ViewChild('availablesGamesPaginator') availablesGamesPaginator!: MatPaginator;
+  @ViewChild('selectedGamesSort') selectedGamesSort!: MatSort;
+  @ViewChild('selectedGamesPaginator') selectedGamesPaginator!: MatPaginator;
 
   constructor(
     private itemService: ItemService,
@@ -86,6 +98,13 @@ export class UserVenteComponent {
     });
   }
 
+  ngAfterViewInit() {
+    this.availableGamesDataSource.sort = this.availablesGamesSort;
+    this.availableGamesDataSource.paginator = this.availablesGamesPaginator;
+    this.selectedGames.sort = this.selectedGamesSort;
+    this.selectedGames.paginator = this.selectedGamesPaginator;
+  }
+
   onVendeurChange(vendeurId: string): void {
     this.fetchAvailableGames(vendeurId);
     this.selectedGames.data = [];
@@ -95,9 +114,27 @@ export class UserVenteComponent {
   fetchAvailableGames(vendeurId: string): void {
     this.itemService.getItemsByUser(vendeurId).subscribe((games) => {
       this.availableGames = games.filter(
-        (game) => game.quantiteJeu > 0 && game.statutJeu === 'Disponible'
+        (game) =>
+          game.quantiteJeuDisponible > 0 && game.statutJeu === 'Disponible'
       );
+      this.availableGamesDataSource = new MatTableDataSource<JeuDepot>(
+        this.availableGames
+      );
+      this.availableGamesDataSource.sort = this.availablesGamesSort;
+      this.availableGamesDataSource.paginator = this.availablesGamesPaginator;
     });
+  }
+
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 
   convertJeuDepotToVenteJeu(
@@ -127,15 +164,21 @@ export class UserVenteComponent {
         (game) => game._id === removedGame.idJeuDepot
       );
       if (jeuDepot) {
-        this.totalAmount -= jeuDepot.prixJeu * removedGame.quantiteVendus;
+        this.totalAmount = parseFloat(
+          (
+            this.totalAmount -
+            jeuDepot.prixJeu * removedGame.quantiteVendus
+          ).toFixed(2)
+        );
       }
       // Remet à jour la quantité dans availableGames
       const availableGame = this.availableGames.find(
         (game) => game._id === removedGame.idJeuDepot
       );
       if (availableGame) {
-        availableGame.quantiteJeu += removedGame.quantiteVendus;
+        availableGame.quantiteJeuDisponible += removedGame.quantiteVendus;
       }
+      this.availableGamesDataSource.data = [...this.availableGames];
     }
   }
 
@@ -170,9 +213,12 @@ export class UserVenteComponent {
               venteJeu.quantiteVendus
             )
         );
-        console.log('Session active :', this.sessionActive);
-        const commission = parseFloat((this.totalAmount * Number(this.sessionActive.commission) / 100).toFixed(2));
-        console.log('Commission :', commission);
+        const commission = parseFloat(
+          (
+            (this.totalAmount * Number(this.sessionActive.commission)) /
+            100
+          ).toFixed(2)
+        );
         this.venteService
           .createVente(
             acheteurId,
@@ -197,6 +243,24 @@ export class UserVenteComponent {
               };
 
               return this.bilanService.updateBilan(bilan._id, updatedBilan);
+            }),
+            switchMap(() => {
+              // Mettre à jour les quantités des jeux vendus
+              const updateObservables = this.selectedGames.data
+                .map((venteJeu) => {
+                  const jeuDepot = this.availableGames.find(
+                    (game) => game._id === venteJeu.idJeuDepot
+                  );
+                  console.log('vente jeu vendu', venteJeu.quantiteVendus);
+                  if (jeuDepot) {
+                    jeuDepot.quantiteJeuVendu += venteJeu.quantiteVendus;
+                    return this.itemService.updateJeuDepot(jeuDepot);
+                  }
+                  return null;
+                })
+                .filter((obs) => obs !== null);
+
+              return forkJoin(updateObservables);
             })
           )
           .subscribe({
@@ -218,57 +282,54 @@ export class UserVenteComponent {
     });
   }
 
-  // DEfini le jeu selectionné
-  defineQuantitySelector(game: JeuDepot): void {
-    this.selectedGameForQuantity = game;
-  }
-
-  handleQuantitySelection(event: { game: JeuDepot; quantity: number }): void {
-    const { game, quantity } = event;
-
-    const selectedGameIndex = this.selectedGames.data.findIndex(
-      (g) => g.idJeuDepot === game._id
-    );
-
-    if (selectedGameIndex > -1) {
-      // Jeu déjà présent : augmenter la quantité
-      this.selectedGames.data[selectedGameIndex].quantiteVendus += quantity;
-      console.log(
-        'Jeu déjà présent :',
-        this.selectedGames.data[selectedGameIndex]
-      );
-    } else {
-      // Ajouter le jeu avec la quantité
-      const venteJeu = this.convertJeuDepotToVenteJeu(game, quantity);
-      this.itemService.getJeuDepot(game._id).subscribe((jeuDepot) => {
-        venteJeu.jeuNom = jeuDepot.nomJeu;
-        venteJeu.editeurNom = jeuDepot.editeurJeu;
-        venteJeu.prixJeu = jeuDepot.prixJeu;
-      });
-      this.selectedGames.data = [...this.selectedGames.data, venteJeu];
-      console.log('Jeu ajouté aux jeux selectionnés:', {
-        ...game,
-        quantiteJeu: quantity,
-      });
-    }
-    this.availableGames = this.availableGames.map((availableGame) => {
-      if (availableGame._id === game._id) {
-        return {
-          ...availableGame,
-          quantiteJeu: availableGame.quantiteJeu - quantity,
-        };
-      }
-      return availableGame;
+  handleQuantitySelection(game: JeuDepot): void {
+    const dialogRef = this.dialog.open(SelectionQuantiteComponent, {
+      width: '400px',
+      data: { game },
     });
-    this.totalAmount += game.prixJeu * quantity;
-    this.selectedGameForQuantity = null;
-  }
 
-  cancelQuantitySelection(): void {
-    this.selectedGameForQuantity = null;
-  }
+    dialogRef
+      .afterClosed()
+      .subscribe((result: { game: JeuDepot; quantity: number } | undefined) => {
+        if (result) {
+          const { game, quantity } = result;
 
-  goBack(): void {
-    window.history.back();
+          const selectedGameIndex = this.selectedGames.data.findIndex(
+            (g) => g.idJeuDepot === game._id
+          );
+
+          if (selectedGameIndex > -1) {
+            // Jeu déjà présent : augmenter la quantité
+            this.selectedGames.data[selectedGameIndex].quantiteVendus +=
+              quantity;
+          } else {
+            // Ajouter le jeu avec la quantité
+            const venteJeu = this.convertJeuDepotToVenteJeu(game, quantity);
+            this.itemService.getJeuDepot(game._id).subscribe((jeuDepot) => {
+              venteJeu.jeuNom = jeuDepot.nomJeu;
+              venteJeu.editeurNom = jeuDepot.editeurJeu;
+              venteJeu.prixJeu = jeuDepot.prixJeu;
+            });
+            this.selectedGames.data = [...this.selectedGames.data, venteJeu];
+          }
+          this.availableGames = this.availableGames.map((availableGame) => {
+            if (availableGame._id === game._id) {
+              return {
+                ...availableGame,
+                quantiteJeuDisponible:
+                  availableGame.quantiteJeuDisponible - quantity,
+              };
+            }
+            return availableGame;
+          });
+          this.availableGamesDataSource.data = [...this.availableGames];
+
+          this.totalAmount = parseFloat(
+            (this.totalAmount + game.prixJeu * quantity).toFixed(2)
+          );
+          this.selectedGames.sort = this.selectedGamesSort;
+          this.selectedGames.paginator = this.selectedGamesPaginator;
+        }
+      });
   }
 }

@@ -2,12 +2,14 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-vente',
     imports: [
         MatDialogModule,
-        MatButtonModule,
+      MatButtonModule,
+      CommonModule
     ],
     templateUrl: './vente.component.html',
     styleUrl: './vente.component.css'

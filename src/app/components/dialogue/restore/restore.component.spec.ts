@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserVenteQteComponent } from './user-vente-qte.component';
+import { RestoreComponent } from './restore.component';
 
-describe('UserVenteQteComponent', () => {
-  let component: UserVenteQteComponent;
-  let fixture: ComponentFixture<UserVenteQteComponent>;
+describe('RestoreComponent', () => {
+  let component: RestoreComponent;
+  let fixture: ComponentFixture<RestoreComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserVenteQteComponent]
+      imports: [RestoreComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(UserVenteQteComponent);
+    fixture = TestBed.createComponent(RestoreComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

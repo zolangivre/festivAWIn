@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
 import {
   FormGroup,
   FormBuilder,
@@ -48,7 +47,6 @@ export class UserEditComponent implements OnInit {
 
   constructor(
     private usersService: UsersService,
-    private route: ActivatedRoute,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private dialog: MatDialog
@@ -57,8 +55,17 @@ export class UserEditComponent implements OnInit {
       nom: ['', [Validators.required, Validators.minLength(2)]],
       prenom: ['', [Validators.required, Validators.minLength(2)]],
       mail: ['', [Validators.required, Validators.email]],
-      telephone: ['', [Validators.pattern('^[0-9]*$')]],
+      telephone: [
+        '',
+        [Validators.pattern('^[0-9]*$'), Validators.minLength(10)],
+      ],
       adresse: ['', [Validators.pattern, Validators.minLength(2)]],
+      ville: ['', [Validators.pattern, Validators.minLength(2)]],
+      codePostal: [
+        '',
+        [Validators.pattern('^[0-9]*$'), Validators.minLength(5)],
+      ],
+      pays: ['', [Validators.pattern, Validators.minLength(2)]],
       role: ['', [Validators.required, Validators.minLength(2)]],
     });
   }

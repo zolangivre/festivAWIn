@@ -13,6 +13,8 @@ import { UsersService } from '../../../services/users.service';
 import { ItemService } from '../../../services/item.service';
 import { UserEditComponent } from '../user-edit/user-edit.component';
 import { DeleteComponent } from '../../dialogue/delete/delete.component';
+import { BilanComponent } from '../../bilan/bilan.component';
+import { BilanAcheteurComponent } from '../../bilan/bilan-acheteur/bilan-acheteur.component';
 
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -37,7 +39,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
         MatTableModule,
         UserEditComponent,
         MatDialogModule,
-        MatSnackBarModule,
+      MatSnackBarModule,
+      BilanComponent,
+      BilanAcheteurComponent,
     ],
     templateUrl: './user-details.component.html',
     styleUrl: './user-details.component.css'
@@ -52,6 +56,9 @@ export class UserDetailsComponent implements OnChanges {
     'mail',
     'telephone',
     'adresse',
+    'ville',
+    'codePostal',
+    'pays',
     'role',
   ];
   editMode: boolean = false;
@@ -104,9 +111,12 @@ export class UserDetailsComponent implements OnChanges {
           this.usersService.deleteUser(utilisateur._id).subscribe(() => {
             this.userDeleted.emit();
             this.itemService
-              .deleteAllJeuDepotUser(utilisateur._id)
-              .subscribe(() => {
-                console.log('Utilisateur et ses jeux supprimés avec succès');
+              .getItemsByUser(utilisateur._id)
+              .subscribe((items) => {
+                items.forEach((item) => {
+                  item.statutJeu = 'Supprimé';
+                  this.itemService.updateJeuDepot(item).subscribe();
+                });
                 this.snackBar.open(
                   'Utilisateur supprimé avec succès',
                   'Fermer',
@@ -137,5 +147,13 @@ export class UserDetailsComponent implements OnChanges {
 
   toggleUserListeAchatMode(): void {
     this.router.navigate(['utilisateur/liste-achat', this.utilisateur._id]);
+  }
+
+  toggleUserListeVenteMode(): void {
+    this.router.navigate(['utilisateur/liste-vente', this.utilisateur._id]);
+  }
+
+  cancelEdit(): void {
+    this.editMode = false;
   }
 }

@@ -2,9 +2,17 @@ html, body { height: 100%; }
 body { 
     margin: 0; 
     font-family: Roboto, "Helvetica Neue", sans-serif; 
-    background-color: blanchedalmond;
+    background-color: #e0e0cb;
     color: #333;
 }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+h1, h2 {
+    color: #2c3e50;
+}
+
+p {
+    color: #7f8c8d;
+}

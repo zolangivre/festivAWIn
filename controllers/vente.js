@@ -47,8 +47,6 @@ exports.createVente = async (req, res) => {
                 idVente: nouvelleVente._id,
                 quantiteVendus: jeu.quantiteVendus
             }], { session });
-
-            console.log("VenteJeu crée avec succes :", VenteJeuI);
             return VenteJeuI;
         });
 

@@ -8,6 +8,7 @@ router.get('/nextsession', sessionCtrl.getNextPlannedSession);
 router.get('/activesession', sessionCtrl.isSessionActive);
 router.get('/encours', sessionCtrl.getSessionEnCours);
 router.put('/update', sessionCtrl.updateSessionStatus);
+router.get('/:id', sessionCtrl.getSessionById);
 router.post('/', sessionCtrl.createSession);
 router.delete('/:id', sessionCtrl.deleteSession);
 

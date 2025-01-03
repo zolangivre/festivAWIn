@@ -70,6 +70,9 @@ exports.createUser = (req, res, next) => {
     mail: req.body.mail,
     telephone: req.body.telephone,
     adresse: req.body.adresse,
+    ville: req.body.ville,
+    codePostal: req.body.codePostal,
+    pays: req.body.pays,
     role: req.body.role
   });
 

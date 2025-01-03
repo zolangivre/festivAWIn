@@ -20,6 +20,15 @@ const utilisateurSchema = mongoose.Schema({
     adresse: {
         type: String
     },
+    ville: {
+        type: String
+    },
+    codePostal: {
+        type: String
+    },
+    pays: {
+        type: String
+    },
     role: { 
         type: String,
         enum: ['Admin', 'Vendeur', 'Acheteur', 'Gestionnaire'],

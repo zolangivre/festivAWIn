@@ -2,10 +2,14 @@ const express = require('express');
 const router = express.Router();
 const jeuDepotController = require('../controllers/jeuDepot');
 
-router.get('/', jeuDepotController.getJeuxDepot);
+// Récupérer tous les jeux qui ne sont pas supprimés
+router.get('/', jeuDepotController.getJeuxDepotPasSupprimés);
+
+// Récupérer tous les jeux
+router.get('/all', jeuDepotController.getJeuxDepot);
+
+// Ajouter un jeu
 router.post('/', jeuDepotController.createJeuDepot);
-// router.put('/:id', jeuDepotController.updateJeuDepot);
-router.get('/filter', jeuDepotController.filterJeuxDepot);
 
 // Route pour obtenir les jeux d'un utilisateur
 router.get('/user/:userId', jeuDepotController.getJeuxDepotByUserId);

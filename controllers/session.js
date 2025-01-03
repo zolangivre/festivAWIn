@@ -61,27 +61,49 @@ exports.getSessionEnCours = (req, res, next) => {
 //Creer une session
 
 exports.createSession = (req, res, next) => {
-    const session = new sessionCollection({
-        dateDebut: req.body.dateDebut,
-        dateFin: req.body.dateFin,
-        fraisDepot: req.body.fraisDepot,
-        commission: req.body.commission,
-        statutSession: req.body.statutSession
-    });
-    session.save().then(
-        () => {
-        res.status(201).json({
-            message: 'Session enregistrée !'
+    const { dateDebut, dateFin } = req.body;
+
+    const startDate = new Date(dateDebut);
+    const endDate = new Date(dateFin);
+
+    // Vérification si une session se chevauche avec la nouvelle
+    sessionCollection.findOne({
+        $or: [
+            {
+                dateDebut: { $lt: endDate }, // La session commence avant la fin de la nouvelle session
+                dateFin: { $gt: startDate },  // La session se termine après le début de la nouvelle session
+            }
+        ]
+    })
+        .then(existingSession => {
+            if (existingSession) {
+                return res.status(400).json({ message: 'Une session se chevauche avec celle-ci.' });
+            }
+
+            // Sinon, enregistrer la session
+            const newSession = new sessionCollection({
+                dateDebut,
+                dateFin,
+                fraisDepot: req.body.fraisDepot,
+                commission: req.body.commission,
+                statutSession: req.body.statutSession
+            });
+
+            newSession.save()
+                .then(() => {
+                    res.status(201).json({
+                        message: 'Session enregistrée avec succès !'
+                    });
+                })
+                .catch((error) => {
+                    res.status(400).json({ error: error.message });
+                });
+        })
+        .catch((error) => {
+            res.status(500).json({ error: error.message });
         });
-        }
-    ).catch(
-        (error) => {
-        res.status(400).json({
-            error: error
-        });
-        }
-    );
-}
+};
+
 
 exports.updateSessionStatus = async (req, res, next) => {
     try {
@@ -130,6 +152,22 @@ exports.deleteSession = (req, res, next) => {
     ).catch(
         (error) => {
         res.status(400).json({
+            error: error
+        });
+        }
+    );
+}
+
+//Recuperer une session par son id
+
+exports.getSessionById = (req, res, next) => {
+    sessionCollection.findOne({ _id: req.params.id }).then(
+        (session) => {
+        res.status(200).json(session);
+        }
+    ).catch(
+        (error) => {
+        res.status(404).json({
             error: error
         });
         }

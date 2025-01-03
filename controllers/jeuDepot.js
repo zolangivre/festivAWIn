@@ -1,5 +1,15 @@
 const JeuDepot = require('../models/jeuDepot');
 
+// Récupérer tous les jeux qui ne sont pas supprimés
+exports.getJeuxDepotPasSupprimés = async (req, res) => {
+    try {
+        const jeux = await JeuDepot.find({ statutJeu: { $ne: 'Supprimé' } });
+        res.status(200).json(jeux);
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la récupération des jeux', error });
+    }
+};
+
 // Récupérer tous les jeux
 exports.getJeuxDepot = async (req, res) => {
     try {
@@ -16,49 +26,11 @@ exports.createJeuDepot = async (req, res) => {
     console.log(jeuDepot);
     try {
         const nouveauJeu = await jeuDepot.save();
-        console.log(nouveauJeu);
         res.status(201).json(nouveauJeu);
     } catch (error) {
         res.status(400).json({ message: 'Erreur lors de la création du jeu', error });
     }
 };
-
-// Filtrer les jeux
-exports.filterJeuxDepot = async (req, res) => {
-    const { searchTerm, minPrice, maxPrice, availabilityFilter } = req.query;
-    const filters = {};
-
-    if (searchTerm) {
-        filters.nomJeu = new RegExp(`^${searchTerm}`, 'i');
-    }
-    if (minPrice) {
-        filters.prixJeu = { ...filters.prixJeu, $gte: parseFloat(minPrice) };
-    }
-    if (maxPrice) {
-        filters.prixJeu = { ...filters.prixJeu, $lte: parseFloat(maxPrice) };
-    }
-    if (availabilityFilter && availabilityFilter !== 'all') {
-        filters.statutJeu = availabilityFilter === 'available' ? 'Disponible' : 'Vendu';
-    }
-
-    try {
-        const jeuxFiltres = await JeuDepot.find(filters);
-        res.status(200).json(jeuxFiltres);
-    } catch (error) {
-        res.status(500).json({ message: 'Erreur lors du filtrage des jeux', error });
-    }
-};
-
-
-// exports.updateJeuDepot = async (req, res) => {
-//     try {
-//         const updatedItem = await JeuDepot.findByIdAndUpdate(req.params.id, req.body, { new: true });
-//         if (!updatedItem) return res.status(404).send('Item not found');
-//         res.status(200).json(updatedItem);
-//     } catch (error) {
-//         res.status(500).send(error.message);
-//     }
-// }
 
 //Récupérer tout les jeux d'un utlisateur par son id
 exports.getJeuxDepotByUserId = async (req, res) => {
@@ -70,8 +42,6 @@ exports.getJeuxDepotByUserId = async (req, res) => {
         res.status(500).json({ message: 'Erreur lors de la récupération des jeux', error });
     }
 }
-
-
 
 // Met a jour un jeuDepot (requete pour modifier la quantité du jeuDepot lors d'un achat)
 exports.updateJeuDepot = async (req, res) => {
@@ -85,7 +55,7 @@ exports.updateJeuDepot = async (req, res) => {
         }
 
         // Vérifier si la quantité est 0 et mettre à jour le statut
-        if (jeu.quantiteJeu === 0) {
+        if (jeu.quantiteJeuDisponible === 0 && jeu.statutJeu === 'Disponible') {
             jeu.statutJeu = 'Vendu';
             jeu = await jeu.save(); // Sauvegarder les modifications
         }

@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.monsite.com', // Exemple d'URL de l'API pour la production
+  apiUrl: 'https://api.monsite.com',
   sessionTimeout: 120,
 };

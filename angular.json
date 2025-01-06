@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/fetiv-awin",
+            "outputPath": "dist/festivawin",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "fetivAWIn:build:production"
+              "buildTarget": "festivAWIn:build:production"
             },
             "development": {
-              "buildTarget": "fetivAWIn:build:development"
+              "buildTarget": "festivAWIn:build:development"
             }
           },
           "defaultConfiguration": "development"

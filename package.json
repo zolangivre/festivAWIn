@@ -7,14 +7,13 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
   "private": true,
   "dependencies": {
-    "@angular/cli": "^19.0.6",
     "@angular/animations": "^19.0.5",
     "@angular/cdk": "^19.0.4",
     "@angular/common": "^19.0.5",

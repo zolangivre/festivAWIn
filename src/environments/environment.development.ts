@@ -1,4 +1,4 @@
 export const environment = {
-    production: false,
-    apiUrl: 'http://festivawin-back.cluster-ig4.igpolytech.fr/api',
+  production: false,
+  apiUrl: 'https://festivawin-back-16b79a35ef75.herokuapp.com',
 };

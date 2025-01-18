@@ -20,3 +20,7 @@ mat-paginator {
 .selected-row {
     background-color: rgb(238, 200, 174);
 }
+
+.facture_btn button {
+    margin-top: 10px;
+}

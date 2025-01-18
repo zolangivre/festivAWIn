@@ -50,7 +50,9 @@
     </mat-paginator>
 }
 @if (selectedRow) {
-    <button mat-raised-button (click)="telechargerFacture(selectedRow)">Télécharger facture</button>
+    <div class="facture_btn">
+        <button mat-raised-button (click)="telechargerFacture(selectedRow)">Télécharger facture</button>
+    </div>
 }
 </div>
 }

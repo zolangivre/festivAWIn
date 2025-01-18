@@ -1,15 +1,26 @@
-html, body { height: 100%; }
-body { 
-    margin: 0; 
-    font-family: Roboto, "Helvetica Neue", sans-serif; 
-    background-color: #e0e0cb;
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
     color: #333;
+    background-color: rgb(255, 255, 227);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow-x: hidden;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body.home-background {
+    background-image: url('assets/home.png');
+}
 
-h1, h2 {
+body.other-background {
+    background-image: url('assets/other.png');
+}
+
+h1,
+h2 {
     color: #2c3e50;
 }
 

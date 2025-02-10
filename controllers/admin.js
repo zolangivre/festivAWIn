@@ -65,37 +65,16 @@ exports.login = async (req, res) => {
             return res.status(400).json({ message: 'Rôle invalide' });
         }
 
-        // Créer le payload du JWT (inclus des informations comme l'ID et le rôle)
         const payload = {
             id: admin._id,
             username: admin.username,
             statut: admin.statut, // Admin ou Gestionnaire
         };
 
-        // Créer le token JWT
         const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '24h' });
         
         res.status(200).json({ message: 'Connexion réussie', token });
     } catch (error) {
-        res.status(500).json({ message: 'Erreur serveur', error });
-    }
-};
-
-//Deconnexion d'un admin ou gestionnaire
-exports.logout = async (req, res) => {
-    try {
-        const { username } = req.body;
-
-        const admin = await Admin
-            .findOne({ username })
-            .then((admin) => {
-                if (!admin) {
-                    return res.status(401).json({ message: 'Utilisateur non trouvé' });
-                }
-                res.status(200).json({ message: 'Déconnexion réussie' });
-            });
-    }
-    catch (error) {
         res.status(500).json({ message: 'Erreur serveur', error });
     }
 };

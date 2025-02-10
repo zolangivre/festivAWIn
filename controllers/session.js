@@ -1,7 +1,6 @@
 const sessionCollection = require('../models/session');
 
 //Recupere la session dont le statut est Planifiée
-
 exports.getSessionPlanifiee = (req, res, next) => {
     sessionCollection.find({ statutSession: 'Planifiee' }).then(
         (session) => {
@@ -16,6 +15,7 @@ exports.getSessionPlanifiee = (req, res, next) => {
     );
 };
 
+//Recupere la session suivante
 exports.getNextPlannedSession = async (req, res, next) => {
     try {
         const nextSession = await sessionCollection.findOne({ statutSession: 'Planifiee' }).sort({ dateDebut: 1 }).exec();
@@ -43,7 +43,6 @@ exports.isSessionActive = async (req, res, next) => {
 };
     
 //Recupere la session dont le statut est En cours
-
 exports.getSessionEnCours = (req, res, next) => {
     sessionCollection.findOne({ statutSession: 'En Cours' }).then(
         (session) => {
@@ -59,19 +58,15 @@ exports.getSessionEnCours = (req, res, next) => {
 }
 
 //Creer une session
-
 exports.createSession = (req, res, next) => {
     const { dateDebut, dateFin } = req.body;
-
     const startDate = new Date(dateDebut);
     const endDate = new Date(dateFin);
-
-    // Vérification si une session se chevauche avec la nouvelle
     sessionCollection.findOne({
         $or: [
             {
-                dateDebut: { $lt: endDate }, // La session commence avant la fin de la nouvelle session
-                dateFin: { $gt: startDate },  // La session se termine après le début de la nouvelle session
+                dateDebut: { $lt: endDate },
+                dateFin: { $gt: startDate },
             }
         ]
     })
@@ -79,8 +74,6 @@ exports.createSession = (req, res, next) => {
             if (existingSession) {
                 return res.status(400).json({ message: 'Une session se chevauche avec celle-ci.' });
             }
-
-            // Sinon, enregistrer la session
             const newSession = new sessionCollection({
                 dateDebut,
                 dateFin,
@@ -159,7 +152,6 @@ exports.deleteSession = (req, res, next) => {
 }
 
 //Recuperer une session par son id
-
 exports.getSessionById = (req, res, next) => {
     sessionCollection.findOne({ _id: req.params.id }).then(
         (session) => {

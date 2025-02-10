@@ -1,31 +1,40 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { SessionService } from '../../services/session.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-countdown',
-    imports: [],
-    templateUrl: './countdown.component.html',
-    styleUrl: './countdown.component.css'
+  selector: 'app-countdown',
+  imports: [],
+  templateUrl: './countdown.component.html',
+  styleUrl: './countdown.component.css',
 })
 export class CountdownComponent {
   countdown: string = '';
   message: string = '';
   private intervalId: any;
+  sessionActiveOuPlanifiee: boolean = false;
 
   constructor(private sessionService: SessionService, private router: Router) {}
 
   ngOnInit(): void {
-    // Vérifie si une session est active
     this.sessionService.updateSessionStatus().subscribe();
     this.sessionService.isSessionActive().subscribe(
       (isActive) => {
         if (isActive) {
-          // Si une session est active, affiche un compte à rebours jusqu'à la fin
+          this.sessionActiveOuPlanifiee = true;
           this.sessionService.getSessionEnCours().subscribe(
             (session) => {
               const endDate = new Date(session.dateFin);
-              this.startCountdown(endDate, 'Une session a commencé et finira dans');
+              this.startCountdown(
+                endDate,
+                'Une session a commencé et finira dans'
+              );
             },
             (error) => {
               console.error(
@@ -35,10 +44,9 @@ export class CountdownComponent {
             }
           );
         } else {
-          // Sinon, recherche la prochaine session et affiche un compte à rebours jusqu'à son début
           this.sessionService.getNextPlannedSession().subscribe(
             (session) => {
-              console.log('Prochaine session planifiée:', session);
+              this.sessionActiveOuPlanifiee = true;
               const startDate = new Date(session.dateDebut);
               this.startCountdown(
                 startDate,
@@ -46,6 +54,8 @@ export class CountdownComponent {
               );
             },
             (error) => {
+              this.sessionActiveOuPlanifiee = false;
+              this.message = 'Aucune session planifiée.';
               console.error(
                 'Erreur lors de la récupération de la prochaine session planifiée:',
                 error

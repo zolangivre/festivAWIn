@@ -1,3 +1,8 @@
 <div class="countdown-container">
+    @if (sessionActiveOuPlanifiee) {
     <p>{{ message }} {{ countdown }}.</p>
+    }
+    @else {
+    <p>{{ message }}</p>
+    }
 </div>

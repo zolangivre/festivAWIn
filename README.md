@@ -1,4 +1,4 @@
-# fetivAWIn
+# FestivAWIn
 
 ## INTRODUCTION
 Ce projet a pour objectif de créer une application web qui permettra aux gestionnaires de

@@ -1,4 +1,5 @@
 const usersCollection = require('../models/utilisateur');
+const Bilan = require('../models/bilan');
 
 //Récupère la liste de tous les utilisateurs (vendeurs, acheteurs, gestionnaires, administrateurs).
 exports.getAllUsers = (req, res, next) => {
@@ -62,20 +63,41 @@ exports.getUserById = (req, res, next) => {
     });
 };
 
-//Crée un nouvel utilisateur (vendeur, acheteur, gestionnaire ou administrateur).
+//Crée un nouvel utilisateur (vendeur, acheteur).
 exports.createUser = (req, res, next) => {
-    const user = new usersCollection({
-        nom: req.body.nom,
-        prenom: req.body.prenom,
-        mail: req.body.mail,
-        telephone: req.body.telephone,
-        adresse: req.body.adresse,
-        role: req.body.role
-    });
-    user.save()
-        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-        .catch(error => res.status(400).json({ error }));
-}
+  const user = new usersCollection({
+    nom: req.body.nom,
+    prenom: req.body.prenom,
+    mail: req.body.mail,
+    telephone: req.body.telephone,
+    adresse: req.body.adresse,
+    ville: req.body.ville,
+    codePostal: req.body.codePostal,
+    pays: req.body.pays,
+    role: req.body.role
+  });
+
+  user.save()
+    .then((savedUser) => {
+      // Créer un bilan pour le nouvel utilisateur
+      const bilan = new Bilan({
+        vendeurId: savedUser._id,
+        sommeDues: 0,
+        totalFrais: 0,
+        totalCommissions: 0,
+        gains: 0
+      });
+
+      return bilan.save()
+        .then(() => {
+          res.status(201).json({
+            message: 'Utilisateur et bilan créés !',
+            user: savedUser
+          });
+        });
+    })
+    .catch(error => res.status(400).json({ error }));
+};
 
 //Met à jour les informations d’un utilisateur existant par son idUtilisateur.
 exports.updateUser = (req, res, next) => {

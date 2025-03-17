@@ -18,13 +18,17 @@ const jeuDepotSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    quantiteJeu: {
+    quantiteJeuDisponible: {
+        type: Number,
+        required: true
+    },
+    quantiteJeuVendu: {
         type: Number,
         required: true
     },
     statutJeu: {
         type: String,
-        enum: ['Disponible', 'Vendu'],
+        enum: ['Disponible', 'Vendu', 'Supprimé'],
         required: true
     },
     dateDepot: {
@@ -38,7 +42,7 @@ const jeuDepotSchema = mongoose.Schema({
     remiseDepot: {
         type: Number,
         required: true
-    }
+    },
 });
 
 module.exports = mongoose.model('JeuDepot', jeuDepotSchema);

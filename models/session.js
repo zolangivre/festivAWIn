@@ -13,6 +13,10 @@ const sessionSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    commission: {
+        type: Number,
+        required: true
+    },
     statutSession: {
         type: String,
         required: true

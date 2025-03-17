@@ -5,8 +5,11 @@ const app = express();
 const userRoutes = require('./routes/utilisateur');
 const jeuDepotRoutes = require('./routes/jeuDepot');
 const venteRoutes = require('./routes/vente');
+const venteJeuRoutes = require('./routes/vente_jeu');
 const sessionRoutes = require('./routes/session');
 const adminRoutes = require('./routes/admin');
+const bilanRoutes = require('./routes/bilan');
+const factureRoutes = require('./routes/facture');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -40,8 +43,11 @@ app.use(express.json());
 app.use('/api/utilisateur', userRoutes);
 app.use('/api/jeuDepot', jeuDepotRoutes);
 app.use('/api/vente', venteRoutes);
+app.use('/api/venteJeu', venteJeuRoutes);
 app.use('/api/session', sessionRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/bilan', bilanRoutes);
+app.use('/api/facture', factureRoutes);
 
 
 module.exports = app;

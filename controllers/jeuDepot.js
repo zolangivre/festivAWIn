@@ -24,6 +24,7 @@ exports.createJeuDepot = async (req, res) => {
 // Filtrer les jeux
 exports.filterJeuxDepot = async (req, res) => {
     const { searchTerm, minPrice, maxPrice, availabilityFilter } = req.query;
+    // console.log(req.query); // renvoie par exemple : { availabilityFilter: 'Disponible' }
     const filters = {};
 
     if (searchTerm) {
@@ -36,7 +37,7 @@ exports.filterJeuxDepot = async (req, res) => {
         filters.prixJeu = { ...filters.prixJeu, $lte: parseFloat(maxPrice) };
     }
     if (availabilityFilter && availabilityFilter !== 'all') {
-        filters.statutJeu = availabilityFilter === 'available' ? 'Disponible' : 'Vendu';
+        filters.statutJeu = availabilityFilter === 'Disponible' ? 'Disponible' : 'Vendu';
     }
 
     try {

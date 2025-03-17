@@ -8,6 +8,9 @@ router.get('/', jeuDepotController.getJeuxDepotPasSupprimés);
 // Récupérer tous les jeux
 router.get('/all', jeuDepotController.getJeuxDepot);
 
+// Filtrer les jeux
+router.get('/filter', jeuDepotController.filterJeuxDepot);
+
 // Ajouter un jeu
 router.post('/', jeuDepotController.createJeuDepot);
 

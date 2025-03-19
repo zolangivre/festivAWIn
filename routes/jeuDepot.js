@@ -27,6 +27,6 @@ router.delete('/user/:userId', jeuDepotController.deleteAllJeuxDepotByUserId);
 router.put('/:jeuId', jeuDepotController.updateJeuDepot);
 
 // Route pour obtenir un jeu par son id
-// router.get('/:jeuId', jeuDepotController.getJeuDepotById);
+router.get('/:jeuId', jeuDepotController.getJeuDepotById);
 
 module.exports = router;

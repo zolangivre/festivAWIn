@@ -1,0 +1,23 @@
+mat-form-field {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+h1 {
+  display: flex;
+  justify-content: center;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-field {
+  flex: 1;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+}

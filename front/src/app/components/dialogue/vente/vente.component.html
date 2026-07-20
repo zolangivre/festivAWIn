@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Confirmation d'achat</h1>
+<mat-dialog-content>
+    <p>Êtes vous sur de vouloir faire cet achat ?</p>
+    <p>La montant total s'élève à : {{ data.montantTotal | currency: "EUR"}}</p>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="false">Annuler</button>
+        <button mat-button color="warn" [mat-dialog-close]="true">Confirmer</button>
+    </div>

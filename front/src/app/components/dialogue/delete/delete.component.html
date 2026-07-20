@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>Confirmation de suppression</h1>
+<mat-dialog-content>
+    <p>Voulez-vous vraiment supprimez {{data.type}} ?</p>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="false">Annuler</button>
+        <button mat-raised-button color="warn" [mat-dialog-close]="true">Supprimer</button>
+    </div>

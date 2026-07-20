@@ -1,0 +1,29 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    color: #333;
+    background-color: rgb(255, 255, 227);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow-x: hidden;
+}
+
+body.home-background {
+    background-image: url('assets/home.png');
+}
+
+body.other-background {
+    background-image: url('assets/other.png');
+}
+
+h1,
+h2 {
+    color: #2c3e50;
+}
+
+p {
+    color: #7f8c8d;
+}

@@ -1,0 +1,74 @@
+@if (utilisateur) {
+<h1>Acheter un jeu pour {{ utilisateur.nom }} {{ utilisateur.prenom }}</h1>
+<div class="venteMode">
+    <div class="available-games">
+        <h2>Jeux disponibles</h2>
+            <div class="select-vendeur">
+                <mat-form-field appearance="outline">
+                    <mat-label>Sélectionnez un vendeur</mat-label>
+                    <mat-select (selectionChange)="onVendeurChange($event.value)">
+                        <mat-option *ngFor="let vendeur of vendeurs" [value]="vendeur._id">
+                            {{ vendeur.nom }} {{ vendeur.prenom }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        <table mat-table [dataSource]="availableGamesDataSource" matSort #availablesGamesSort="matSort" (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
+            <ng-container matColumnDef="nomJeu">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Nom </th>
+                <td mat-cell *matCellDef="let element"> {{ element.nomJeu }} </td>
+            </ng-container>
+            <ng-container matColumnDef="editeurJeu">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Editeur </th>
+                <td mat-cell *matCellDef="let element"> {{ element.editeurJeu }} </td>
+            </ng-container>
+            <ng-container matColumnDef="prixJeu">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Prix Unitaire </th>
+                <td mat-cell *matCellDef="let element"> {{ element.prixJeu | currency:'EUR' }} </td>
+            </ng-container>
+            <ng-container matColumnDef="quantiteJeuDisponible">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Quantité </th>
+                <td mat-cell *matCellDef="let element"> {{ element.quantiteJeuDisponible | number }} </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['nomJeu', 'editeurJeu', 'prixJeu', 'quantiteJeuDisponible']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['nomJeu', 'editeurJeu', 'prixJeu', 'quantiteJeuDisponible'];"
+                (click)="handleQuantitySelection(row)"></tr>
+        </table>
+        <mat-paginator #availablesGamesPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of jeux">
+        </mat-paginator>
+    </div>
+
+    <div class="selected-games">
+        <h2>Jeux sélectionnés</h2>
+        <table mat-table [dataSource]="selectedGames" matSort #selectedGamesSort="matSort" (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
+            <ng-container matColumnDef="jeuNom">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Nom </th>
+                <td mat-cell *matCellDef="let element"> {{ element.jeuNom }} </td>
+            </ng-container>
+            <ng-container matColumnDef="editeurNom">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Editeur </th>
+                <td mat-cell *matCellDef="let element"> {{ element.editeurNom }} </td>
+            </ng-container>
+            <ng-container matColumnDef="prixJeu">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Prix Unitaire</th>
+                <td mat-cell *matCellDef="let element"> {{ element.prixJeu | currency:'EUR' }} </td>
+            </ng-container>
+            <ng-container matColumnDef="quantiteVendus">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Quantité </th>
+                <td mat-cell *matCellDef="let element">{{ element.quantiteVendus | number }}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['jeuNom', 'editeurNom', 'prixJeu', 'quantiteVendus']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['jeuNom', 'editeurNom', 'prixJeu', 'quantiteVendus'];" (click)="removeGameFromPurchase(row)">
+            </tr>
+        </table>
+        <mat-paginator #selectedGamesPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of jeux">
+        </mat-paginator>
+        <div class="total">
+            <p>Montant total : {{ totalAmount | currency: "EUR"}}</p>
+        </div>
+        <div class="button">
+            <button mat-raised-button [disabled]="selectedGames.data.length === 0" color="primary" (click)="makePurchase()">Effectuer l'achat</button>
+        </div>
+    </div>
+</div>
+}

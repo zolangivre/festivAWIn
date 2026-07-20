@@ -1,0 +1,16 @@
+    <div class="container">
+        <div class="message">
+            <div>
+                <h1> Bienvenue sur FestivAWIn </h1>
+            </div>
+            @if (isActive == true) {
+            <app-countdown></app-countdown>
+            }
+            @if (isActive == false) {
+            <app-countdown></app-countdown>
+            }
+        </div>
+        <button mat-raised-button (click)="redirectToVente()" class="vente-button">Voir les ventes</button>
+        <button mat-raised-button (click)="redirectToJeux()" class="vente-button">Voir les jeux</button>
+    </div>
+    <router-outlet></router-outlet>

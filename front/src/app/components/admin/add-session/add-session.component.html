@@ -1,0 +1,50 @@
+<div class="add-session">
+    <h1>Créer session dépôt-vente</h1>
+    <form [formGroup]="sessionForm" (ngSubmit)="addSession()">
+        <div class="date-range-container">
+            <mat-form-field appearance="outline">
+                <mat-label>Période de la session</mat-label>
+                <mat-date-range-input [formGroup]="sessionForm" [rangePicker]="picker">
+                    <input matStartDate formControlName="dateDebut" placeholder="Date de début" />
+                    <input matEndDate formControlName="dateFin" placeholder="Date de fin" />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker touchUi #picker>
+                    <mat-datepicker-actions>
+                        <button mat-button matDatepickerCancel>Annuler</button>
+                        <button mat-raised-button matDatepickerApply>Appliquer</button>
+                    </mat-datepicker-actions>
+                </mat-date-range-picker>
+            </mat-form-field>
+        </div>
+
+        <div class="time-container">
+            <mat-form-field appearance="outline">
+                <mat-label>Heure de début</mat-label>
+                <input matInput [matTimepicker]="startTimePicker" formControlName="heureDebut">
+                <mat-timepicker-toggle matIconSuffix [for]="startTimePicker"></mat-timepicker-toggle>
+                <mat-timepicker #startTimePicker></mat-timepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Heure de fin</mat-label>
+                <input matInput [matTimepicker]="endTimePicker" formControlName="heureFin">
+                <mat-timepicker-toggle matIconSuffix [for]="endTimePicker"></mat-timepicker-toggle>
+                <mat-timepicker #endTimePicker></mat-timepicker>
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Frais de dépôt (en %)</mat-label>
+            <input matInput formControlName="fraisDepot" type="number" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Commission de ventes (en %)</mat-label>
+            <input matInput formControlName="commission" type="number" />
+        </mat-form-field>
+
+        <div class="button-container">
+            <button mat-raised-button color="primary" type="submit" [disabled]="sessionForm.invalid">Créer
+                session</button>
+        </div>
+    </form>
+</div>

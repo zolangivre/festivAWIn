@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Acheter un jeu</h2>
+<div mat-dialog-content>
+    <p>Sélectionnez la quantité pour le jeu : {{ data.game.nomJeu }}</p>
+    <mat-form-field appearance="outline">
+        <mat-label>Quantité</mat-label>
+        <input matInput type="number" [(ngModel)]="quantity" min="1" [max]="data.game.quantiteJeuDisponible" />
+        <mat-hint>Disponible : {{ data.game.quantiteJeuDisponible }}</mat-hint>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button  (click)="cancelSelection()" [mat-dialog-close]="false">Annuler</button>
+    <button mat-raised-button color="warn" [disabled]="quantity < 1 || quantity > data.game.quantiteJeuDisponible" (click)="confirmSelection()" [mat-dialog-close]="true">Confirmer</button>
+</div>

@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.display {
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.mat-header-cell, .mat-cell {
+  padding: 8px;
+  text-align: left;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  margin-right: 10px;
+}
+
+button:last-child {
+  margin-right: 0;
+}
+
+.bilan-acheteur, .bilan-vendeur {
+  margin-top: 20px;
+}
+
+.edit {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+}
+
+.edit button {
+  margin-right: auto;
+}
+
+.edit h2 {
+  margin-right: 320px;
+  text-align: center;
+}

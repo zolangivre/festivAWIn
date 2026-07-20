@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Modifier le jeu</h1>
+<mat-dialog-content>
+    <p>Modifier les informations du jeu :</p>
+    <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+            <mat-label>Nom du jeu</mat-label>
+            <input matInput formControlName="nomJeu" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Éditeur du jeu</mat-label>
+            <input matInput formControlName="editeurJeu" />
+        </mat-form-field>
+
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Annuler</button>
+            <button mat-raised-button color="warn" [disabled]="editForm.invalid" type="submit"
+                [mat-dialog-close]="true">Enregistrer</button>
+        </div>
+    </form>

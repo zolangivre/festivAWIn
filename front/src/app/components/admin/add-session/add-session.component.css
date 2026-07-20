@@ -1,0 +1,46 @@
+.add-session {
+    position: fixed;
+    padding: 20px;
+    border-radius: 30px;
+    background-color: beige;
+    top: 50%;
+    left: 50%;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translate(-50%, -50%);
+}
+
+mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    margin-right: 10px;
+}
+
+button:last-child {
+    margin-right: 0;
+}
+
+.time-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+}

@@ -1,0 +1,72 @@
+@if (utilisateur) {
+<h1>Effectuer un dépôt pour {{utilisateur.nom}} {{utilisateur.prenom}}</h1>
+<div class="depotMode">
+    <div class="depot-list">
+        <h2>Liste des jeux</h2>
+        <table mat-table [dataSource]="depotListDataSource" matSort (matSortChange)="announceSortChange($event)" 
+        class="mat-elevation-z8">
+            <ng-container matColumnDef="nomJeu">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Nom </th>
+                <td mat-cell *matCellDef="let element"> {{ element.nomJeu }} </td>
+            </ng-container>
+            <ng-container matColumnDef="editeurJeu">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Editeur </th>
+                <td mat-cell *matCellDef="let element"> {{ element.editeurJeu }} </td>
+            </ng-container>
+            <ng-container matColumnDef="prixJeu">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Prix </th>
+                <td mat-cell *matCellDef="let element"> {{ element.prixJeu | currency:'EUR' }} </td>
+            </ng-container>
+            <ng-container matColumnDef="quantiteJeuDisponible">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Quantité </th>
+                <td mat-cell *matCellDef="let element"> {{ element.quantiteJeuDisponible | number }} </td>
+            </ng-container>
+            <ng-container matColumnDef="fraisDepot">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Frais unitaire </th>
+                <td mat-cell *matCellDef="let element"> {{ element.fraisDepot | currency:'EUR' }} </td>
+            </ng-container>
+            <ng-container matColumnDef="remiseDepot">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Remise </th>
+                <td mat-cell *matCellDef="let element"> {{ element.remiseDepot | number }} % </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="deleteJeu()"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of jeux">
+        </mat-paginator>
+    </div>
+    <div class="depot">
+        <h2>Ajouter des jeux</h2>
+        <form [formGroup]="jeuDepotForm" (ngSubmit)="makeDeposit()">
+            <div>
+                <mat-form-field for="nomJeu" appearance="outline">
+                    <mat-label>Nom</mat-label>
+                    <input matInput id="nomJeu" formControlName="nomJeu" />
+                </mat-form-field>
+                <mat-form-field for="editeurJeu" appearance="outline">
+                    <mat-label>Editeur</mat-label>
+                    <input matInput id="editeurJeu" formControlName="editeurJeu" />
+                </mat-form-field>
+                <mat-form-field for="prixJeu" appearance="outline">
+                    <mat-label>Prix (en €)</mat-label>
+                    <input matInput id="prixJeu" formControlName="prixJeu" />
+                </mat-form-field>
+                <mat-form-field for="quantiteJeuDisponible" appearance="outline">
+                    <mat-label>Quantité</mat-label>
+                    <input matInput id="quantiteJeuDisponible" formControlName="quantiteJeuDisponible" />
+                </mat-form-field>
+                <mat-form-field for="remiseDepot" appearance="outline">
+                    <mat-label>Remise (en %)</mat-label>
+                    <input matInput id="remiseDepot" formControlName="remiseDepot" />
+                </mat-form-field>
+            </div>
+            <div class="button">
+                <button mat-raised-button [disabled]="jeuDepotForm.invalid" (click)="addJeu()">Ajouter au dépôt</button>
+            </div>
+            <div class="submit-button">
+                <button mat-raised-button type="submit" [disabled]="depot_vide">Effectuer le dépôt</button>
+            </div>
+        </form>
+    </div>
+</div>
+}

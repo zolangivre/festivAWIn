@@ -1,0 +1,39 @@
+<div class="bilan-container">
+    <h2>Bilan de {{utilisateur.nom}} {{utilisateur.prenom}}</h2>
+    <div class="bilan-row">
+        <div class="bilan-section">
+            <h2>Montant frais</h2>
+            <p [ngClass]="{'negative-amount': bilan.totalFrais < 0, 'positive-amount': bilan.totalFrais > 0}">
+                {{ bilan.totalFrais | currency: "EUR"}}
+            </p>
+        </div>
+        <div class="bilan-section">
+            <h2>Montant commissions</h2>
+            <p [ngClass]="{'negative-amount': bilan.totalCommissions < 0, 'positive-amount': bilan.totalCommissions > 0}">
+                {{ bilan.totalCommissions | currency: "EUR" }}
+            </p>
+        </div>
+    </div>
+    <div class="bilan-row">
+        <div class="bilan-section">
+            <h2>Montant des ventes</h2>
+            <p [ngClass]="{'negative-amount': bilan.gains < 0, 'positive-amount': bilan.gains > 0}">
+                {{ bilan.gains | currency: "EUR" }}
+            </p>
+        </div>
+        <div class="bilan-section">
+            <h2>Sommes dues</h2>
+            <p [ngClass]="{'negative-amount': bilan.sommeDues < 0, 'positive-amount': bilan.sommeDues > 0}">
+                {{ bilan.sommeDues | currency: "EUR" }}
+            </p>
+        </div>
+    </div>
+    <div class="bilan-row">
+        <div class="bilan-section">
+            <h2>Montant final perçu</h2>
+            <p [ngClass]="{'negative-amount': montantFinal < 0, 'positive-amount': montantFinal > 0}">
+                {{ montantFinal | currency: "EUR" }}
+            </p>
+        </div>
+    </div>
+</div>

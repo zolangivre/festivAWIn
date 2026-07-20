@@ -1,0 +1,32 @@
+<div class="navigation-buttons">
+  <button mat-icon-button class="home-button" (click)="toggleHome()" matTooltip="Accueil">
+    <mat-icon>home</mat-icon>
+  </button>
+  <button mat-icon-button class="previous-button" (click)="goBack()" matTooltip="Précédent">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</div>
+
+<div class="top-right-button">
+  @if (isAuthentified) {
+      @if (isAdmin) {
+      <button mat-icon-button class="session-button" (click)="goToSession()" matTooltip="Voir les sessions">
+        <mat-icon>date_range</mat-icon>
+      </button>
+      }
+      <button mat-icon-button class="gestion-button" (click)="gestionnaire()" matTooltip="Page de gestion">
+        <mat-icon>manage</mat-icon>
+      </button>
+      <button mat-icon-button class="logout-button" (click)="deconnexion()" matTooltip="Déconnexion">
+        <mat-icon>logout</mat-icon>
+      </button>
+
+  }
+  @else {
+      <button mat-icon-button class="login-button" (click)="connexion()" matTooltip="Connexion">
+        <mat-icon>login</mat-icon>
+      </button>
+  }
+</div>
+
+<router-outlet></router-outlet>

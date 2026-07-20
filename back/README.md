@@ -76,7 +76,3 @@ All routes are mounted under `/api`:
 ```bash
 npm test
 ```
-
-## Deployment
-
-The API is deployed on Heroku.

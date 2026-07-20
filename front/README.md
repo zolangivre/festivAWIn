@@ -2,8 +2,6 @@
 
 Angular web app for FestivAWIn, a board-game consignment sale ("dépôt-vente") management system used at festivals. It lets sellers deposit games, staff record sales, and admins track balances and generate invoices.
 
-Live site: https://festivawin-b8551f870523.herokuapp.com/
-
 ## Tech stack
 
 - Angular 19 + Angular Material / CDK
@@ -68,7 +66,3 @@ src/app/
 ## API
 
 The app talks to the FestivAWIn back-end API (see [`../back`](../back)). The API base URL is configured per environment in `src/environments/`.
-
-## Deployment
-
-The app is built and deployed on Heroku.

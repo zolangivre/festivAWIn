@@ -1,7 +1,5 @@
 # FestivAWIn
 
-Live site: https://festivawin-b8551f870523.herokuapp.com/
-
 ## Introduction
 
 FestivAWIn is a web application that helps festival organizers manage board-game consignment sales ("dépôt-vente"). It lets staff register games deposited by sellers, track sales as they happen, and oversee the whole operation. The app provides a simple interface for deposits, sales and invoicing, so organizers can efficiently manage transactions throughout the event.
